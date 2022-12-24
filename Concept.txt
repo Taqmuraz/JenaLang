@@ -1,0 +1,31 @@
+var float2 vector from func [ 10 11 ]
+var float x from get x from vector
+var float y from get y from vector
+var float sum from [ x + y ]
+
+var Example example from [
+	var Example instance from new Example [ ]
+	set v from instance to 10
+	set e from instance to null
+	instance ]
+
+set x from vector to [ get y from vector ]
+set e from example to new Example [ ]
+
+var [ float2 Example ] pair from [ get [ exampleV exampleE ] from example ]
+set e from [ get e from example ] to new Example [ get exampleV from pair get exampleE from pair ]
+
+keywords :
+
+get
+set
+var
+from
+to
+new
+null
+
+syntax :
+
+[ ]
++ - * /
