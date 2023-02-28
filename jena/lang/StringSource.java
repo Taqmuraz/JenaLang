@@ -10,12 +10,12 @@ public class StringSource implements Source
     }
 
     @Override
-    public void read(Position position, Count count, CharacterBuffer buffer)
+    public void read(Position position, Count count, SourceReader buffer)
     {
         int l = source.length();
         int start = position.position(0, l);
-        int end = start + count.count(l);
+        int c = count.count(l - start);
 
-        for (int i = start; i < end; i++) buffer.write(source.charAt(i));
+        for (int i = 0; i < c; i++) buffer.write(source.charAt(i + start), i);
     }
 }

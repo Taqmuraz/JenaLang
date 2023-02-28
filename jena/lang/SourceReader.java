@@ -2,5 +2,5 @@ package jena.lang;
 
 public interface SourceReader
 {
-    void symbol(char c);
+    void write(char symbol, int number);
 }

@@ -28,7 +28,7 @@ public class FileSource implements Source
     }
 
     @Override
-    public void read(Position position, Count count, CharacterBuffer buffer)
+    public void read(Position position, Count count, SourceReader buffer)
     {
         source.read(position, count, buffer);
     }

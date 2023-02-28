@@ -6,24 +6,22 @@ import java.util.List;
 public final class CharacterSeparatedSourceFlow implements SourceFlow
 {
     private SourceFlow flow;
-    private StringBuilder text = new StringBuilder();
+    private int lastStart;
+    private int lastIndex;
 
     public CharacterSeparatedSourceFlow(CharacterKind kind, Source source)
     {
         List<Source> sources = new ArrayList<Source>();
-        source.read(StartPosition.instance, MaxCount.instance, c ->
+        source.read(StartPosition.instance, MaxCount.instance, (c, n) ->
         {
             if (kind.isKind(c))
             {
-                sources.add(new StringSource(text.toString()));
-                text = new StringBuilder();
+                sources.add(new RelativeSource(source, lastStart, n - lastStart));
+                lastStart = n + 1;
             }
-            else
-            {
-                text.append(c);
-            }
+            lastIndex = n;
         });
-        sources.add(new StringSource(text.toString()));
+        sources.add(new RelativeSource(source, lastStart, lastIndex - lastStart + 1));
 
         flow = new ArraySourceFlow(sources.toArray(Source[]::new));
     }

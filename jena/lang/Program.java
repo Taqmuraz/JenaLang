@@ -10,7 +10,7 @@ public class Program
             flow.read(MaxCount.instance, source ->
             {
                 System.out.print("source : ");
-                source.read(StartPosition.instance, MaxCount.instance, System.out::print);
+                source.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
                 System.out.println();
             });
         }

@@ -6,7 +6,7 @@ public final class EmptySourceCheck
 
     public EmptySourceCheck(Source source)
     {
-        source.read(StartPosition.instance, MaxCount.instance, c -> empty = false);
+        source.read(StartPosition.instance, MaxCount.instance, (c, n) -> empty = false);
     }
 
     public boolean isEmpty()
