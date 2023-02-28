@@ -11,16 +11,7 @@ public class Program
     {
         try
         {
-            Scanner scanner;
-            scanner = new Scanner(new File("source.jena"));
-            List<String> lines = new ArrayList<String>();
-
-            while(scanner.hasNextLine())
-            {
-                lines.add(scanner.nextLine());
-            }
-
-            SourceFlow flow = new StringLiteralFlow(String.join("\n", lines));
+            SourceFlow flow = new StringLiteralFlow(new FileSource("source.jena"));
             flow.read(MaxCount.instance, source ->
             {
                 System.out.print("source : ");

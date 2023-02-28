@@ -26,6 +26,8 @@ public final class CharacterSeparatedSourceFlow implements SourceFlow
                 text.append(c);
             }
         });
+        if(!text.isEmpty()) sources.add(new StringSource(text.toString()));
+        
         flow = new ArraySourceFlow(sources.stream().toArray(Source[]::new));
     }
 

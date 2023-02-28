@@ -7,29 +7,21 @@ public final class StringLiteralFlow implements SourceFlow
 {
     private SourceFlow flow;
 
-    public StringLiteralFlow(String source)
+    public StringLiteralFlow(Source source)
     {
         List<SourceFlow> flows = new ArrayList<SourceFlow>();
-        StringBuilder text = new StringBuilder();
-        boolean literal = false;
-
-        for(int i = 0; i < source.length(); i++)
+        new CharacterSeparatedSourceFlow(c -> c == '\"', source).read(MaxCount.instance, new SourceFlowReader()
         {
-            char c = source.charAt(i);
-            if (c == '\"')
-            {
-                Source s = new StringSource(text.toString());
-                if (!literal) flows.add(new CharacterSeparatedSourceFlow(Character::isWhitespace, s));
-                else flows.add(new SingleSourceFlow(s));
-                text = new StringBuilder();
-                literal = !literal;
-            }
-            else
-            {
-                text.append(c);
-            }
-        }
+            int index;
 
+            @Override
+            public void call(Source source)
+            {
+                if((index & 1) == 0) flows.add(new CharacterSeparatedSourceFlow(Character::isWhitespace, source));
+                else flows.add(new SingleSourceFlow(source));
+                index++;
+            }
+        });
         this.flow = new CompositeSourceFlow(flows);
     }
 
