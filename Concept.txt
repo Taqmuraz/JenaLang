@@ -1,3 +1,6 @@
+********************************************************************************************
+CLASS DECLARATION
+
 java code :
 
 class Vector3f_123 implements Vector3f
@@ -8,21 +11,44 @@ class Vector3f_123 implements Vector3f
 	}
 }
 
+class Program
+{
+	static void main()
+	{
+		Vector3f vector = new Vector3f_123();
+		vector.accept((x, y, z) -> System.out.println(x + y + z));
+	}
+}
+
 jena code :
 
-Object class Vector3f_123
+class Vector3f_123
 	implements Vector3f
 	method accept
 		argument Vector3fAcceptor acceptor
-		body
-			acceptor call 1 2 3
-		end
+		body do
+			acceptor call 1 2 3 end
 end
 
-keywords :
+method main
+	body
+		do var vector new Vector3f_123
+		do vector accept method arrow x y z body print x + y + z
+	end
+call
 
-end
 
-syntax :
 
-+ - * /
+********************************************************************************************
+ANONYMOUS CLASSES
+
+
+********************************************************************************************
+SYNTAX
+
+special symbols :
++ add
+- sub
+* mul
+/ div
+. floating point format separator
