@@ -5,30 +5,31 @@ import java.util.Scanner;
 
 public class FileSource implements Source
 {
-    private String file;
+    private Source source;
 
     public FileSource(String file)
     {
-        this.file = file;
-    }
-
-    @Override
-    public void read(SourceReader sourceReader)
-    {
+        StringBuilder text = new StringBuilder();
         Scanner scanner = null;
         try
         {
             scanner = new Scanner(new File(file));
             while(scanner.hasNextLine())
             {
-                String line = scanner.nextLine();
-                for(int i = 0; i < line.length(); i++) sourceReader.symbol(line.charAt(i));
-                sourceReader.symbol('\n');
+                text.append(scanner.nextLine());
+                text.append('\n');
             }
         }
         catch(Throwable error)
         {
             if(scanner != null) scanner.close();
         }
+        source = new StringSource(text.toString());
+    }
+
+    @Override
+    public void read(Position position, Count count, CharacterBuffer buffer)
+    {
+        source.read(position, count, buffer);
     }
 }

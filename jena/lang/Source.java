@@ -2,7 +2,5 @@ package jena.lang;
 
 public interface Source
 {
-    void read(SourceReader sourceReader);
-
-    static final Source empty = (s) -> {};
+    void read(Position position, Count count, CharacterBuffer buffer);
 }

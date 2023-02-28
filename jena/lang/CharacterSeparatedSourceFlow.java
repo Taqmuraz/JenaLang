@@ -11,7 +11,7 @@ public final class CharacterSeparatedSourceFlow implements SourceFlow
     public CharacterSeparatedSourceFlow(CharacterKind kind, Source source)
     {
         List<Source> sources = new ArrayList<Source>();
-        source.read(c ->
+        source.read(StartPosition.instance, MaxCount.instance, c ->
         {
             if (kind.isKind(c))
             {

@@ -1,10 +1,5 @@
 package jena.lang;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-
 public class Program
 {
     public static void main(String[] args)
@@ -15,7 +10,7 @@ public class Program
             flow.read(MaxCount.instance, source ->
             {
                 System.out.print("source : ");
-                source.read(System.out::print);
+                source.read(StartPosition.instance, MaxCount.instance, System.out::print);
                 System.out.println();
             });
         }
