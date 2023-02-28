@@ -1,0 +1,4 @@
+class Vector3f_123
+	implements Vector3f
+	comment "this is representation of the 3d vector from the algebra"
+end
