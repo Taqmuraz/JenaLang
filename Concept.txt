@@ -42,6 +42,8 @@ call
 ********************************************************************************************
 ANONYMOUS CLASSES
 
+method arrow body print "anonymous"
+
 
 ********************************************************************************************
 SYNTAX
@@ -52,3 +54,4 @@ special symbols :
 * mul
 / div
 . floating point format separator
+" string literal open/close symbol
