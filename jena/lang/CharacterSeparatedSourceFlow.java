@@ -15,20 +15,17 @@ public final class CharacterSeparatedSourceFlow implements SourceFlow
         {
             if (kind.isKind(c))
             {
-                if (!text.isEmpty())
-                {
-                    sources.add(new StringSource(text.toString()));
-                    text = new StringBuilder();
-                }
+                sources.add(new StringSource(text.toString()));
+                text = new StringBuilder();
             }
             else
             {
                 text.append(c);
             }
         });
-        if(!text.isEmpty()) sources.add(new StringSource(text.toString()));
-        
-        flow = new ArraySourceFlow(sources.stream().toArray(Source[]::new));
+        sources.add(new StringSource(text.toString()));
+
+        flow = new ArraySourceFlow(sources.toArray(Source[]::new));
     }
 
     @Override

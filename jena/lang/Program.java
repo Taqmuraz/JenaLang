@@ -11,7 +11,7 @@ public class Program
     {
         try
         {
-            SourceFlow flow = new StringLiteralFlow(new FileSource("source.jena"));
+            SourceFlow flow = new EmptySourceFilterFlow(new StringLiteralFlow(new FileSource("source.jena")));
             flow.read(MaxCount.instance, source ->
             {
                 System.out.print("source : ");
