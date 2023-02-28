@@ -1,31 +1,28 @@
-var float2 vector from func [ 10 11 ]
-var float x from get x from vector
-var float y from get y from vector
-var float sum from [ x + y ]
+java code :
 
-var Example example from [
-	var Example instance from new Example [ ]
-	set v from instance to 10
-	set e from instance to null
-	instance ]
+class Vector3f_123 implements Vector3f
+{
+	public void accept(Vector3fAcceptor acceptor)
+	{
+		acceptor.call(1, 2, 3);
+	}
+}
 
-set x from vector to [ get y from vector ]
-set e from example to new Example [ ]
+jena code :
 
-var [ float2 Example ] pair from [ get [ exampleV exampleE ] from example ]
-set e from [ get e from example ] to new Example [ get exampleV from pair get exampleE from pair ]
+Object class Vector3f_123
+	implements Vector3f
+	method accept
+		argument Vector3fAcceptor acceptor
+		body
+			acceptor call 1 2 3
+		end
+end
 
 keywords :
 
-get
-set
-var
-from
-to
-new
-null
+end
 
 syntax :
 
-[ ]
 + - * /
