@@ -9,6 +9,10 @@ public class Program
             SourceFlow flow = new StringLiteralFlow(new FileSource("source.jena"))
                 .split(new SingleCharacterKind('('))
                 .split(new SingleCharacterKind(')'))
+                .split(new SingleCharacterKind('{'))
+                .split(new SingleCharacterKind('}'))
+                .split(new SingleCharacterKind('['))
+                .split(new SingleCharacterKind(']'))
                 .notKindFilter(SpaceCharacterKind.instance);
 
             flow.read(source ->

@@ -1,57 +1,36 @@
-********************************************************************************************
-CLASS DECLARATION
-
-java code :
-
-class Vector3f_123 implements Vector3f
+interface Vector3f
 {
-	public void accept(Vector3fAcceptor acceptor)
+	method print (Printer printer)
+}
+
+class Vector3fStruct
+{
+	float { x y z } = 0
+
+	method print (Printer printer) using new TextWriter(printer) as writer
 	{
-		acceptor.call(1, 2, 3);
+		writer.write { "(" x ", " y ", " z ")" }
+	}
+
+	method { { add (a + b) } { sub (a - b) } } as { name operation } name (Vector3fStruct v)
+	{
+		using { { x v.x } { y v.y } { z v.z } } as { a b } operation		
 	}
 }
 
-class Program
-{
-	static void main()
-	{
-		Vector3f vector = new Vector3f_123();
-		vector.accept((x, y, z) -> System.out.println(x + y + z));
-	}
-}
+*********************************
+CONCEPT :
 
-jena code :
+x { a b c }
 
-class Vector3f_123
-	implements Vector3f
-	method accept
-		argument Vector3fAcceptor acceptor
-		body do
-			acceptor call 1 2 3 end
-end
+where
+parent x
+	children a, b, c
 
-method main
-	body
-		do var vector new Vector3f_123
-		do vector accept method arrow x y z body print x + y + z
-	end
-call
+the same as
 
-
-
-********************************************************************************************
-ANONYMOUS CLASSES
-
-method arrow body print "anonymous"
-
-
-********************************************************************************************
-SYNTAX
-
-special symbols :
-+ add
-- sub
-* mul
-/ div
-. floating point format separator
-" string literal open/close symbol
+x a x b x c
+or
+x a
+x b
+x c
