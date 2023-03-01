@@ -6,10 +6,36 @@ class Vector3fStruct
 	{
 		writer.write { "(" x ", " y ", " z ")" }
 	}
+}
 
-	method { (add (a + b)) (sub (a - b)) } as (name operation) name (Vector3fStruct Vector3fAction) as (v action)
+interface Vector3f
+{
+	calculate Vector3fAction
+}
+
+interface Vector3fAction
+{
+	call (float float float)
+}
+
+class
+{
+	(Vector3fAdd (a + b))
+	(Vector3fSub (a - b))
+}
+as (name operation) name
+{
+	Vector3f { a b }
+
+	constructor (Vector3f Vector3f) as (a b)
 	{
-		action(new Vector3f(using { { x v.x } { y v.y } { z v.z } } as { a b } operation))
+		this.a = a
+		this.b = b
+	}
+
+	method calculate Vector3fAction as action
+	{
+		a.calculate((ax, ay, az) -> b.calculate((bx, by, bz) -> action({ (ax bx) (ay by) (az bz) } as (a b) operation)))
 	}
 }
 
@@ -30,16 +56,6 @@ class Vector3fStruct
 		writer.write ", "
 		writer.write z
 		writer.write ")"
-	}
-
-	method add (Vector3fStruct Vector3fAction) as (v action)
-	{
-		action(new Vector3f((x + v.x) (y + v.y) (z + v.z)))
-	}
-
-	method sub (Vector3fStruct Vector3fAction) as (v action)
-	{
-		action(new Vector3f((x - v.x) (y - v.y) (z - v.z)))
 	}
 }
 
