@@ -22,6 +22,8 @@ class
 {
 	(Vector3fAdd (a + b))
 	(Vector3fSub (a - b))
+	(Vector3fMul (a * b))
+	(Vector3fDiv (a / b))
 }
 as (name operation) name
 {
@@ -29,13 +31,12 @@ as (name operation) name
 
 	constructor (Vector3f Vector3f) as (a b)
 	{
-		this.a = a
-		this.b = b
+		{ a b } as f this.f = f
 	}
 
 	method calculate Vector3fAction as action
 	{
-		a.calculate((ax, ay, az) -> b.calculate((bx, by, bz) -> action({ (ax bx) (ay by) (az bz) } as (a b) operation)))
+		a.calculate((ax ay az) -> b.calculate((bx by bz) -> action({ (ax bx) (ay by) (az bz) } as (a b) operation)))
 	}
 }
 
