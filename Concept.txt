@@ -1,20 +1,15 @@
-interface Vector3f
-{
-	method print (Printer printer)
-}
-
 class Vector3fStruct
 {
 	float { x y z } = 0
 
-	method print (Printer printer) using new TextWriter(printer) as writer
+	method print Printer as printer using new TextWriter(printer) as writer
 	{
 		writer.write { "(" x ", " y ", " z ")" }
 	}
 
-	method { (add (a + b)) (sub (a - b)) } as (name operation) name (Vector3fStruct v)
+	method { (add (a + b)) (sub (a - b)) } as (name operation) name (Vector3fStruct Vector3fAction) as (v action)
 	{
-		new Vector3f(using { { x v.x } { y v.y } { z v.z } } as { a b } operation)		
+		action(new Vector3f(using { { x v.x } { y v.y } { z v.z } } as { a b } operation))
 	}
 }
 
@@ -37,14 +32,14 @@ class Vector3fStruct
 		writer.write ")"
 	}
 
-	method add (Vector3fStruct v)
+	method add (Vector3fStruct Vector3fAction) as (v action)
 	{
-		new Vector3f((x + v.x) (y + v.y) (z + v.z))
+		action(new Vector3f((x + v.x) (y + v.y) (z + v.z)))
 	}
 
-	method sub (Vector3fStruct v)
+	method sub (Vector3fStruct Vector3fAction) as (v action)
 	{
-		new Vector3f((x - v.x) (y - v.y) (z - v.z))
+		action(new Vector3f((x - v.x) (y - v.y) (z - v.z)))
 	}
 }
 
