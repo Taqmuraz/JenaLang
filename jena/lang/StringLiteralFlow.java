@@ -1,33 +1,31 @@
 package jena.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class StringLiteralFlow implements SourceFlow
 {
-    private SourceFlow flow;
+    private Source source;
 
     public StringLiteralFlow(Source source)
     {
-        List<SourceFlow> flows = new ArrayList<SourceFlow>();
-        new CharacterSeparatedSourceFlow(c -> c == '\"', source).read(MaxCount.instance, new SourceFlowReader()
+        this.source = source;
+    }
+
+    @Override
+    public void read(SourceFlowReader reader)
+    {
+        CharacterKind separatorKind = c -> c == '\"';
+        CharacterKind whitespaceKind = Character::isWhitespace;
+
+        new CharacterSeparatedSourceFlow(source, separatorKind).notKindFilter(separatorKind).read(new SourceFlowReader()
         {
             int index;
 
             @Override
             public void call(Source source)
             {
-                if((index & 1) == 0) flows.add(new CharacterSeparatedSourceFlow(Character::isWhitespace, source));
-                else flows.add(new SingleSourceFlow(source));
+                if((index & 1) == 0) source.split(whitespaceKind).notKindFilter(whitespaceKind).read(reader);
+                else reader.call(source);
                 index++;
             }
         });
-        this.flow = new CompositeSourceFlow(flows);
-    }
-
-    @Override
-    public void read(Count count, SourceFlowReader reader)
-    {
-        flow.read(count, reader);
     }
 }

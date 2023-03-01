@@ -10,9 +10,8 @@ public final class SingleSourceFlow implements SourceFlow
     }
 
     @Override
-    public void read(Count count, SourceFlowReader reader)
+    public void read(SourceFlowReader reader)
     {
-        int c = count.count(1);
-        if (c > 0) reader.call(source);
+        reader.call(source);
     }
 }

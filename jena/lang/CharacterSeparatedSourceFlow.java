@@ -1,34 +1,39 @@
 package jena.lang;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class CharacterSeparatedSourceFlow implements SourceFlow
 {
-    private SourceFlow flow;
-    private int lastStart;
-    private int lastIndex;
+    private Source source;
+    private CharacterKind kind;
 
-    public CharacterSeparatedSourceFlow(CharacterKind kind, Source source)
+    public CharacterSeparatedSourceFlow(Source source, CharacterKind kind)
     {
-        List<Source> sources = new ArrayList<Source>();
-        source.read(StartPosition.instance, MaxCount.instance, (c, n) ->
-        {
-            if (kind.isKind(c))
-            {
-                sources.add(new RelativeSource(source, lastStart, n - lastStart));
-                lastStart = n + 1;
-            }
-            lastIndex = n;
-        });
-        sources.add(new RelativeSource(source, lastStart, lastIndex - lastStart + 1));
-
-        flow = new ArraySourceFlow(sources.toArray(Source[]::new));
+        this.source = source;
+        this.kind = kind;
     }
 
     @Override
-    public void read(Count count, SourceFlowReader reader)
+    public void read(SourceFlowReader reader)
     {
-        flow.read(count, reader);
+        new SourceFlowReader()
+        {
+            int lastStart;
+            int lastIndex;
+            @Override
+            public void call(Source source)
+            {
+                source.read(StartPosition.instance, MaxCount.instance, (c, n) ->
+                {
+                    if (kind.isKind(c))
+                    {
+                        reader.call(source.subsource(lastStart, n - lastStart));
+                        reader.call(source.subsource(n, 1));
+                        lastStart = n + 1;
+                    }
+                    lastIndex = n;
+                });
+                reader.call(source.subsource(lastStart, lastIndex - lastStart + 1));
+            }
+        }
+        .call(source);
     }
 }

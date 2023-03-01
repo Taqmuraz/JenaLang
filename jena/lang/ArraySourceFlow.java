@@ -1,11 +1,8 @@
 package jena.lang;
 
-import java.util.stream.IntStream;
-
 public final class ArraySourceFlow implements SourceFlow
 {
     private Source[] sources;
-    private int position;
 
     public ArraySourceFlow(Source... sources)
     {
@@ -13,9 +10,8 @@ public final class ArraySourceFlow implements SourceFlow
     }
 
     @Override
-    public void read(Count count, SourceFlowReader reader)
+    public void read(SourceFlowReader reader)
     {
-        int c = count.count(sources.length - position);
-        IntStream.range(position, position + c).boxed().map(i -> sources[i]).forEach(reader::call);
+        for(int i = 0; i < sources.length; i++) reader.call(sources[i]);
     }
 }

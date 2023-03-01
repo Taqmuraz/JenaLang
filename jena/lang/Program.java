@@ -6,8 +6,8 @@ public class Program
     {
         try
         {
-            SourceFlow flow = new EmptySourceFilterFlow(new StringLiteralFlow(new FileSource("source.jena")));
-            flow.read(MaxCount.instance, source ->
+            SourceFlow flow = new StringLiteralFlow(new FileSource("source.jena"));
+            flow.read(source ->
             {
                 System.out.print("source : ");
                 source.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
