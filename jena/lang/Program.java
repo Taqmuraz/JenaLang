@@ -6,7 +6,11 @@ public class Program
     {
         try
         {
-            SourceFlow flow = new StringLiteralFlow(new FileSource("source.jena"));
+            SourceFlow flow = new StringLiteralFlow(new FileSource("source.jena"))
+                .split(new SingleCharacterKind('('))
+                .split(new SingleCharacterKind(')'))
+                .notKindFilter(SpaceCharacterKind.instance);
+
             flow.read(source ->
             {
                 System.out.print("source : ");
