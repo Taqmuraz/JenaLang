@@ -4,7 +4,7 @@ class Vector3fStruct
 
 	method print Printer as printer using new TextWriter(printer) as writer
 	(
-		writer.write { "(" x ", " y ", " z ")" }
+		{ "(" x ", " y ", " z ")" } as arg writer.write(arg)
 	)
 )
 
@@ -18,20 +18,19 @@ interface Vector3fAction
 	call (float float float)
 )
 
-class
 {
 	(Vector3fAdd (a + b))
 	(Vector3fSub (a - b))
 	(Vector3fMul (a * b))
 	(Vector3fDiv (a / b))
 }
-as (name operation) name
+as (name operation) class name
 (
 	Vector3f { a b }
 
 	constructor (Vector3f Vector3f) as (a b)
 	(
-		{ a b } as f this.f = f
+		{ a b } as f (this.f = f)
 	)
 
 	method calculate Vector3fAction as action
@@ -98,3 +97,19 @@ or
 x a
 x b
 x c
+
+(({ a b c } * y))
+
+the same as
+
+((x * a) (x * b) (x * c))
+
+{ a b c } as y x
+
+where x is child expression
+
+({ a b c } as y x * y)
+
+the same as
+
+(x * a x * b x * c)
