@@ -1,4 +1,7 @@
-package jena.lang;
+package jena.lang.source;
+
+import jena.lang.MaxCount;
+import jena.lang.StartPosition;
 
 public final class SourceCharacterKindCheck
 {
@@ -16,6 +19,6 @@ public final class SourceCharacterKindCheck
 
     public boolean isKind()
     {
-        return ofKind == total;
+        return ofKind != 0 && ofKind == total;
     }
 }

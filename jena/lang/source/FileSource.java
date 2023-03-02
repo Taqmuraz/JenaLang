@@ -1,7 +1,10 @@
-package jena.lang;
+package jena.lang.source;
 
 import java.io.File;
 import java.util.Scanner;
+
+import jena.lang.Count;
+import jena.lang.Position;
 
 public class FileSource implements Source
 {
@@ -28,7 +31,7 @@ public class FileSource implements Source
     }
 
     @Override
-    public void read(Position position, Count count, SourceReader buffer)
+    public void read(Position position, Count count, SourceSymbolAction buffer)
     {
         source.read(position, count, buffer);
     }

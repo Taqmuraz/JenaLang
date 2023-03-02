@@ -1,17 +1,1 @@
-interface Vector3f
-{
-	print (Printer printer)
-}
-
-class Vector3fStruct
-{
-	float({ x y z }, 0)
-
-	print (Printer printer)
-	{
-		using new TextWriter(printer) as writer
-		{
-			writer.write { "(" x ", " y ", " z ")" }
-		}
-	}
-}
+1 + 2

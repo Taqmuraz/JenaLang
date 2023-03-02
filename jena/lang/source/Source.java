@@ -1,8 +1,11 @@
-package jena.lang;
+package jena.lang.source;
+
+import jena.lang.Count;
+import jena.lang.Position;
 
 public interface Source
 {
-    void read(Position position, Count count, SourceReader buffer);
+    void read(Position position, Count count, SourceSymbolAction buffer);
 
     default Source subsource(int position, int count)
     {
@@ -22,5 +25,10 @@ public interface Source
     default boolean isKind(CharacterKind kind)
     {
         return new SourceCharacterKindCheck(this, kind).isKind();
+    }
+
+    default CharacterBuffer text()
+    {
+        return new SourceCharacterBuffer(this);
     }
 }

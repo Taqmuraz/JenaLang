@@ -1,4 +1,4 @@
-package jena.lang;
+package jena.lang.source;
 
 public final class SpaceCharacterKind implements CharacterKind
 {

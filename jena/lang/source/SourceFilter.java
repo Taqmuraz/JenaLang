@@ -1,4 +1,4 @@
-package jena.lang;
+package jena.lang.source;
 
 public interface SourceFilter
 {

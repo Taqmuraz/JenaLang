@@ -1,4 +1,4 @@
-package jena.lang;
+package jena.lang.source;
 
 public final class MapSourceFlow implements SourceFlow
 {
@@ -12,7 +12,7 @@ public final class MapSourceFlow implements SourceFlow
     }
 
     @Override
-    public void read(SourceFlowReader reader)
+    public void read(SourceAction reader)
     {
         flow.read(source -> reader.call(mapping.map(source)));
     }

@@ -1,4 +1,7 @@
-package jena.lang;
+package jena.lang.source;
+
+import jena.lang.MaxCount;
+import jena.lang.StartPosition;
 
 public final class CharacterSeparatedSourceFlow implements SourceFlow
 {
@@ -12,9 +15,9 @@ public final class CharacterSeparatedSourceFlow implements SourceFlow
     }
 
     @Override
-    public void read(SourceFlowReader reader)
+    public void read(SourceAction reader)
     {
-        new SourceFlowReader()
+        new SourceAction()
         {
             int lastStart;
             int lastIndex;

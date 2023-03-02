@@ -1,4 +1,4 @@
-package jena.lang;
+package jena.lang.source;
 
 public final class SingleSourceFlow implements SourceFlow
 {
@@ -10,7 +10,7 @@ public final class SingleSourceFlow implements SourceFlow
     }
 
     @Override
-    public void read(SourceFlowReader reader)
+    public void read(SourceAction reader)
     {
         reader.call(source);
     }

@@ -1,4 +1,4 @@
-package jena.lang;
+package jena.lang.source;
 
 public final class StringLiteralFlow implements SourceFlow
 {
@@ -10,11 +10,11 @@ public final class StringLiteralFlow implements SourceFlow
     }
 
     @Override
-    public void read(SourceFlowReader reader)
+    public void read(SourceAction reader)
     {
         CharacterKind separatorKind = c -> c == '\"';
 
-        new CharacterSeparatedSourceFlow(source, separatorKind).notKindFilter(separatorKind).read(new SourceFlowReader()
+        new CharacterSeparatedSourceFlow(source, separatorKind).notKindFilter(separatorKind).read(new SourceAction()
         {
             int index;
 

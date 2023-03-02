@@ -1,8 +1,8 @@
-package jena.lang;
+package jena.lang.source;
 
 public interface SourceFlow
 {
-    void read(SourceFlowReader reader);
+    void read(SourceAction reader);
 
     default SourceFlow filter(SourceFilter filter)
     {
@@ -27,5 +27,10 @@ public interface SourceFlow
     default SourceFlow map(SourceMapping mapping)
     {
         return new MapSourceFlow(this, mapping);
+    }
+
+    default SourceSpan span()
+    {
+        return new SourceSpanFromFlow(this);
     }
 }
