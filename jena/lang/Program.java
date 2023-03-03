@@ -1,5 +1,6 @@
 package jena.lang;
 
+import jena.lang.source.EmptySourceFilter;
 import jena.lang.source.FileSource;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceFlow;
@@ -20,6 +21,11 @@ public class Program
                 .split(new SingleCharacterKind('}'))
                 .split(new SingleCharacterKind('['))
                 .split(new SingleCharacterKind(']'))
+                .split(new SingleCharacterKind('+'))
+                .split(new SingleCharacterKind('-'))
+                .split(new SingleCharacterKind('*'))
+                .split(new SingleCharacterKind('/'))
+                .notFilter(new EmptySourceFilter())
                 .notKindFilter(SpaceCharacterKind.instance);
 
             flow.read(source ->
@@ -31,7 +37,7 @@ public class Program
 
             new JenaSyntaxReader().read(flow.span(), syntax ->
             {
-                syntax.source(source -> System.out.println(source.text()));
+                syntax.source(source -> System.out.print(source.text()));
             });
         }
         catch(Throwable error)

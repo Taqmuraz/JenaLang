@@ -1,15 +1,15 @@
 package jena.syntax;
 
-import jena.lang.source.SingleCharacterSource;
-
-public class AddExpressionSyntax implements Syntax
+public class BinaryExpressionSyntax implements Syntax
 {
     private Syntax left;
     private Syntax right;
+    private Syntax operator;
     
-    public AddExpressionSyntax(Syntax left, Syntax right)
+    public BinaryExpressionSyntax(Syntax left, Syntax operator, Syntax right)
     {
         this.left = left;
+        this.operator = operator;
         this.right = right;
     }
 
@@ -17,7 +17,7 @@ public class AddExpressionSyntax implements Syntax
     public void source(SyntaxSerializer writer)
     {
         left.source(writer);
-        writer.source(new SingleCharacterSource('+'));
+        operator.source(writer);
         right.source(writer);
     }
 }

@@ -8,6 +8,10 @@ public interface SourceFlow
     {
         return new FilterSourceFlow(this, filter);
     }
+    default SourceFlow notFilter(SourceFilter filter)
+    {
+        return new FilterSourceFlow(this, s -> !filter.check(s));
+    }
 
     default SourceFlow kindFilter(CharacterKind kind)
     {
