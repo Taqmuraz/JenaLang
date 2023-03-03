@@ -7,8 +7,8 @@ public class BinaryExpressionSyntaxRule implements SyntaxRule
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action)
     {
-        SyntaxRule literal = new IntegerLiteralSyntaxRule();
-        literal.match(span, (left, leftSpan) ->
+        SyntaxRule expression = new AnyExpressionSyntaxRule().except(getClass());
+        expression.match(span, (left, leftSpan) ->
         {
             for(char operatorSymbol : new char[] { '+', '-', '*', '/' }) new OperatorSyntaxRule(operatorSymbol).match(leftSpan, (operator, operatorSpan) ->
             {
@@ -16,7 +16,7 @@ public class BinaryExpressionSyntaxRule implements SyntaxRule
                 {
                     action.call(new BinaryExpressionSyntax(left, operator, right), rightSpan);
                 };
-                literal.match(operatorSpan, rightAction);
+                expression.match(operatorSpan, rightAction);
                 new SyntaxGuess(operatorSpan, this).guess(rightAction);
             });
         });

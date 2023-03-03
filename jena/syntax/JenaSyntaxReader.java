@@ -4,11 +4,7 @@ import jena.lang.source.SourceSpan;
 
 public class JenaSyntaxReader
 {
-    SyntaxRule rule = new CompositeSyntaxRule
-    (
-        new IntegerLiteralSyntaxRule(),
-        new BinaryExpressionSyntaxRule()
-    );
+    SyntaxRule rule = new AnyExpressionSyntaxRule();
 
     public void read(SourceSpan span, SyntaxAction action)
     {

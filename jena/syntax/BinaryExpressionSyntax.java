@@ -1,5 +1,7 @@
 package jena.syntax;
 
+import jena.lang.source.StringSource;
+
 public class BinaryExpressionSyntax implements Syntax
 {
     private Syntax left;
@@ -16,8 +18,12 @@ public class BinaryExpressionSyntax implements Syntax
     @Override
     public void source(SyntaxSerializer writer)
     {
+        writer.source(new StringSource("binary("));
         left.source(writer);
+        writer.source(new StringSource(","));
         operator.source(writer);
+        writer.source(new StringSource(","));
         right.source(writer);
+        writer.source(new StringSource(")"));
     }
 }

@@ -1,6 +1,7 @@
 package jena.syntax;
 
 import jena.lang.source.Source;
+import jena.lang.source.StringSource;
 
 public class IntegerLiteralSyntax implements Syntax
 {
@@ -14,6 +15,8 @@ public class IntegerLiteralSyntax implements Syntax
     @Override
     public void source(SyntaxSerializer writer)
     {
+        writer.source(new StringSource("int("));
         writer.source(literal);
+        writer.source(new StringSource(")"));
     }
 }
