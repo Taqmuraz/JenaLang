@@ -10,12 +10,14 @@ public class BinaryExpressionSyntaxRule implements SyntaxRule
         SyntaxRule literal = new IntegerLiteralSyntaxRule();
         literal.match(span, (left, leftSpan) ->
         {
-            for(char operator : new char[] { '+', '-', '*', '/' }) new OperatorSyntaxRule(operator).match(leftSpan, (plus, plusSpan) ->
+            for(char operatorSymbol : new char[] { '+', '-', '*', '/' }) new OperatorSyntaxRule(operatorSymbol).match(leftSpan, (operator, operatorSpan) ->
             {
-                literal.match(plusSpan, (right, rightSpan) ->
+                SyntaxSpanAction rightAction = (right, rightSpan) ->
                 {
-                    action.call(new BinaryExpressionSyntax(left, plus, right), rightSpan);
-                });
+                    action.call(new BinaryExpressionSyntax(left, operator, right), rightSpan);
+                };
+                literal.match(operatorSpan, rightAction);
+                new SyntaxGuess(operatorSpan, this).guess(rightAction);
             });
         });
     }
