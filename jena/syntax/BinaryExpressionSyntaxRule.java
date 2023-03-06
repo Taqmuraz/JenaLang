@@ -14,7 +14,7 @@ public class BinaryExpressionSyntaxRule implements SyntaxRule
             {
                 SyntaxSpanAction rightAction = (right, rightSpan) ->
                 {
-                    action.call(new BinaryExpressionSyntax(left, operator, right), rightSpan);
+                    if(operator instanceof BinaryOperatorSyntax) action.call(new BinaryExpressionSyntax(left, (BinaryOperatorSyntax)operator, right), rightSpan);
                 };
                 expression.match(operatorSpan, rightAction);
                 new SyntaxGuess(operatorSpan, this).guess(rightAction);

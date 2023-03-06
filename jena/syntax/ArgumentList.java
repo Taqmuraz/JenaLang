@@ -2,20 +2,19 @@ package jena.syntax;
 
 import jena.lang.source.SingleCharacterSource;
 
-public final class ParenthesizedSyntax implements Syntax
+public final class ArgumentList implements Syntax
 {
-    private Syntax expression;
+    private Syntax[] arguments;
 
-    public ParenthesizedSyntax(Syntax expression)
-    {
-        this.expression = expression;
+    public ArgumentList(Syntax... arguments) {
+        this.arguments = arguments;
     }
 
     @Override
     public void source(SyntaxSerializer writer)
     {
         writer.source(new SingleCharacterSource('('));
-        expression.source(writer);
+        new JoinExpressionSyntax(new SingleCharacterSource(' '), arguments).source(writer);
         writer.source(new SingleCharacterSource(')'));
     }
 }

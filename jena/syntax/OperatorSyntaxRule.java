@@ -17,7 +17,7 @@ public final class OperatorSyntaxRule implements SyntaxRule
     {
         if(span.at(0).isKind(new SingleCharacterKind(operator)))
         {
-            action.call(new OperatorSyntax(operator), span.skip(1));
+            action.call(new MathBinaryOperatorSyntax(operator), span.skip(1));
         }
     }
 }
