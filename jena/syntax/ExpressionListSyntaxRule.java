@@ -13,10 +13,9 @@ public final class ExpressionListSyntaxRule
         void call(Syntax[] arguments, SourceSpan span);
     }
 
-    private static class ExpressionListMatchAction implements SyntaxSpanAction
+    private class ExpressionListMatchAction implements SyntaxSpanAction
     {
         List<Syntax> expressions = new ArrayList<Syntax>();
-        SyntaxRule anyExpression = new AnyExpressionSyntaxRule();
         ArgumentListSpanAction action;
         
         public ExpressionListMatchAction(ArgumentListSpanAction action)
@@ -34,16 +33,23 @@ public final class ExpressionListSyntaxRule
             }
             else
             {
-                anyExpression.match(expressionSpan, this);
+                rule.match(expressionSpan, this);
             }
         }
+    }
+
+    private SyntaxRule rule;
+
+    public ExpressionListSyntaxRule(SyntaxRule rule)
+    {
+        this.rule = rule;
     }
 
     public void match(SourceSpan span, ArgumentListSpanAction action)
     {
         if(span.at(0).isKind(new SingleCharacterKind('(')))
         {
-            new AnyExpressionSyntaxRule().match(span.skip(1), new ExpressionListMatchAction(action));
+            rule.match(span.skip(1), new ExpressionListMatchAction(action));
         }
     }
 }
