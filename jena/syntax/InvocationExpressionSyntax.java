@@ -1,14 +1,18 @@
 package jena.syntax;
 
+import java.util.Arrays;
+
 public final class InvocationExpressionSyntax implements Syntax
 {
     private Syntax expression;
+    private Syntax[] arguments;
     private Syntax argumentList;
 
     public InvocationExpressionSyntax(Syntax expression, Syntax... arguments)
     {
         this.expression = expression;
-        this.argumentList = new ArgumentList(arguments);
+        this.arguments = arguments;
+        this.argumentList = new ArgumentListSyntax(arguments);
     }
 
     @Override
@@ -16,5 +20,17 @@ public final class InvocationExpressionSyntax implements Syntax
     {
         expression.source(writer);
         argumentList.source(writer);
+    }
+
+    @Override
+    public Syntax decomposed()
+    {
+        return new InvocationExpressionSyntax(expression.decomposed(), Arrays.stream(arguments).map(a -> a.decomposed()).toArray(Syntax[]::new));
+    }
+
+    @Override
+    public Value value(Namespace namespace)
+    {
+        return expression.value(namespace).call(new ArrayArgumentList(Arrays.stream(arguments).map(a -> a.value(namespace)).toArray(Value[]::new)));
     }
 }

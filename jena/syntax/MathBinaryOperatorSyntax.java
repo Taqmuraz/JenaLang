@@ -32,4 +32,16 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
         }
         return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringSource(name)), right);
     }
+
+    @Override
+    public Syntax decomposed()
+    {
+        return this;
+    }
+
+    @Override
+    public Value value(Namespace namespace)
+    {
+        return NoneValue.instance;
+    }
 }

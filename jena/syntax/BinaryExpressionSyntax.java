@@ -16,6 +16,20 @@ public class BinaryExpressionSyntax implements Syntax
     @Override
     public void source(SyntaxSerializer writer)
     {
-        operator.classicExpression(left, right).source(writer);
+        left.source(writer);
+        operator.source(writer);
+        right.source(writer);
+    }
+
+    @Override
+    public Syntax decomposed()
+    {
+        return operator.classicExpression(left.decomposed(), right.decomposed());
+    }
+
+    @Override
+    public Value value(Namespace namespace)
+    {
+        return decomposed().value(namespace);
     }
 }

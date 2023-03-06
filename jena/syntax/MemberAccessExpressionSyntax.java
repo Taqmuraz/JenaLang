@@ -21,4 +21,16 @@ public final class MemberAccessExpressionSyntax implements Syntax
         writer.source(new SingleCharacterSource('.'));
         writer.source(memberName);
     }
+
+    @Override
+    public Syntax decomposed()
+    {
+        return new MemberAccessExpressionSyntax(expression.decomposed(), memberName);
+    }
+
+    @Override
+    public Value value(Namespace namespace)
+    {
+        return expression.value(namespace).member(memberName);
+    }
 }

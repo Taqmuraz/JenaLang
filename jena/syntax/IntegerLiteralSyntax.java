@@ -16,4 +16,16 @@ public class IntegerLiteralSyntax implements Syntax
     {
         writer.source(literal);
     }
+
+    @Override
+    public Syntax decomposed()
+    {
+        return this;
+    }
+
+    @Override
+    public Value value(Namespace namespace)
+    {
+        return new IntegerValue(Integer.valueOf(literal.text().toString()));
+    }
 }

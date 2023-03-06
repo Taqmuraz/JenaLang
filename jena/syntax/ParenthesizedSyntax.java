@@ -18,4 +18,16 @@ public final class ParenthesizedSyntax implements Syntax
         expression.source(writer);
         writer.source(new SingleCharacterSource(')'));
     }
+
+    @Override
+    public Syntax decomposed()
+    {
+        return new ParenthesizedSyntax(expression.decomposed());
+    }
+
+    @Override
+    public Value value(Namespace namespace)
+    {
+        return expression.value(namespace);
+    }
 }
