@@ -1,4 +1,4 @@
-package jena.syntax;
+package jena.lang.value;
 
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;

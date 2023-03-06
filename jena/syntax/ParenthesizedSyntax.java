@@ -1,6 +1,8 @@
 package jena.syntax;
 
 import jena.lang.source.SingleCharacterSource;
+import jena.lang.value.Namespace;
+import jena.lang.value.Value;
 
 public final class ParenthesizedSyntax implements Syntax
 {

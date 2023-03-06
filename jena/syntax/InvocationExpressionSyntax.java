@@ -2,6 +2,10 @@ package jena.syntax;
 
 import java.util.Arrays;
 
+import jena.lang.value.ArrayArgumentList;
+import jena.lang.value.Namespace;
+import jena.lang.value.Value;
+
 public final class InvocationExpressionSyntax implements Syntax
 {
     private Syntax expression;

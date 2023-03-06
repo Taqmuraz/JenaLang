@@ -1,6 +1,9 @@
 package jena.syntax;
 
 import jena.lang.source.Source;
+import jena.lang.value.IntegerValue;
+import jena.lang.value.Namespace;
+import jena.lang.value.Value;
 
 public class IntegerLiteralSyntax implements Syntax
 {

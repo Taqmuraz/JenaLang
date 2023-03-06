@@ -1,4 +1,4 @@
-package jena.syntax;
+package jena.lang.value;
 
 public final class EmptyValueList implements ValueList
 {

@@ -3,6 +3,9 @@ package jena.syntax;
 import java.util.Arrays;
 
 import jena.lang.source.Source;
+import jena.lang.value.Namespace;
+import jena.lang.value.TupleValue;
+import jena.lang.value.Value;
 
 public final class JoinExpressionSyntax implements Syntax
 {

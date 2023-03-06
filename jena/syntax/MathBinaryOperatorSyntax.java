@@ -2,6 +2,9 @@ package jena.syntax;
 
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.StringSource;
+import jena.lang.value.Namespace;
+import jena.lang.value.NoneValue;
+import jena.lang.value.Value;
 
 public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
 {

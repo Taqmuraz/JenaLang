@@ -1,5 +1,8 @@
 package jena.syntax;
 
+import jena.lang.value.Namespace;
+import jena.lang.value.Value;
+
 public class BinaryExpressionSyntax implements Syntax
 {
     private Syntax left;
