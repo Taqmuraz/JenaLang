@@ -4,10 +4,11 @@ import jena.lang.source.SourceSpan;
 
 public class AnyExpressionSyntaxRule implements SyntaxRule
 {
-    SyntaxRule[] rules =
+    private static final SyntaxRule[] rules =
     {
-        new IntegerLiteralSyntaxRule(),
-        new ParenthesizedExpressionSyntaxRule(),
+        new BasicExpressionSyntaxRule(),
+        new MemberAccessExpressionSyntaxRule(),
+        new InvocationExpressionSyntaxRule(),
         new BinaryExpressionSyntaxRule()
     };
 

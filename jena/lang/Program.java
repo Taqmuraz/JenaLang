@@ -26,6 +26,7 @@ public class Program
                 .split(new SingleCharacterKind('-'))
                 .split(new SingleCharacterKind('*'))
                 .split(new SingleCharacterKind('/'))
+                .split(new SingleCharacterKind('.'))
                 .notFilter(new EmptySourceFilter())
                 .notKindFilter(SpaceCharacterKind.instance);
 
@@ -41,7 +42,7 @@ public class Program
                 syntax.source(source -> System.out.print(source.text()));
                 System.out.println("\ndecomposed :");
                 (syntax = syntax.decomposed()).source(source -> System.out.print(source.text()));
-                System.out.print("\nvalue :");
+                System.out.print("\nvalue : ");
                 syntax.value(EmptyNamespace.instance).print(source -> System.out.println(source.text()));
             });
         }

@@ -12,7 +12,7 @@ public final class InvocationExpressionSyntax implements Syntax
     {
         this.expression = expression;
         this.arguments = arguments;
-        this.argumentList = new ArgumentListSyntax(arguments);
+        this.argumentList = new ExpressionListSyntax(arguments);
     }
 
     @Override

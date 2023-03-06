@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 import jena.lang.source.SingleCharacterSource;
 
-public final class ArgumentListSyntax implements Syntax
+public final class ExpressionListSyntax implements Syntax
 {
     private Syntax[] arguments;
 
-    public ArgumentListSyntax(Syntax... arguments) {
+    public ExpressionListSyntax(Syntax... arguments) {
         this.arguments = arguments;
     }
 
@@ -23,7 +23,7 @@ public final class ArgumentListSyntax implements Syntax
     @Override
     public Syntax decomposed()
     {
-        return new ArgumentListSyntax(Arrays.stream(arguments).map(a -> a.decomposed()).toArray(Syntax[]::new));
+        return new ExpressionListSyntax(Arrays.stream(arguments).map(a -> a.decomposed()).toArray(Syntax[]::new));
     }
 
     @Override
