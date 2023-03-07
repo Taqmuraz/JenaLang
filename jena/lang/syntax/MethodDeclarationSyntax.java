@@ -37,7 +37,7 @@ public final class MethodDeclarationSyntax implements Syntax
     @Override
     public Syntax decomposed()
     {
-        return this;
+        return new MethodDeclarationSyntax(name, arguments.map(a -> a.decomposed()), expression.decomposed());
     }
 
     @Override
