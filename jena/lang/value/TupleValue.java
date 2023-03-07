@@ -1,16 +1,16 @@
 package jena.lang.value;
 
-import jena.lang.ArrayGenericFlow;
-import jena.lang.JoinAction;
+import jena.lang.GenericBuffer;
+import jena.lang.GenericFlow;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
 
 public final class TupleValue implements Value
 {
-    private Value[] items;
+    private GenericFlow<Value> items;
 
-    public TupleValue(Value... items)
+    public TupleValue(GenericFlow<Value> items)
     {
         this.items = items;
     }
@@ -21,7 +21,7 @@ public final class TupleValue implements Value
         action.call(new SingleCharacterSource('('));
         Source space = new SingleCharacterSource(' ');
         
-        new JoinAction<Value>(new ArrayGenericFlow<>(items), item -> item.print(action), () -> action.call(space)).join();
+        items.join(item -> item.print(action), () -> action.call(space));
 
         action.call(new SingleCharacterSource(')'));
     }
@@ -35,10 +35,12 @@ public final class TupleValue implements Value
     @Override
     public Value call(ArgumentList arguments)
     {
-        return arguments.number(0, args -> items[items.length - 1], () -> arguments.number(1, args ->
+        GenericBuffer<Value> items = this.items.collect();
+
+        return arguments.number(0, args -> items.at(items.length() - 1), () -> arguments.number(1, args ->
         {
             Source source = (p, c, a) -> args.at(0).print(s -> s.read(p, c, a));
-            return items[Integer.valueOf(source.toString())];
+            return items.at(Integer.valueOf(source.toString()));
         }, () -> NoneValue.instance));
     }
 }

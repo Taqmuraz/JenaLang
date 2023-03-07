@@ -9,7 +9,7 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
         new BasicExpressionSyntaxRule(),
         new MemberAccessExpressionSyntaxRule(),
         new InvocationExpressionSyntaxRule(),
-        new BinaryExpressionSyntaxRule()
+        new BinaryExpressionSyntaxRule(),
     };
 
     @Override

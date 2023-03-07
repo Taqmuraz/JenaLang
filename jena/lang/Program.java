@@ -15,36 +15,39 @@ public class Program
     {
         try
         {
-            SourceFlow flow = new StringLiteralFlow(new InputStreamLineSource(System.in))
-                .split(new SingleCharacterKind('('))
-                .split(new SingleCharacterKind(')'))
-                .split(new SingleCharacterKind('{'))
-                .split(new SingleCharacterKind('}'))
-                .split(new SingleCharacterKind('['))
-                .split(new SingleCharacterKind(']'))
-                .split(new SingleCharacterKind('+'))
-                .split(new SingleCharacterKind('-'))
-                .split(new SingleCharacterKind('*'))
-                .split(new SingleCharacterKind('/'))
-                .split(new SingleCharacterKind('.'))
-                .notFilter(new EmptySourceFilter())
-                .notKindFilter(SpaceCharacterKind.instance);
-
-            flow.read(source ->
+            while(true)
             {
-                System.out.print("source : ");
-                source.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
-                System.out.println();
-            });
+                SourceFlow flow = new StringLiteralFlow(new InputStreamLineSource(System.in))
+                    .split(new SingleCharacterKind('('))
+                    .split(new SingleCharacterKind(')'))
+                    .split(new SingleCharacterKind('{'))
+                    .split(new SingleCharacterKind('}'))
+                    .split(new SingleCharacterKind('['))
+                    .split(new SingleCharacterKind(']'))
+                    .split(new SingleCharacterKind('+'))
+                    .split(new SingleCharacterKind('-'))
+                    .split(new SingleCharacterKind('*'))
+                    .split(new SingleCharacterKind('/'))
+                    .split(new SingleCharacterKind('.'))
+                    .notFilter(new EmptySourceFilter())
+                    .notKindFilter(SpaceCharacterKind.instance);
 
-            new JenaSyntaxReader().read(flow.span(), syntax ->
-            {
-                syntax.source(source -> System.out.print(source.text()));
-                System.out.println("\ndecomposed :");
-                (syntax = syntax.decomposed()).source(source -> System.out.print(source.text()));
-                System.out.print("\nvalue : ");
-                syntax.value(EmptyNamespace.instance).print(source -> System.out.println(source.text()));
-            });
+                flow.read(source ->
+                {
+                    System.out.print("source : ");
+                    source.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
+                    System.out.println();
+                });
+
+                new JenaSyntaxReader().read(flow.span(), syntax ->
+                {
+                    syntax.source(source -> System.out.print(source.text()));
+                    System.out.println("\ndecomposed :");
+                    (syntax = syntax.decomposed()).source(source -> System.out.print(source.text()));
+                    System.out.print("\nvalue : ");
+                    syntax.value(EmptyNamespace.instance).print(source -> System.out.println(source.text()));
+                });
+            }
         }
         catch(Throwable error)
         {

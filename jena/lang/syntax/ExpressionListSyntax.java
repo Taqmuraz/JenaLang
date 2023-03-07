@@ -1,7 +1,6 @@
 package jena.lang.syntax;
 
-import java.util.Arrays;
-
+import jena.lang.GenericFlow;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.value.Namespace;
 import jena.lang.value.TupleValue;
@@ -9,9 +8,9 @@ import jena.lang.value.Value;
 
 public final class ExpressionListSyntax implements Syntax
 {
-    private Syntax[] arguments;
+    private GenericFlow<Syntax> arguments;
 
-    public ExpressionListSyntax(Syntax... arguments) {
+    public ExpressionListSyntax(GenericFlow<Syntax> arguments) {
         this.arguments = arguments;
     }
 
@@ -19,19 +18,19 @@ public final class ExpressionListSyntax implements Syntax
     public void source(SyntaxSerializer writer)
     {
         writer.source(new SingleCharacterSource('('));
-        new JoinExpressionSyntax(new SingleCharacterSource(' '), arguments).source(writer);
+        arguments.join(arg -> arg.source(writer), () -> writer.source(new SingleCharacterSource(' ')));
         writer.source(new SingleCharacterSource(')'));
     }
 
     @Override
     public Syntax decomposed()
     {
-        return new ExpressionListSyntax(Arrays.stream(arguments).map(a -> a.decomposed()).toArray(Syntax[]::new));
+        return new ExpressionListSyntax(arguments.map(a -> a.decomposed()));
     }
 
     @Override
     public Value value(Namespace namespace)
     {
-        return new TupleValue(Arrays.stream(arguments).map(a -> a.value(namespace)).toArray(Value[]::new));
+        return new TupleValue(arguments.map(a -> a.value(namespace)));
     }
 }

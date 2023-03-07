@@ -37,6 +37,12 @@ public class SourceSpanFromFlow implements SourceSpan
             {
                 return span(start + count);
             }
+
+            @Override
+            public int code()
+            {
+                return start;
+            }
         };
     }
 
@@ -44,5 +50,11 @@ public class SourceSpanFromFlow implements SourceSpan
     public SourceSpan skip(int count)
     {
         return span(count);
+    }
+
+    @Override
+    public int code()
+    {
+        return 0;
     }
 }

@@ -1,7 +1,8 @@
 package jena.lang.source;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
-import java.util.Scanner;
+import java.io.InputStreamReader;
 
 import jena.lang.Count;
 import jena.lang.Position;
@@ -12,9 +13,15 @@ public final class InputStreamLineSource implements Source
 
     public InputStreamLineSource(InputStream stream)
     {
-        Scanner scanner = new Scanner(stream);
-        source = new StringSource(scanner.nextLine());
-        scanner.close();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        try
+        {
+            source = new StringSource(reader.readLine());
+        }
+        catch(Exception ex)
+        {
+            System.out.println(ex);
+        }
     }
 
     @Override
