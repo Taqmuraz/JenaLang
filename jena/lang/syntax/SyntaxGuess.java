@@ -21,10 +21,6 @@ public class SyntaxGuess
     {
         rule.match(span, (syntax, span) -> 
         {
-            System.out.print("\nsyntax : ");
-            syntax.source(s -> System.out.print(s.text().toString()));
-            System.out.println(" span : " + span.code());
-
             if(hasGuess)
             {
                 if(guessSpan.code() < span.code())
