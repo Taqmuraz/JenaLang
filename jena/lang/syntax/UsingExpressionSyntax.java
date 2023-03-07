@@ -1,16 +1,11 @@
 package jena.lang.syntax;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jena.lang.GenericFlow;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
-import jena.lang.value.HashMapNamespace;
+import jena.lang.value.FlowNamespace;
 import jena.lang.value.Namespace;
-import jena.lang.value.NestedNamespace;
-import jena.lang.value.NoneValue;
 import jena.lang.value.Value;
 
 public final class UsingExpressionSyntax implements Syntax
@@ -49,22 +44,6 @@ public final class UsingExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        HashMapNamespace inner = new HashMapNamespace();
-        List<Source> nameList = new ArrayList<Source>();
-        List<Value> expressionList = new ArrayList<Value>();
-        expressions.read((e, i) -> expressionList.add(e.value(namespace)));
-        names.read((n, i) -> n.source(s -> nameList.add(s)));
-
-        for(int i = 0; i < nameList.size(); i++)
-        {
-            Value value = NoneValue.instance;
-            if(i < expressionList.size())
-            {
-                value = expressionList.get(i);
-            }
-            inner.addName(nameList.get(i), value);
-        }
-
-        return expression.value(new NestedNamespace(namespace, inner));
+        return expression.value(namespace.nested(new FlowNamespace(names.<Source>map(SyntaxSource::new).zip(expressions.map(e -> e.value(namespace))))));
     }
 }

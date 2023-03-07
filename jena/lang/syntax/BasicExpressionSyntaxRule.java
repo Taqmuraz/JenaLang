@@ -8,7 +8,8 @@ public class BasicExpressionSyntaxRule implements SyntaxRule
         new IntegerLiteralSyntaxRule(),
         new NameExpressionSyntaxRule(),
         new ParenthesizedExpressionSyntaxRule(),
-        new UsingExpressionSyntaxRule()
+        new UsingExpressionSyntaxRule(),
+        new MethodDeclarationSyntaxRule()
     );
 
     @Override

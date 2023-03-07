@@ -14,7 +14,7 @@ public final class BufferArgumentList implements ArgumentList
     @Override
     public Value number(int number, ValueListFunction action, ValueFunction fail)
     {
-        if(arguments.length() == number) return action.call(i -> arguments.at(i));
+        if(arguments.length() == number) return action.call(arguments);
         return fail.call();
     }
 }

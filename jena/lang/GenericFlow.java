@@ -21,4 +21,22 @@ public interface GenericFlow<Element>
         read((e, i) -> list.add(e));
         return new ListGenericBuffer<Element>(list);
     }
+    default <Other> GenericFlow<GenericPair<Element, Other>> connect(GenericFunction<Element, Other> connection)
+    {
+        return new MapFlow<Element, GenericPair<Element, Other>>(this, e -> p -> p.call(e, connection.call(e)));
+    }
+    default <Other> GenericFlow<GenericPair<Element, Other>> zip(GenericFlow<Other> other)
+    {
+        return action ->
+        {
+            GenericBuffer<Element> es = collect();
+            GenericBuffer<Other> os = other.collect();
+            int length = Integer.min(es.length(), os.length());
+            for(int i = 0; i < length; i++)
+            {
+                int index = i;
+                action.call(both -> both.call(es.at(index), os.at(index)), index);
+            }
+        };
+    }
 }
