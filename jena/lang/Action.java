@@ -1,4 +1,4 @@
-package jena.lang.syntax;
+package jena.lang;
 
 public interface Action
 {

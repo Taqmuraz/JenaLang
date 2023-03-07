@@ -2,6 +2,7 @@ package jena.lang.syntax;
 
 import java.util.Stack;
 
+import jena.lang.Action;
 import jena.lang.source.SourceSpan;
 
 public class SyntaxGuess

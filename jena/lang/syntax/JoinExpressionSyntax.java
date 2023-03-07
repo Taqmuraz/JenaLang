@@ -6,6 +6,8 @@ import jena.lang.source.Source;
 import jena.lang.value.Namespace;
 import jena.lang.value.TupleValue;
 import jena.lang.value.Value;
+import jena.lang.ArrayGenericFlow;
+import jena.lang.JoinAction;
 
 public final class JoinExpressionSyntax implements Syntax
 {
@@ -21,12 +23,7 @@ public final class JoinExpressionSyntax implements Syntax
     @Override
     public void source(SyntaxSerializer writer)
     {
-        expressions[0].source(writer);
-        for(int i = 1; i < expressions.length; i++)
-        {
-            writer.source(separator);
-            expressions[i].source(writer);
-        }
+        new JoinAction<Syntax>(new ArrayGenericFlow<>(expressions), e -> e.source(writer), () -> writer.source(separator)).join();
     }
 
     @Override

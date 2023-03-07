@@ -1,5 +1,7 @@
 package jena.lang.value;
 
+import jena.lang.ArrayGenericFlow;
+import jena.lang.JoinAction;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
@@ -18,12 +20,9 @@ public final class TupleValue implements Value
     {
         action.call(new SingleCharacterSource('('));
         Source space = new SingleCharacterSource(' ');
-        items[0].print(action);
-        for(int i = 1; i < items.length; i++)
-        {
-            action.call(space);
-            items[i].print(action);
-        }
+        
+        new JoinAction<Value>(new ArrayGenericFlow<>(items), item -> item.print(action), () -> action.call(space)).join();
+
         action.call(new SingleCharacterSource(')'));
     }
 

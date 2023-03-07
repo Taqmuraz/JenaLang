@@ -49,7 +49,11 @@ public final class ExpressionListSyntaxRule
     {
         if(span.at(0).isKind(new SingleCharacterKind('(')))
         {
-            rule.match(span.skip(1), new ExpressionListMatchAction(action));
+            if(span.at(1).isKind(new SingleCharacterKind(')')))
+            {
+                action.call(new Syntax[0], span.skip(2));
+            }
+            else rule.match(span.skip(1), new ExpressionListMatchAction(action));
         }
     }
 }
