@@ -1,7 +1,7 @@
-package jena.syntax;
+package jena.lang.syntax;
 
 import jena.lang.source.Source;
-import jena.lang.value.IntegerValue;
+import jena.lang.value.RealValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
@@ -29,6 +29,6 @@ public class IntegerLiteralSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new IntegerValue(Integer.valueOf(literal.text().toString()));
+        return new RealValue(Integer.valueOf(literal.text().toString()));
     }
 }

@@ -1,4 +1,4 @@
-package jena.syntax;
+package jena.lang.syntax;
 
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;

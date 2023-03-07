@@ -1,4 +1,4 @@
-package jena.syntax;
+package jena.lang.syntax;
 
 import java.util.ArrayList;
 import java.util.List;

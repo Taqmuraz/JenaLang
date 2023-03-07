@@ -1,4 +1,4 @@
-package jena.syntax;
+package jena.lang.syntax;
 
 public interface BinaryOperatorSyntax extends Syntax
 {

@@ -6,8 +6,8 @@ import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceFlow;
 import jena.lang.source.SpaceCharacterKind;
 import jena.lang.source.StringLiteralFlow;
+import jena.lang.syntax.JenaSyntaxReader;
 import jena.lang.value.EmptyNamespace;
-import jena.syntax.JenaSyntaxReader;
 
 public class Program
 {
