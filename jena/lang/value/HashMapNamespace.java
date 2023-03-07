@@ -17,6 +17,8 @@ public final class HashMapNamespace implements Namespace
     @Override
     public Value name(Source name)
     {
-        return names.get(name.text().toString());
+        Value value = names.get(name.text().toString());
+        if (value == null) return NoneValue.instance;
+        return value;
     }
 }
