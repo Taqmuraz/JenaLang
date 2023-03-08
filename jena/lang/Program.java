@@ -30,6 +30,8 @@ public class Program
                     .split(new SingleCharacterKind('/'))
                     .split(new SingleCharacterKind('.'))
                     .split(new SingleCharacterKind(','))
+                    .split(new SingleCharacterKind('>'))
+                    .split(new SingleCharacterKind('<'))
                     .notFilter(new EmptySourceFilter())
                     .notKindFilter(SpaceCharacterKind.instance);
 

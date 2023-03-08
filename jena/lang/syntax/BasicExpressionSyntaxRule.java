@@ -10,7 +10,8 @@ public class BasicExpressionSyntaxRule implements SyntaxRule
         new ParenthesizedExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule(),
         new MethodDeclarationSyntaxRule(),
-        new ArrayExpressionSyntaxRule()
+        new ArrayExpressionSyntaxRule(),
+        new LambdaExpressionSyntaxRule()
     );
 
     @Override
