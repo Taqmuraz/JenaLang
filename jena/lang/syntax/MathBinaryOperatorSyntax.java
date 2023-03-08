@@ -1,6 +1,6 @@
 package jena.lang.syntax;
 
-import jena.lang.SingleGenericFlow;
+import jena.lang.SingleGenericBuffer;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.StringSource;
 import jena.lang.value.Namespace;
@@ -34,7 +34,7 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
             case '/':name = "div"; break;
             default:name = "unknownOperator";
         }
-        return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringSource(name)), new SingleGenericFlow<Syntax>(right));
+        return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringSource(name)), new SingleGenericBuffer<Syntax>(right));
     }
 
     @Override

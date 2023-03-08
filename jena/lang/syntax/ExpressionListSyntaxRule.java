@@ -3,9 +3,9 @@ package jena.lang.syntax;
 import java.util.ArrayList;
 import java.util.List;
 
-import jena.lang.EmptyGenericFlow;
-import jena.lang.GenericFlow;
-import jena.lang.ListGenericFlow;
+import jena.lang.EmptyGenericBuffer;
+import jena.lang.GenericBuffer;
+import jena.lang.ListGenericBuffer;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceSpan;
 
@@ -13,7 +13,7 @@ public final class ExpressionListSyntaxRule
 {
     public interface ArgumentListSpanAction
     {
-        void call(GenericFlow<Syntax> arguments, SourceSpan span);
+        void call(GenericBuffer<Syntax> arguments, SourceSpan span);
     }
 
     private class ExpressionListMatchAction implements SyntaxSpanAction
@@ -32,7 +32,7 @@ public final class ExpressionListSyntaxRule
             expressions.add(expression);
             if(expressionSpan.at(0).isKind(new SingleCharacterKind(')')))
             {
-                action.call(new ListGenericFlow<Syntax>(expressions), expressionSpan.skip(1));
+                action.call(new ListGenericBuffer<Syntax>(expressions), expressionSpan.skip(1));
             }
             else if(expressionSpan.at(0).isKind(new SingleCharacterKind(',')))
             {
@@ -54,7 +54,7 @@ public final class ExpressionListSyntaxRule
         {
             if(span.at(1).isKind(new SingleCharacterKind(')')))
             {
-                action.call(new EmptyGenericFlow<Syntax>(), span.skip(2));
+                action.call(new EmptyGenericBuffer<Syntax>(), span.skip(2));
             }
             else new SyntaxGuess(span.skip(1), rule).guess(new ExpressionListMatchAction(action));
         }

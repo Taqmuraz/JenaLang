@@ -1,12 +1,11 @@
 package jena.lang;
 
+import java.util.Objects;
+
 public final class EmptyGenericBuffer<Element> implements GenericBuffer<Element>
 {
-    private Element element;
-
-    public EmptyGenericBuffer(Element defaultElement)
+    public EmptyGenericBuffer()
     {
-        this.element = defaultElement;
     }
 
     @Override
@@ -18,6 +17,7 @@ public final class EmptyGenericBuffer<Element> implements GenericBuffer<Element>
     @Override
     public Element at(int index)
     {
-        return element;
+        Objects.checkIndex(index, 0);
+        return null;
     }
 }

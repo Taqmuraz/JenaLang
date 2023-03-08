@@ -33,6 +33,6 @@ public final class JoinExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new TupleValue(expressions.map(e -> e.value(namespace)));
+        return new TupleValue(expressions.map(e -> e.value(namespace)).collect());
     }
 }

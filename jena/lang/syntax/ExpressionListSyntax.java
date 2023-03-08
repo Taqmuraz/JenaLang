@@ -1,6 +1,6 @@
 package jena.lang.syntax;
 
-import jena.lang.GenericFlow;
+import jena.lang.GenericBuffer;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.value.Namespace;
@@ -9,11 +9,11 @@ import jena.lang.value.Value;
 
 public final class ExpressionListSyntax implements Syntax
 {
-    private GenericFlow<Syntax> arguments;
+    private GenericBuffer<Syntax> arguments;
     private Source openBrace;
     private Source closeBrace;
 
-    public ExpressionListSyntax(GenericFlow<Syntax> arguments, Source openBrace, Source closeBrace)
+    public ExpressionListSyntax(GenericBuffer<Syntax> arguments, Source openBrace, Source closeBrace)
     {
         this.arguments = arguments;
         this.openBrace = openBrace;
@@ -24,19 +24,19 @@ public final class ExpressionListSyntax implements Syntax
     public void source(SyntaxSerializer writer)
     {
         writer.source(openBrace);
-        arguments.join(arg -> arg.source(writer), () -> writer.source(new SingleCharacterSource(',')));
+        arguments.flow().join(arg -> arg.source(writer), () -> writer.source(new SingleCharacterSource(',')));
         writer.source(closeBrace);
     }
 
     @Override
     public Syntax decomposed()
     {
-        return new ExpressionListSyntax(arguments.map(a -> a.decomposed()), openBrace, closeBrace);
+        return new ExpressionListSyntax(arguments.flow().map(a -> a.decomposed()).collect(), openBrace, closeBrace);
     }
 
     @Override
     public Value value(Namespace namespace)
     {
-        return new TupleValue(arguments.map(a -> a.value(namespace)));
+        return new TupleValue(arguments.flow().map(a -> a.value(namespace)).collect());
     }
 }

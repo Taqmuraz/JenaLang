@@ -9,7 +9,7 @@ public final class EmptyArgumentList implements ArgumentList
     @Override
     public Value number(int number, ValueListFunction action, ValueFunction fail)
     {
-        if(number == 0) return action.call(new EmptyGenericBuffer<Value>(NoneValue.instance));
+        if(number == 0) return action.call(new EmptyGenericBuffer<Value>());
         return fail.call();
     }
 }
