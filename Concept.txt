@@ -9,11 +9,11 @@
 
 method [argument list] [expression] -- method
 
-[expression] [+-*/] [expression] -- binary expression
+[expression] [+|-|*|/] [expression] -- binary expression
 
 [expression].[name] -- member access expression
 
-[expression]([expression|,*]+) -- invocation expression
+[expression][expression list] -- invocation expression
 
 ([expression]) -- parenthesized expression
 
