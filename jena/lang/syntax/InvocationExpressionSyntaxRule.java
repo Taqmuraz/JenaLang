@@ -9,7 +9,7 @@ public final class InvocationExpressionSyntaxRule implements SyntaxRule
     {
         new InvocableExpressionSyntaxRule().match(span, (left, leftSpan) ->
         {
-            new ExpressionListSyntaxRule(new AnyExpressionSyntaxRule()).match(leftSpan, (args, argsSpan) ->
+            new ExpressionListSyntaxRule(new AnyExpressionSyntaxRule()).matchList(leftSpan, (args, argsSpan) ->
             {
                 action.call(new InvocationExpressionSyntax(left, args), argsSpan);
             });

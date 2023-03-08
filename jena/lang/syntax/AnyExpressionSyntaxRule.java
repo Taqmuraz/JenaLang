@@ -4,7 +4,7 @@ import jena.lang.source.SourceSpan;
 
 public class AnyExpressionSyntaxRule implements SyntaxRule
 {
-    private static final SyntaxRule[] rules =
+    private final SyntaxRule[] rules =
     {
         new BasicExpressionSyntaxRule(),
         new MemberAccessExpressionSyntaxRule(),

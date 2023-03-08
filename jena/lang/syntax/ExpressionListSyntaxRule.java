@@ -9,7 +9,7 @@ import jena.lang.ListGenericFlow;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceSpan;
 
-public final class ExpressionListSyntaxRule
+public final class ExpressionListSyntaxRule implements SyntaxRule
 {
     public interface ArgumentListSpanAction
     {
@@ -48,7 +48,7 @@ public final class ExpressionListSyntaxRule
         this.rule = rule;
     }
 
-    public void match(SourceSpan span, ArgumentListSpanAction action)
+    public void matchList(SourceSpan span, ArgumentListSpanAction action)
     {
         if(span.at(0).isKind(new SingleCharacterKind('(')))
         {
@@ -58,5 +58,11 @@ public final class ExpressionListSyntaxRule
             }
             else new SyntaxGuess(span.skip(1), rule).guess(new ExpressionListMatchAction(action));
         }
+    }
+
+    @Override
+    public void match(SourceSpan span, SyntaxSpanAction action)
+    {
+        matchList(span, (args, s) -> action.call(new ExpressionListSyntax(args), s));
     }
 }
