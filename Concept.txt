@@ -1,115 +1,22 @@
-class Vector3fStruct
-(
-	float { x y z } = 0
+[0-9]+ -- int
+[a-z|A-Z]+ -- name
 
-	method print Printer as printer using new TextWriter(printer) as writer
-	(
-		{ "(" x ", " y ", " z ")" } as arg writer.write(arg)
-	)
-)
+([name|,*]+) -- argument list
 
-interface Vector3f
-(
-	calculate Vector3fAction
-)
+([expression|,*]+) -- expression list
 
-interface Vector3fAction
-(
-	call (float float float)
-)
+\[[expression|,*]+)\] -- array
 
-{
-	(Vector3fAdd (a + b))
-	(Vector3fSub (a - b))
-	(Vector3fMul (a * b))
-	(Vector3fDiv (a / b))
-}
-as (name operation) class name
-(
-	Vector3f { a b }
+method [argument list] [expression] -- method
 
-	constructor (Vector3f Vector3f) as (a b)
-	(
-		{ a b } as f (this.f = f)
-	)
+[expression] [+-*/] [expression] -- binary expression
 
-	method calculate Vector3fAction as action
-	(
-		a.calculate((ax ay az) -> b.calculate((bx by bz) -> action({ (ax bx) (ay by) (az bz) } as (a b) operation)))
-	)
-)
+[expression].[name] -- member access expression
 
-// result code
+[expression]([expression|,*]+) -- invocation expression
 
-class Vector3fStruct
-(
-	float x = 0
-	float y = 0
-	float z = 0
+([expression]) -- parenthesized expression
 
-	method print (Printer printer) using new TextWriter(printer) as writer
-	(
-		writer.write "("
-		writer.write x
-		writer.write ", "
-		writer.write y
-		writer.write ", "
-		writer.write z
-		writer.write ")"
-	)
-)
+using [expression list] as [argument list] [expression] -- using expression
 
-class Vector3fAdd
-(
-	Vector3f a
-	Vector3f b
-
-	constructor (Vector3f Vector3f) as (a b)
-	(
-		this.a = a
-		this.b = b
-	)
-
-	method calculate Vector3fAction as action
-	(
-		a.calculate((ax ay az) -> b.calculate((bx by bz) -> action
-		(
-			(ax + bx)
-			(ay + by)
-			(az + bz)
-		)))
-	)
-)
-
-*********************************
-CONCEPT :
-
-x { a b c }
-
-where
-parent x
-	children a, b, c
-
-the same as
-
-x a x b x c
-or
-x a
-x b
-x c
-
-(({ a b c } * y))
-
-the same as
-
-((x * a) (x * b) (x * c))
-
-{ a b c } as y x
-
-where x is child expression
-
-({ a b c } as y x * y)
-
-the same as
-
-(x * a x * b x * c)
+[argument list | name] -> [expression] -- lambda expression
