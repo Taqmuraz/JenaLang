@@ -45,8 +45,7 @@ public class Program
                     System.out.println("\ndecomposed :");
                     (syntax = syntax.decomposed()).source(source -> System.out.print(source.text()));
                     System.out.print("\nvalue : ");
-                    syntax.value(EmptyNamespace.instance).print(source -> System.out.print(source.text()));
-                    System.out.println();
+                    syntax.value(EmptyNamespace.instance).print(source -> System.out.println(source.text()));
                 });
             }
         }

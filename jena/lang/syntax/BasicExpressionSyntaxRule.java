@@ -9,8 +9,7 @@ public class BasicExpressionSyntaxRule implements SyntaxRule
         new NameExpressionSyntaxRule(),
         new ParenthesizedExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule(),
-        new MethodDeclarationSyntaxRule(),
-        new ExpressionListSyntaxRule(new AnyExpressionSyntaxRule())
+        new MethodDeclarationSyntaxRule()
     );
 
     @Override
