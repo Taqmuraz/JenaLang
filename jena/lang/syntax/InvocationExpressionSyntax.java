@@ -1,6 +1,7 @@
 package jena.lang.syntax;
 
 import jena.lang.GenericFlow;
+import jena.lang.source.SingleCharacterSource;
 import jena.lang.value.BufferArgumentList;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
@@ -15,7 +16,7 @@ public final class InvocationExpressionSyntax implements Syntax
     {
         this.expression = expression;
         this.arguments = arguments;
-        this.argumentList = new ExpressionListSyntax(arguments);
+        this.argumentList = new ExpressionListSyntax(arguments, new SingleCharacterSource('('), new SingleCharacterSource(')'));
     }
 
     @Override

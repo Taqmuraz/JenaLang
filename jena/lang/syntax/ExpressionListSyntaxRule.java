@@ -34,9 +34,9 @@ public final class ExpressionListSyntaxRule
             {
                 action.call(new ListGenericFlow<Syntax>(expressions), expressionSpan.skip(1));
             }
-            else
+            else if(expressionSpan.at(0).isKind(new SingleCharacterKind(',')))
             {
-                new SyntaxGuess(expressionSpan, rule).guess(this);
+                new SyntaxGuess(expressionSpan.skip(1), rule).guess(this);
             }
         }
     }

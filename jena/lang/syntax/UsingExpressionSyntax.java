@@ -26,11 +26,11 @@ public final class UsingExpressionSyntax implements Syntax
     {
         writer.source(new StringSource("using"));
         writer.source(new SingleCharacterSource('('));
-        expressions.join(e -> e.source(writer), () -> writer.source(new SingleCharacterSource(' ')));
+        expressions.join(e -> e.source(writer), () -> writer.source(new SingleCharacterSource(',')));
         writer.source(new SingleCharacterSource(')'));
         writer.source(new StringSource("as"));
         writer.source(new SingleCharacterSource('('));
-        names.join(n -> n.source(writer), () -> writer.source(new SingleCharacterSource(' ')));
+        names.join(n -> n.source(writer), () -> writer.source(new SingleCharacterSource(',')));
         writer.source(new SingleCharacterSource(')'));
         expression.source(writer);
     }

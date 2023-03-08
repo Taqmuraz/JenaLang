@@ -19,9 +19,9 @@ public final class TupleValue implements Value
     public void print(SourceAction action)
     {
         action.call(new SingleCharacterSource('('));
-        Source space = new SingleCharacterSource(' ');
+        Source separator = new SingleCharacterSource(',');
         
-        items.join(item -> item.print(action), () -> action.call(space));
+        items.join(item -> item.print(action), () -> action.call(separator));
 
         action.call(new SingleCharacterSource(')'));
     }
@@ -40,7 +40,7 @@ public final class TupleValue implements Value
         return arguments.number(0, args -> items.at(items.length() - 1), () -> arguments.number(1, args ->
         {
             Source source = (p, c, a) -> args.at(0).print(s -> s.read(p, c, a));
-            return items.at(Integer.valueOf(source.toString()));
+            return items.at(Integer.valueOf(source.text().toString()));
         }, () -> NoneValue.instance));
     }
 }
