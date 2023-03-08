@@ -1,6 +1,7 @@
 package jena.lang.value;
 
 import jena.lang.GenericBuffer;
+import jena.lang.GenericPair;
 import jena.lang.SingleGenericBuffer;
 import jena.lang.StructPair;
 import jena.lang.source.SingleCharacterSource;
@@ -17,10 +18,16 @@ public final class TupleValue implements Value
     {
         this.items = items;
         members = new MemberCollection(
-            new SingleGenericBuffer<>(
+            new SingleGenericBuffer<GenericPair<Source, Value>>(
                 new StructPair<>(
                     new StringSource("count"),
-                    new IntegerValue(items.length()))));
+                    new IntegerValue(items.length()))).flow()
+                    .append(
+                        new StructPair<>(
+                            new StringSource("map"),
+                            new AnonymousMethodValue(1, args ->
+                                new TupleValue(items.map(item ->
+                                args.at(0).call(new SingleArgumentList(item))))))).collect());
     }
 
     @Override

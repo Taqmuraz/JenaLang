@@ -41,7 +41,7 @@ public final class MethodDeclarationSyntax implements Syntax
     {
         return new AnonymousMethodValue(arguments.length(), ps ->
         {
-            return expression.value(new PairNamespace(arguments.flow().<Source>map(SyntaxSource::new).zip(ps.flow()).collect()));
+            return expression.value(namespace.nested(new PairNamespace(arguments.flow().<Source>map(SyntaxSource::new).zip(ps.flow()).collect())));
         });
     }
 }

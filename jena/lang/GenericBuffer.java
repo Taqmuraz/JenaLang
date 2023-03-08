@@ -15,4 +15,9 @@ public interface GenericBuffer<Element>
             }
         };
     }
+
+    default<Out> GenericBuffer<Out> map(GenericFunction<Element, Out> map)
+    {
+        return new MapBuffer<Element, Out>(this, map);
+    }
 }
