@@ -25,7 +25,7 @@ public final class MethodDeclarationSyntax implements Syntax
     {
         writer.source(new StringSource("method"));
         writer.source(new SingleCharacterSource('('));
-        arguments.flow().join(a -> a.source(writer), () -> writer.source(new SingleCharacterSource(' ')));
+        arguments.flow().join(a -> a.source(writer), () -> writer.source(new SingleCharacterSource(',')));
         writer.source(new SingleCharacterSource(')'));
         expression.source(writer);
     }
