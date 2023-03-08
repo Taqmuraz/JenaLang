@@ -33,12 +33,12 @@ public class Program
                     .notFilter(new EmptySourceFilter())
                     .notKindFilter(SpaceCharacterKind.instance);
 
-                flow.read(source ->
+                /*flow.read(source ->
                 {
                     System.out.print("source : ");
                     source.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
                     System.out.println();
-                });
+                });*/
 
                 new JenaSyntaxReader().read(flow.span(), syntax ->
                 {

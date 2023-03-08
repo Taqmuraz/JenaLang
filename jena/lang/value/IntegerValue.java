@@ -4,11 +4,11 @@ import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
 import jena.lang.source.StringSource;
 
-public final class RealValue implements Value
+public final class IntegerValue implements Value
 {
-    private double value;
+    private int value;
 
-    public RealValue(double value)
+    public IntegerValue(int value)
     {
         this.value = value;
     }
@@ -25,18 +25,18 @@ public final class RealValue implements Value
         String stringName = name.text().toString();
         return new MethodValue(name, arguments -> arguments.number(1, args ->
         {
-            if(args.at(0) instanceof RealValue)
+            if(args.at(0) instanceof IntegerValue)
             {
-                double other = ((RealValue)args.at(0)).value;
-                if(stringName.equals("add")) return new RealValue(value + other);
-                if(stringName.equals("sub")) return new RealValue(value - other);
-                if(stringName.equals("mul")) return new RealValue(value * other);
-                if(stringName.equals("div")) return new RealValue(value / other);
+                int other = ((IntegerValue)args.at(0)).value;
+                if(stringName.equals("add")) return new IntegerValue(value + other);
+                if(stringName.equals("sub")) return new IntegerValue(value - other);
+                if(stringName.equals("mul")) return new IntegerValue(value * other);
+                if(stringName.equals("div")) return new IntegerValue(value / other);
             }
             return NoneValue.instance;
         }, () -> arguments.number(0, args ->
         {
-            if(stringName.equals("sqrt")) return new RealValue(Math.sqrt(value));
+            if(stringName.equals("sqrt")) return new IntegerValue((int)Math.sqrt(value));
             return NoneValue.instance;
         }, () -> NoneValue.instance)));
     }

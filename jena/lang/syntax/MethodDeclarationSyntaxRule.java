@@ -11,7 +11,7 @@ public final class MethodDeclarationSyntaxRule implements SyntaxRule
         if(span.at(0).text().compareString("method") && span.at(1).isKind(Character::isAlphabetic))
         {
             Source name = span.at(1);
-            new ExpressionListSyntaxRule(new NameExpressionSyntaxRule()).match(span.skip(2), (arguments, argumentsSpan) ->
+            new ParameterListSyntaxRule().match(span.skip(2), (arguments, argumentsSpan) ->
             {
                 new AnyExpressionSyntaxRule().match(argumentsSpan, (expression, expressionSpan) ->
                 {
