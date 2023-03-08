@@ -12,8 +12,8 @@ public final class ListGenericFlow<Element> implements GenericFlow<Element>
     }
 
     @Override
-    public void read(GenericArrayElementAction<Element> action)
+    public void read(GenericAction<Element> action)
     {
-        for(int i = 0; i < elements.size(); i++) action.call(elements.get(i), i);
+        for(int i = 0; i < elements.size(); i++) action.call(elements.get(i));
     }
 }

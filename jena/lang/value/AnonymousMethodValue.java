@@ -2,16 +2,15 @@ package jena.lang.value;
 
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
+import jena.lang.source.StringSource;
 
-public final class FixedMethodValue implements Value
+public final class AnonymousMethodValue implements Value
 {
-    private Source name;
     private int arguments;
     private ValueListFunction function;
 
-    public FixedMethodValue(Source name, int arguments, ValueListFunction function)
+    public AnonymousMethodValue(int arguments, ValueListFunction function)
     {
-        this.name = name;
         this.arguments = arguments;
         this.function = function;
     }
@@ -19,7 +18,7 @@ public final class FixedMethodValue implements Value
     @Override
     public void print(SourceAction action)
     {
-        action.call(name);
+        action.call(new StringSource("anonymous_method"));
     }
 
     @Override

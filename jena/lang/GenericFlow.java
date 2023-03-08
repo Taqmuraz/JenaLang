@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface GenericFlow<Element>
 {
-    void read(GenericArrayElementAction<Element> action);
+    void read(GenericAction<Element> action);
 
     default <Out> GenericFlow<Out> map(GenericFunction<Element, Out> map)
     {
@@ -18,7 +18,7 @@ public interface GenericFlow<Element>
     default GenericBuffer<Element> collect()
     {
         List<Element> list = new ArrayList<Element>();
-        read((e, i) -> list.add(e));
+        read(e -> list.add(e));
         return new ListGenericBuffer<Element>(list);
     }
     default <Other> GenericFlow<GenericPair<Element, Other>> connect(GenericFunction<Element, Other> connection)
@@ -35,8 +35,16 @@ public interface GenericFlow<Element>
             for(int i = 0; i < length; i++)
             {
                 int index = i;
-                action.call(both -> both.call(es.at(index), os.at(index)), index);
+                action.call(both -> both.call(es.at(index), os.at(index)));
             }
+        };
+    }
+    default GenericFlow<Element> append(Element element)
+    {
+        return action ->
+        {
+            read(action);
+            action.call(element);
         };
     }
 }

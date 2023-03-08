@@ -10,9 +10,9 @@ public final class SingleGenericFlow<Element> implements GenericFlow<Element>
     }
 
     @Override
-    public void read(GenericArrayElementAction<Element> action)
+    public void read(GenericAction<Element> action)
     {
-        action.call(element, 0);
+        action.call(element);
     }
 
     @Override

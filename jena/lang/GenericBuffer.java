@@ -11,7 +11,7 @@ public interface GenericBuffer<Element>
         {
             for(int i = 0; i < length(); i++)
             {
-                action.call(at(i), i);
+                action.call(at(i));
             }
         };
     }

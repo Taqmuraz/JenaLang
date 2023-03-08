@@ -4,7 +4,7 @@ import jena.lang.GenericBuffer;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
-import jena.lang.value.FlowNamespace;
+import jena.lang.value.PairNamespace;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
@@ -44,6 +44,6 @@ public final class UsingExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return expression.value(namespace.nested(new FlowNamespace(names.flow().<Source>map(SyntaxSource::new).zip(expressions.flow().map(e -> e.value(namespace))))));
+        return expression.value(namespace.nested(new PairNamespace(names.flow().<Source>map(SyntaxSource::new).zip(expressions.flow().map(e -> e.value(namespace))).collect())));
     }
 }

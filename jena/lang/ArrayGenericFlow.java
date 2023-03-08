@@ -10,8 +10,8 @@ public final class ArrayGenericFlow<Element> implements GenericFlow<Element>
     }
 
     @Override
-    public void read(GenericArrayElementAction<Element> action)
+    public void read(GenericAction<Element> action)
     {
-        for(int i = 0; i < elements.length; i++) action.call(elements[i], i);
+        for(int i = 0; i < elements.length; i++) action.call(elements[i]);
     }
 }

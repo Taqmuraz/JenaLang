@@ -1,17 +1,16 @@
 package jena.lang.value;
 
 import jena.lang.GenericBuffer;
-import jena.lang.GenericFlow;
 import jena.lang.GenericPair;
 import jena.lang.source.Source;
 
-public final class FlowNamespace implements Namespace
+public final class PairNamespace implements Namespace
 {
     GenericBuffer<GenericPair<Source, Value>> names;
 
-    public FlowNamespace(GenericFlow<GenericPair<Source, Value>> flow)
+    public PairNamespace(GenericBuffer<GenericPair<Source, Value>> names)
     {
-        names = flow.collect();
+        this.names = names;
     }
 
     @Override

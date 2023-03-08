@@ -12,8 +12,8 @@ public final class MapFlow<In, Out> implements GenericFlow<Out>
     }
 
     @Override
-    public void read(GenericArrayElementAction<Out> action)
+    public void read(GenericAction<Out> action)
     {
-        flow.read((element, index) -> action.call(map.call(element), index));
+        flow.read(element -> action.call(map.call(element)));
     }
 }

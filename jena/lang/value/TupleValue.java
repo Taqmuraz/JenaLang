@@ -1,34 +1,43 @@
 package jena.lang.value;
 
 import jena.lang.GenericBuffer;
+import jena.lang.SingleGenericBuffer;
+import jena.lang.StructPair;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
+import jena.lang.source.StringSource;
 
 public final class TupleValue implements Value
 {
     private GenericBuffer<Value> items;
+    private MemberCollection members;
 
     public TupleValue(GenericBuffer<Value> items)
     {
         this.items = items;
+        members = new MemberCollection(
+            new SingleGenericBuffer<>(
+                new StructPair<>(
+                    new StringSource("count"),
+                    new IntegerValue(items.length()))));
     }
 
     @Override
     public void print(SourceAction action)
     {
-        action.call(new SingleCharacterSource('('));
+        action.call(new SingleCharacterSource('['));
         Source separator = new SingleCharacterSource(',');
         
         items.flow().join(item -> item.print(action), () -> action.call(separator));
 
-        action.call(new SingleCharacterSource(')'));
+        action.call(new SingleCharacterSource(']'));
     }
 
     @Override
     public Value member(Source name)
     {
-        return NoneValue.instance;
+        return members.member(name);
     }
 
     @Override

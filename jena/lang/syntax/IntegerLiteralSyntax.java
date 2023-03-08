@@ -8,10 +8,12 @@ import jena.lang.value.Value;
 public class IntegerLiteralSyntax implements Syntax
 {
     private Source literal;
+    private Value value;
 
     public IntegerLiteralSyntax(Source literal)
     {
         this.literal = literal;
+        this.value = new IntegerValue(Integer.valueOf(literal.text().toString()));
     }
 
     @Override
@@ -29,6 +31,6 @@ public class IntegerLiteralSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new IntegerValue(Integer.valueOf(literal.text().toString()));
+        return value;
     }
 }

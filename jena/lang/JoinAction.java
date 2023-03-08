@@ -5,6 +5,7 @@ public final class JoinAction<Element>
     private GenericFlow<Element> flow;
     private GenericAction<Element> elementAction;
     private Action separatorAction;
+    private int index;
     
     public JoinAction(GenericFlow<Element> flow, GenericAction<Element> elementAction, Action separatorAction)
     {
@@ -15,9 +16,9 @@ public final class JoinAction<Element>
 
     public void join()
     {
-        flow.read((element, index) ->
+        flow.read(element ->
         {
-            if(index > 0) separatorAction.call();
+            if(index++ > 0) separatorAction.call();
             elementAction.call(element);
         });
     }
