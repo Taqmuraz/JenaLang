@@ -1,1 +1,1 @@
-[1, 2, 3, 4].map(i -> i * 2)
+using (class(a, b)(read:(reader -> reader(a, b)))) as (PairClass) using (PairClass(10, 11)) as (pair) pair((a, b) -> print(a + b))

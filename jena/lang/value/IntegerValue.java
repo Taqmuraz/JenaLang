@@ -11,12 +11,12 @@ import jena.lang.source.StringSource;
 public final class IntegerValue implements Value
 {
     private int value;
-    private MemberCollection members;
+    private ObjectValue members;
 
     public IntegerValue(int value)
     {
         this.value = value;
-        this.members = new MemberCollection(
+        this.members = new ObjectValue(
             new ArrayGenericBuffer<String>(new String[]
             {
                 "add",    

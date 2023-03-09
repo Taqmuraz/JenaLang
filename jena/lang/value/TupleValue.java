@@ -12,12 +12,12 @@ import jena.lang.source.StringSource;
 public final class TupleValue implements Value
 {
     private GenericBuffer<Value> items;
-    private MemberCollection members;
+    private ObjectValue members;
 
     public TupleValue(GenericBuffer<Value> items)
     {
         this.items = items;
-        members = new MemberCollection(
+        members = new ObjectValue(
             new SingleGenericBuffer<GenericPair<Source, Value>>(
                 new StructPair<>(
                     new StringSource("count"),

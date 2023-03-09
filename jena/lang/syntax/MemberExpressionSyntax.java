@@ -8,6 +8,7 @@ import jena.lang.value.Namespace;
 import jena.lang.value.TextValue;
 import jena.lang.value.TupleValue;
 import jena.lang.value.Value;
+import jena.lang.value.ValueProducer;
 
 public final class MemberExpressionSyntax implements Syntax
 {
@@ -40,7 +41,7 @@ public final class MemberExpressionSyntax implements Syntax
         return new TupleValue(new ArrayGenericBuffer<Value>(new Value[] { new TextValue(name), expression.value(namespace) }));
     }
 
-    public GenericPair<Source, Syntax> nameExpression()
+    public GenericPair<Source, ValueProducer> nameExpression()
     {
         return action -> action.call(name, expression);
     }

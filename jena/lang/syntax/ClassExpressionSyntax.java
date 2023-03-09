@@ -3,8 +3,8 @@ package jena.lang.syntax;
 import jena.lang.GenericBuffer;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.StringSource;
+import jena.lang.value.ClassValue;
 import jena.lang.value.Namespace;
-import jena.lang.value.NoneValue;
 import jena.lang.value.Value;
 
 public final class ClassExpressionSyntax implements Syntax
@@ -35,6 +35,6 @@ public final class ClassExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return NoneValue.instance;
+        return new ClassValue(arguments.map(SyntaxSource::new), members.flow().map(m -> ((MemberExpressionSyntax)m).nameExpression()).collect(), namespace);
     }
 }

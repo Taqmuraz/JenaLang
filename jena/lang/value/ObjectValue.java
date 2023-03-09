@@ -6,12 +6,12 @@ import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
 
-public final class MemberCollection implements Value
+public final class ObjectValue implements Value
 {
     private GenericBuffer<GenericPair<Source, Value>> members;
     private PairNamespace namespace;
 
-    public MemberCollection(GenericBuffer<GenericPair<Source, Value>> members)
+    public ObjectValue(GenericBuffer<GenericPair<Source, Value>> members)
     {
         this.members = members;
         this.namespace = new PairNamespace(members);
