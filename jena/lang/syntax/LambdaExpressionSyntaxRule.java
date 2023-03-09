@@ -18,7 +18,7 @@ public final class LambdaExpressionSyntaxRule implements SyntaxRule
             {
                 new AnyExpressionSyntaxRule().match(argSpan.skip(2), (expression, expressionSpan) ->
                 {
-                    action.call(new MethodDeclarationSyntax(args, expression), expressionSpan);
+                    action.call(new MethodExpressionSyntax(args, expression), expressionSpan);
                 });
             }
         });

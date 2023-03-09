@@ -9,12 +9,12 @@ import jena.lang.value.AnonymousMethodValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
-public final class MethodDeclarationSyntax implements Syntax
+public final class MethodExpressionSyntax implements Syntax
 {
     private GenericBuffer<Syntax> arguments;
     private Syntax expression;
     
-    public MethodDeclarationSyntax(GenericBuffer<Syntax> arguments, Syntax expression)
+    public MethodExpressionSyntax(GenericBuffer<Syntax> arguments, Syntax expression)
     {
         this.arguments = arguments;
         this.expression = expression;
@@ -33,7 +33,7 @@ public final class MethodDeclarationSyntax implements Syntax
     @Override
     public Syntax decomposed()
     {
-        return new MethodDeclarationSyntax(arguments.flow().map(a -> a.decomposed()).collect(), expression.decomposed());
+        return new MethodExpressionSyntax(arguments.flow().map(a -> a.decomposed()).collect(), expression.decomposed());
     }
 
     @Override

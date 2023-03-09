@@ -2,7 +2,7 @@ package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
 
-public final class MethodDeclarationSyntaxRule implements SyntaxRule
+public final class MethodExpressionSyntaxRule implements SyntaxRule
 {
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action)
@@ -13,7 +13,7 @@ public final class MethodDeclarationSyntaxRule implements SyntaxRule
             {
                 new AnyExpressionSyntaxRule().match(argumentsSpan, (expression, expressionSpan) ->
                 {
-                    action.call(new MethodDeclarationSyntax(arguments, expression), expressionSpan);
+                    action.call(new MethodExpressionSyntax(arguments, expression), expressionSpan);
                 });
             });
         }
