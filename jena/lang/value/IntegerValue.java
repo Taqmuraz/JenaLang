@@ -22,7 +22,11 @@ public final class IntegerValue implements Value
                 "add",    
                 "sub",    
                 "mul",    
-                "div",    
+                "div",
+                "greater",
+                "less",
+                "equals",
+                "notEquals",
             })
             .flow().map(n -> new StringSource(n))
             .zip(new ArrayGenericBuffer<IntegerFunction>(new IntegerFunction[]
@@ -31,6 +35,10 @@ public final class IntegerValue implements Value
                 arg -> value - arg,
                 arg -> value * arg,
                 arg -> value / arg,
+                arg -> value > arg ? 1 : 0,
+                arg -> value < arg ? 1 : 0,
+                arg -> value == arg ? 1 : 0,
+                arg -> value != arg ? 1 : 0,
             })
             .flow()).<GenericPair<Source, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(f, i -> i.value))))
             .append(new StructPair<Source, Value>

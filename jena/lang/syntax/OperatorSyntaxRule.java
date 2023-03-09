@@ -1,13 +1,13 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SingleCharacterKind;
+import jena.lang.source.Source;
 import jena.lang.source.SourceSpan;
 
 public final class OperatorSyntaxRule implements SyntaxRule
 {
-    private char operator;
+    private Source operator;
 
-    public OperatorSyntaxRule(char operator)
+    public OperatorSyntaxRule(Source operator)
     {
         this.operator = operator;
     }
@@ -15,7 +15,7 @@ public final class OperatorSyntaxRule implements SyntaxRule
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action)
     {
-        if(span.at(0).isKind(new SingleCharacterKind(operator)))
+        if(span.at(0).text().compare(operator.text()))
         {
             action.call(new MathBinaryOperatorSyntax(operator), span.skip(1));
         }

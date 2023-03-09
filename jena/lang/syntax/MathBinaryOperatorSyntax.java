@@ -1,7 +1,7 @@
 package jena.lang.syntax;
 
 import jena.lang.SingleGenericBuffer;
-import jena.lang.source.SingleCharacterSource;
+import jena.lang.source.Source;
 import jena.lang.source.StringSource;
 import jena.lang.value.Namespace;
 import jena.lang.value.NoneValue;
@@ -9,9 +9,9 @@ import jena.lang.value.Value;
 
 public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
 {
-    private char operator;
+    private Source operator;
 
-    public MathBinaryOperatorSyntax(char operator)
+    public MathBinaryOperatorSyntax(Source operator)
     {
         this.operator = operator;
     }
@@ -19,19 +19,24 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
     @Override
     public void source(SyntaxSerializer writer)
     {
-        writer.source(new SingleCharacterSource(operator));
+        writer.source(operator);
     }
 
     @Override
     public Syntax classicExpression(Syntax left, Syntax right)
     {
+        String value = operator.text().toString();
         String name;
-        switch(operator)
+        switch(value)
         {
-            case '+':name = "add"; break;
-            case '-':name = "sub"; break;
-            case '*':name = "mul"; break;
-            case '/':name = "div"; break;
+            case "+":name = "add"; break;
+            case "-":name = "sub"; break;
+            case "*":name = "mul"; break;
+            case "/":name = "div"; break;
+            case "<":name = "less"; break;
+            case ">":name = "greater"; break;
+            case "=":name = "equals"; break;
+            case "!":name = "notEquals"; break;
             default:name = "unknownOperator";
         }
         return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringSource(name)), new SingleGenericBuffer<Syntax>(right));

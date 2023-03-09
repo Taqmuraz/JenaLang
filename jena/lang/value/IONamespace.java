@@ -1,15 +1,11 @@
-package jena.lang;
+package jena.lang.value;
 
+import jena.lang.ArrayGenericFlow;
+import jena.lang.SingleGenericFlow;
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
-import jena.lang.value.AnonymousMethodValue;
-import jena.lang.value.IntegerValue;
-import jena.lang.value.Namespace;
-import jena.lang.value.ObjectValue;
-import jena.lang.value.TextValue;
-import jena.lang.value.Value;
 
 public final class IONamespace implements Namespace
 {

@@ -1,6 +1,7 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
+import jena.lang.source.StringSource;
 
 public class BinaryExpressionSyntaxRule implements SyntaxRule
 {
@@ -10,7 +11,7 @@ public class BinaryExpressionSyntaxRule implements SyntaxRule
         SyntaxRule expression = new AnyExpressionSyntaxRule().except(getClass());
         expression.match(span, (left, leftSpan) ->
         {
-            for(char operatorSymbol : new char[] { '+', '-', '*', '/' }) new OperatorSyntaxRule(operatorSymbol).match(leftSpan, (operator, operatorSpan) ->
+            for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "=", "!" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(leftSpan, (operator, operatorSpan) ->
             {
                 SyntaxSpanAction rightAction = (right, rightSpan) ->
                 {
