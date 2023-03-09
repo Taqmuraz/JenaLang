@@ -44,8 +44,8 @@ public class Program
 
                 new JenaSyntaxReader().read(flow.span(), syntax ->
                 {
-                    syntax.source(source -> System.out.print(source.text()));
-                    System.out.println();
+                    //syntax.source(source -> System.out.print(source.text()));
+                    //System.out.println();
                     /*System.out.println("\ndecomposed :");
                     (syntax = syntax.decomposed()).source(source -> System.out.print(source.text()));
                     System.out.print("\nvalue : ");

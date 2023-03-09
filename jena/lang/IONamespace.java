@@ -1,9 +1,11 @@
 package jena.lang;
 
+import jena.lang.source.InputStreamLineSource;
 import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
 import jena.lang.value.AnonymousMethodValue;
+import jena.lang.value.IntegerValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.ObjectValue;
 import jena.lang.value.TextValue;
@@ -18,6 +20,8 @@ public final class IONamespace implements Namespace
         members = new ObjectValue(new ArrayGenericFlow<String>(new String[]
         {
             "print",
+            "read",
+            "readInt",
             "line",
             "space",
         }).<Source>map(StringSource::new).zip(new SingleGenericFlow<Value>(
@@ -27,7 +31,10 @@ public final class IONamespace implements Namespace
                 arg.print(s -> System.out.print(s.text().toString()));
                 return arg;
             })
-        ).append(new TextValue(new SingleCharacterSource('\n')))
+        )
+        .append(new AnonymousMethodValue(0, args -> new TextValue(new InputStreamLineSource(System.in))))
+        .append(new AnonymousMethodValue(0, args -> new IntegerValue(Integer.valueOf(new InputStreamLineSource(System.in).text().toString()))))
+        .append(new TextValue(new SingleCharacterSource('\n')))
         .append(new TextValue(new SingleCharacterSource(' ')))).collect());
     }
 
