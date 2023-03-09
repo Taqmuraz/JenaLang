@@ -1,6 +1,6 @@
 package jena.lang;
 
-import jena.lang.source.InputStreamLineSource;
+import jena.lang.source.FileSource;
 import jena.lang.source.JenaSourceFlow;
 import jena.lang.source.SourceFlow;
 import jena.lang.source.StringLiteralFlow;
@@ -13,9 +13,9 @@ public class Program
     {
         try
         {
-            while(true)
+            //while(true)
             {
-                SourceFlow flow = new JenaSourceFlow(new StringLiteralFlow(new InputStreamLineSource(System.in)));
+                SourceFlow flow = new JenaSourceFlow(new StringLiteralFlow(new FileSource("source.jena")));
 
                 /*flow.read(source ->
                 {
@@ -26,8 +26,9 @@ public class Program
 
                 new JenaSyntaxReader().read(flow.span(), syntax ->
                 {
-                    syntax.source(source -> System.out.print(source.text()));
-                    System.out.println();
+                    syntax = syntax.decomposed();
+                    //syntax.source(source -> System.out.print(source.text()));
+                    //System.out.println();
                     syntax.value(new IONamespace());
                     System.out.println();
                 });

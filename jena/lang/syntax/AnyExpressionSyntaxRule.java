@@ -4,7 +4,7 @@ import jena.lang.source.SourceSpan;
 
 public class AnyExpressionSyntaxRule implements SyntaxRule
 {
-    private static final SyntaxRule rule = new ContinuedSyntaxRule
+    private static final SyntaxRule rule = new CompositeSyntaxRule(new ContinuedSyntaxRule
     (
         new CompositeSyntaxRule
         (
@@ -12,10 +12,7 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new TextLiteralExpressionSyntaxRule(),
             new NameExpressionSyntaxRule(),
             new ParenthesizedExpressionSyntaxRule(),
-            new UsingExpressionSyntaxRule(),
-            new MethodExpressionSyntaxRule(),
             new ArrayExpressionSyntaxRule(),
-            new LambdaExpressionSyntaxRule(),
             new ClassExpressionSyntaxRule()
         ),
         new CompositeContinuousSyntaxRule
@@ -24,7 +21,12 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new MemberAccessExpressionSyntaxRule(),
             new InvocationExpressionSyntaxRule()
         )
-    );
+    ), new CompositeSyntaxRule
+    (
+        new LambdaExpressionSyntaxRule(),
+        new MethodExpressionSyntaxRule(),
+        new UsingExpressionSyntaxRule()
+    ));
 
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action)

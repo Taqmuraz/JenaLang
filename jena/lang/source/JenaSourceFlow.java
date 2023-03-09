@@ -23,7 +23,8 @@ public final class JenaSourceFlow implements SourceFlow
             .split(new SingleCharacterKind('<'))
             .split(new SingleCharacterKind(':'))
             .notFilter(new EmptySourceFilter())
-            .notKindFilter(SpaceCharacterKind.instance);
+            .notKindFilter(SpaceCharacterKind.instance)
+            .map(s -> new CharacterBufferSource(s.text()));
     }
 
     @Override
