@@ -3,23 +3,22 @@ package jena.lang.syntax;
 import jena.lang.source.SourceSpan;
 import jena.lang.source.StringSource;
 
-public class BinaryExpressionSyntaxRule implements SyntaxRule
+public class BinaryExpressionSyntaxRule implements ContinuousSyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action)
     {
-        SyntaxRule expression = new AnyExpressionSyntaxRule().except(getClass());
-        expression.match(span, (left, leftSpan) ->
+        for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "=", "!" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(span, (operator, operatorSpan) ->
         {
-            for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "=", "!" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(leftSpan, (operator, operatorSpan) ->
+            if(operator instanceof BinaryOperatorSyntax)
             {
-                SyntaxSpanAction rightAction = (right, rightSpan) ->
-                {
-                    if(operator instanceof BinaryOperatorSyntax) action.call(new BinaryExpressionSyntax(left, (BinaryOperatorSyntax)operator, right), rightSpan);
-                };
-                expression.match(operatorSpan, rightAction);
-                new SyntaxGuess(operatorSpan, this).guess(rightAction);
-            });
+                new AnyExpressionSyntaxRule().match(operatorSpan, (right, rightSpan) ->
+                {                
+                    Syntax result = new BinaryExpressionSyntax(last, (BinaryOperatorSyntax)operator, right);
+                    action.call(result, rightSpan);
+                    this.match(rightSpan, result, action);
+                });
+            }
         });
     }
 }

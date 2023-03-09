@@ -4,25 +4,31 @@ import jena.lang.source.SourceSpan;
 
 public class AnyExpressionSyntaxRule implements SyntaxRule
 {
-    private static final SyntaxRule[] rules =
-    {
-        new BasicExpressionSyntaxRule(),
-        new MemberAccessExpressionSyntaxRule(),
-        new InvocationExpressionSyntaxRule(),
-        //new BinaryExpressionSyntaxRule(),
-    };
+    private static final SyntaxRule rule = new ContinuedSyntaxRule
+    (
+        new CompositeSyntaxRule
+        (
+            new IntegerLiteralSyntaxRule(),
+            new TextLiteralExpressionSyntaxRule(),
+            new NameExpressionSyntaxRule(),
+            new ParenthesizedExpressionSyntaxRule(),
+            new UsingExpressionSyntaxRule(),
+            new MethodExpressionSyntaxRule(),
+            new ArrayExpressionSyntaxRule(),
+            new LambdaExpressionSyntaxRule(),
+            new ClassExpressionSyntaxRule()
+        ),
+        new CompositeContinuousSyntaxRule
+        (
+            new BinaryExpressionSyntaxRule(),
+            new MemberAccessExpressionSyntaxRule(),
+            new InvocationExpressionSyntaxRule()
+        )
+    );
 
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action)
     {
-        for(SyntaxRule rule : rules) rule.match(span, action);
-    }
-
-    public SyntaxRule except(Class<? extends SyntaxRule> ruleClass)
-    {
-        return (span, action) ->
-        {
-            for(SyntaxRule rule : rules) if (!rule.getClass().equals(ruleClass)) rule.match(span, action);
-        };
+        rule.match(span, action);
     }
 }

@@ -2,17 +2,14 @@ package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
 
-public final class InvocationExpressionSyntaxRule implements SyntaxRule
+public final class InvocationExpressionSyntaxRule implements ContinuousSyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action)
     {
-        new InvocableExpressionSyntaxRule().match(span, (left, leftSpan) ->
+        new ArgumentListSyntaxRule().match(span, (args, argsSpan) ->
         {
-            new ArgumentListSyntaxRule().match(leftSpan, (args, argsSpan) ->
-            {
-                action.call(new InvocationExpressionSyntax(left, args), argsSpan);
-            });
+            action.call(new InvocationExpressionSyntax(last, args), argsSpan);
         });
     }
 }

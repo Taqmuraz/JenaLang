@@ -3,17 +3,14 @@ package jena.lang.syntax;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceSpan;
 
-public final class MemberAccessExpressionSyntaxRule implements SyntaxRule
+public final class MemberAccessExpressionSyntaxRule implements ContinuousSyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action)
     {
-        new BasicExpressionSyntaxRule().match(span, (expression, expressionSpan) ->
+        if(span.at(0).isKind(new SingleCharacterKind('.')))
         {
-            if(expressionSpan.at(0).isKind(new SingleCharacterKind('.')))
-            {
-                action.call(new MemberAccessExpressionSyntax(expression, expressionSpan.at(1)), expressionSpan.skip(2));
-            }
-        });
+            action.call(new MemberAccessExpressionSyntax(last, span.at(1)), span.skip(2));
+        }
     }
 }
