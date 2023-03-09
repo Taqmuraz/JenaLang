@@ -22,7 +22,12 @@ public final class StringLiteralFlow implements SourceFlow
             public void call(Source source)
             {
                 if((index & 1) == 0) source.split(SpaceCharacterKind.instance).read(reader);
-                else reader.call(source);
+                else
+                {
+                    reader.call(new SingleCharacterSource('\"'));
+                    reader.call(new NonSplitSource(source));
+                    reader.call(new SingleCharacterSource('\"'));
+                }
                 index++;
             }
         });

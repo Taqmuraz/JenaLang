@@ -6,6 +6,7 @@ public class BasicExpressionSyntaxRule implements SyntaxRule
 {
     private static final SyntaxRule rule = new CompositeSyntaxRule(
         new IntegerLiteralSyntaxRule(),
+        new TextLiteralExpressionSyntaxRule(),
         new NameExpressionSyntaxRule(),
         new ParenthesizedExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule(),

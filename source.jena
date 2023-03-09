@@ -1,12 +1,11 @@
 using
 (
-    class(a, b)
-    (
-        read:reader -> reader(a, b)
-    )
-) as (PairClass)
-using 
+    class(firstName, lastName)(display:printer -> ["Name : ", firstName, lastName].map(printer)),
+    class(firstName, lastName, company)(display:p -> ["Name : ", firstName, lastName].map(p))
+) as (Person, Employee)
 (
-    PairClass(10, 11)
-) as (pair)
-    pair.read((a, b) -> print(a + b))
+    using(Person("Peter", "Parker"), Employee("Bob", "Smith", "Google")) as (peter, bob)
+    (
+        [peter, bob].map(v -> v.display(text -> [print(text), print(line)]))
+    )
+)
