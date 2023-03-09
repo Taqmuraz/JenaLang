@@ -1,4 +1,7 @@
 [0-9]+ -- int
+
+"[.*]" -- text literal
+
 [a-z|A-Z]+ -- name
 
 ([name|,*]+) -- argument list
@@ -20,3 +23,9 @@ method [argument list] [expression] -- method
 using [expression list] as [argument list] [expression] -- using expression
 
 [argument list | name] -> [expression] -- lambda expression
+
+[name]:[expression] -- member
+
+([member|,*]+) -- member list
+
+class[argument list][member list]
