@@ -10,7 +10,7 @@ public class BasicExpressionSyntaxRule implements SyntaxRule
         new NameExpressionSyntaxRule(),
         new ParenthesizedExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule(),
-        new MethodExpressionSyntaxRule(),
+        //new MethodExpressionSyntaxRule(),
         new ArrayExpressionSyntaxRule(),
         new LambdaExpressionSyntaxRule(),
         new ClassExpressionSyntaxRule()

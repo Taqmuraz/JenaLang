@@ -1,8 +1,8 @@
 using
 (
     [
-        class(firstName, lastName)(display:printer -> ["Name : ", firstName, " ", lastName].map(printer)),
-        class(firstName, lastName, company)(display:p -> ["Name : ", firstName, " ", lastName].map(p))
+        class(firstName, lastName)(display:printer -> ["Name : ", firstName, space, lastName].map(printer)),
+        class(firstName, lastName, company)(display:p -> ["Name : ", firstName, space, lastName, space, ", Company : ", company].map(p))
     ],
     [c -> c("Peter", "Parker"), c -> c("Bob", "Smith", "Google")]
 ) as (classes, builders) 2.times(i -> [((builders(i))(classes(i))).display(print), print(line)])
