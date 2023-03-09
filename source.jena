@@ -1,1 +1,12 @@
-using (class(a, b)(read:(reader -> reader(a, b)))) as (PairClass) using (PairClass(10, 11)) as (pair) pair((a, b) -> print(a + b))
+using
+(
+    class(a, b)
+    (
+        read:reader -> reader(a, b)
+    )
+) as (PairClass)
+using 
+(
+    PairClass(10, 11)
+) as (pair)
+    pair.read((a, b) -> print(a + b))
