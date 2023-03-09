@@ -54,7 +54,7 @@ public final class IntegerValue implements Value
                         {
                             return args.at(0).call(new SingleArgumentList(new IntegerValue(index)));
                         }
-                    });
+                    }.flow().collect());
                 })
             ))
             .collect());

@@ -1,7 +1,6 @@
 package jena.lang;
 
 import jena.lang.source.EmptySourceFilter;
-import jena.lang.source.FileSource;
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceFlow;
@@ -15,9 +14,9 @@ public class Program
     {
         try
         {
-            //while(true)
+            while(true)
             {
-                SourceFlow flow = new StringLiteralFlow(new FileSource(new InputStreamLineSource(System.in).text().toString()))
+                SourceFlow flow = new StringLiteralFlow(new InputStreamLineSource(System.in))
                     .split(new SingleCharacterKind('('))
                     .split(new SingleCharacterKind(')'))
                     .split(new SingleCharacterKind('{'))
@@ -45,13 +44,15 @@ public class Program
 
                 new JenaSyntaxReader().read(flow.span(), syntax ->
                 {
-                    /*syntax.source(source -> System.out.print(source.text()));
-                    System.out.println("\ndecomposed :");
+                    syntax.source(source -> System.out.print(source.text()));
+                    System.out.println();
+                    /*System.out.println("\ndecomposed :");
                     (syntax = syntax.decomposed()).source(source -> System.out.print(source.text()));
                     System.out.print("\nvalue : ");
                     syntax.value(EmptyNamespace.instance).print(source -> System.out.print(source.text()));
                     System.out.println();*/
                     syntax.value(new IONamespace());
+                    System.out.println();
                 });
             }
         }
