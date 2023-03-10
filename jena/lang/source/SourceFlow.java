@@ -33,6 +33,11 @@ public interface SourceFlow
         return new MapSourceFlow(this, mapping);
     }
 
+    default SourceFlow flatMap(SourceFlatMapping mapping)
+    {
+        return new FlatMapSourceFlow(this, mapping);
+    }
+
     default SourceSpan span()
     {
         return new SourceSpanFromFlow(this);

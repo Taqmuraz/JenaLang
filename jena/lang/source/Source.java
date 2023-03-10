@@ -14,7 +14,7 @@ public interface Source
 
     default SourceFlow split(CharacterKind kind)
     {
-        return new CharacterSeparatedSourceFlow(this, kind);
+        return new SingleCharacterSeparatedSourceFlow(this, kind);
     }
 
     default SourceFlow single()

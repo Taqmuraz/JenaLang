@@ -14,9 +14,9 @@ public final class LambdaExpressionSyntaxRule implements SyntaxRule
     {
         GenericAction<GenericPair<SourceSpan,GenericBuffer<Syntax>>> matchAfterName = pair -> pair.both((argSpan, args) ->
         {
-            if(argSpan.at(0).text().compareString("-") && argSpan.at(1).text().compareString(">"))
+            if(argSpan.at(0).text().compareString("->"))
             {
-                new AnyExpressionSyntaxRule().match(argSpan.skip(2), (expression, expressionSpan) ->
+                new AnyExpressionSyntaxRule().match(argSpan.skip(1), (expression, expressionSpan) ->
                 {
                     action.call(new MethodExpressionSyntax(args, expression), expressionSpan);
                 });

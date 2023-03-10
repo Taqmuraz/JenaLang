@@ -35,8 +35,8 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
             case "/":name = "div"; break;
             case "<":name = "less"; break;
             case ">":name = "greater"; break;
-            case "=":name = "equals"; break;
-            case "!":name = "notEquals"; break;
+            case "==":name = "equals"; break;
+            case "!=":name = "notEquals"; break;
             default:name = "unknownOperator";
         }
         return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringSource(name)), new SingleGenericBuffer<Syntax>(right));

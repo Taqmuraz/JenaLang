@@ -12,7 +12,7 @@
 
 method [argument list] [expression] -- method
 
-[expression] [+|-|*|/] [expression] -- binary expression
+[expression] [+|-|*|/|<|>|==|!=] [expression] -- binary expression
 
 [expression].[name] -- member access expression
 

@@ -13,15 +13,10 @@ public final class JenaSourceFlow implements SourceFlow
             .split(new SingleCharacterKind('}'))
             .split(new SingleCharacterKind('['))
             .split(new SingleCharacterKind(']'))
-            .split(new SingleCharacterKind('+'))
-            .split(new SingleCharacterKind('-'))
-            .split(new SingleCharacterKind('*'))
-            .split(new SingleCharacterKind('/'))
             .split(new SingleCharacterKind('.'))
             .split(new SingleCharacterKind(','))
-            .split(new SingleCharacterKind('>'))
-            .split(new SingleCharacterKind('<'))
             .split(new SingleCharacterKind(':'))
+            .flatMap(s -> new GroupCharacterSeparatedSourceFlow(s, new GroupCharacterKind('+', '-', '*', '/', '=', '!', '<', '>')))
             .notFilter(new EmptySourceFilter())
             .map(s -> new CharacterBufferSource(s.text()));
     }

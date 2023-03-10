@@ -3,12 +3,12 @@ package jena.lang.source;
 import jena.lang.MaxCount;
 import jena.lang.StartPosition;
 
-public final class CharacterSeparatedSourceFlow implements SourceFlow
+public final class GroupCharacterSeparatedSourceFlow implements SourceFlow
 {
     private Source source;
     private CharacterKind kind;
 
-    public CharacterSeparatedSourceFlow(Source source, CharacterKind kind)
+    public GroupCharacterSeparatedSourceFlow(Source source, CharacterKind kind)
     {
         this.source = source;
         this.kind = kind;
@@ -21,16 +21,18 @@ public final class CharacterSeparatedSourceFlow implements SourceFlow
         {
             int lastStart;
             int lastIndex;
+            boolean inKind;
             @Override
             public void call(Source source)
             {
                 source.read(StartPosition.instance, MaxCount.instance, (c, n) ->
                 {
-                    if (kind.isKind(c))
+                    boolean kindCheck = kind.isKind(c);
+                    if(inKind != kindCheck)
                     {
+                        inKind = kindCheck;
                         reader.call(source.subsource(lastStart, n - lastStart));
-                        reader.call(source.subsource(n, 1));
-                        lastStart = n + 1;
+                        lastStart = n;
                     }
                     lastIndex = n;
                 });

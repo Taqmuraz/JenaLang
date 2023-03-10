@@ -15,7 +15,7 @@ public final class StringLiteralFlow implements SourceFlow
         CharacterKind separatorKind = c -> c == '\"';
         Source separatorSource = new SingleCharacterSource('\"');
 
-        new CharacterSeparatedSourceFlow(source, separatorKind).notKindFilter(separatorKind).read(new SourceAction()
+        new SingleCharacterSeparatedSourceFlow(source, separatorKind).notKindFilter(separatorKind).read(new SourceAction()
         {
             int index;
 

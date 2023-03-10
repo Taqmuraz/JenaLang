@@ -8,7 +8,7 @@ public class BinaryExpressionSyntaxRule implements ContinuousSyntaxRule
     @Override
     public void match(SourceSpan span, Syntax last, SyntaxSpanAction action)
     {
-        for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "=", "!" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(span, (operator, operatorSpan) ->
+        for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "==", "!=" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(span, (operator, operatorSpan) ->
         {
             if(operator instanceof BinaryOperatorSyntax)
             {
