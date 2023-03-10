@@ -1,4 +1,4 @@
-[0-9]+ -- int
+[0-9]+ -- int literal
 
 "[.*]" -- text literal
 
@@ -28,4 +28,26 @@ using [expression list] as [argument list] [expression] -- using expression
 
 ([member|,*]+) -- member list
 
-class[argument list][member list]
+class[argument list][member list] -- class expression
+
+continuous syntaxes :
+
+invocation expression
+member access expression
+binary expression
+
+continuable syntaxes :
+
+int literal
+text literal
+name
+array
+member access expression
+parenthesized expression
+class expression
+
+non-continuable syntaxes :
+
+lambda expression
+method expression
+using expression

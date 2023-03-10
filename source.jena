@@ -4,12 +4,12 @@ using
     (
         display:printer ->
         (
-            ["Name : ", firstName, space, lastName].map(printer)
+            ["Name : ", firstName, " ", lastName].map(printer)
         )
     ),
     class(firstName, lastName, company)
     (
-        display:p -> ["Name : ", firstName, space, lastName, space, ", Company : ", company].map(p)
+        display:p -> ["Name : ", firstName, " ", lastName, " ", ", Company : ", company].map(p)
     )
 ) as (Person, Employee)
 (
