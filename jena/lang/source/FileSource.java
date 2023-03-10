@@ -10,13 +10,13 @@ public class FileSource implements Source
 {
     private Source source;
 
-    public FileSource(String file)
+    public FileSource(File file)
     {
         StringBuilder text = new StringBuilder();
         Scanner scanner = null;
         try
         {
-            scanner = new Scanner(new File(file));
+            scanner = new Scanner(file);
             while(scanner.hasNextLine())
             {
                 text.append(scanner.nextLine());

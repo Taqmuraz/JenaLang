@@ -2,6 +2,7 @@ package jena.lang.value;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
+import jena.lang.source.SingleCharacterSource;
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
 import jena.lang.source.StringSource;
@@ -23,6 +24,9 @@ public final class ClassValue implements Value
     public void print(SourceAction action)
     {
         action.call(new StringSource("class"));
+        action.call(new SingleCharacterSource('('));
+        arguments.flow().join(a -> action.call(a), () -> action.call(new SingleCharacterSource(',')));
+        action.call(new SingleCharacterSource(')'));
     }
 
     @Override

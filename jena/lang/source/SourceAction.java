@@ -1,6 +1,7 @@
 package jena.lang.source;
 
-public interface SourceAction
+import jena.lang.GenericAction;
+
+public interface SourceAction extends GenericAction<Source>
 {
-    void call(Source source);
 }

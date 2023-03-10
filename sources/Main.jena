@@ -1,0 +1,7 @@
+using (Person, Employee) as (Person, Employee)
+(
+    using(Person("Peter", "Parker"), Employee("Bob", "Smith", "Google")) as (peter, bob)
+    (
+        [peter, bob].map(p -> [p.display(print), print(line)])
+    )
+)

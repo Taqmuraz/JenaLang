@@ -9,12 +9,12 @@ import jena.lang.source.SourceAction;
 public final class ObjectValue implements Value
 {
     private GenericBuffer<GenericPair<Source, Value>> members;
-    private PairNamespace namespace;
+    private Namespace namespace;
 
     public ObjectValue(GenericBuffer<GenericPair<Source, Value>> members)
     {
         this.members = members;
-        this.namespace = new PairNamespace(members);
+        this.namespace = new HashMapNamespace(members);
     }
 
     @Override

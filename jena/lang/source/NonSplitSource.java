@@ -19,7 +19,7 @@ public final class NonSplitSource implements Source
     }
 
     @Override
-    public SourceFlow split(CharacterKind kind)
+    public SourceFlow flow(SourceFlatMapping mapping)
     {
         return new SingleSourceFlow(this);
     }

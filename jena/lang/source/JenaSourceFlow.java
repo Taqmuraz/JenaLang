@@ -4,9 +4,9 @@ public final class JenaSourceFlow implements SourceFlow
 {
     private SourceFlow flow;
 
-    public JenaSourceFlow(SourceFlow flow)
+    public JenaSourceFlow(Source source)
     {
-        this.flow = flow
+        this.flow = new StringLiteralFlow(source)
             .split(new SingleCharacterKind('('))
             .split(new SingleCharacterKind(')'))
             .split(new SingleCharacterKind('{'))

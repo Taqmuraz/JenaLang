@@ -1,11 +1,14 @@
 package jena.lang;
 
+import java.io.File;
+
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.source.JenaSourceFlow;
-import jena.lang.source.SourceFlow;
-import jena.lang.source.StringLiteralFlow;
+import jena.lang.source.Source;
 import jena.lang.syntax.JenaSyntaxReader;
 import jena.lang.value.IONamespace;
+import jena.lang.value.Namespace;
+import jena.lang.value.StorageNamespace;
 
 public class Program
 {
@@ -13,23 +16,25 @@ public class Program
     {
         try
         {
+            Namespace namespace = new StorageNamespace(new File("sources"), new IONamespace());
             while(true)
             {
-                SourceFlow flow = new JenaSourceFlow(new StringLiteralFlow(new InputStreamLineSource(System.in)));
+                Source source = new InputStreamLineSource(System.in);
 
-                flow.read(source ->
+                new JenaSourceFlow(source).read(s ->
                 {
                     System.out.print("source : ");
-                    source.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
+                    s.read(StartPosition.instance, MaxCount.instance, (c, n) -> System.out.print(c));
                     System.out.println();
                 });
 
-                new JenaSyntaxReader().read(flow.span(), syntax ->
+                new JenaSyntaxReader(source).read(syntax ->
                 {
                     syntax = syntax.decomposed();
-                    syntax.source(source -> System.out.print(source.text()));
+                    syntax.source(s -> System.out.print(s.text()));
                     System.out.println();
-                    syntax.value(new IONamespace());
+                    
+                    syntax.value(namespace);
                     System.out.println();
                 });
             }

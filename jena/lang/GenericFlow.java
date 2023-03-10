@@ -11,9 +11,27 @@ public interface GenericFlow<Element>
     {
         return new MapFlow<Element, Out>(this, map);
     }
+    default<Out> GenericFlow<Out> flatMap(GenericFunction<Element, GenericFlow<Out>> mapping)
+    {
+        return new FlatMapGenericFlow<Element, Out>(this, mapping);
+    }
     default void join(GenericAction<Element> action, Action separator)
     {
         new JoinAction<Element>(this, action, separator).join();
+    }
+    default GenericFlow<Element> filter(GenericFilter<Element> filter)
+    {
+        return action -> read(element ->
+        {
+            if(filter.pass(element)) action.call(element);
+        });
+    }
+    default GenericFlow<Element> noFilter(GenericFilter<Element> filter)
+    {
+        return action -> read(element ->
+        {
+            if(!filter.pass(element)) action.call(element);
+        });
     }
     default GenericBuffer<Element> collect()
     {

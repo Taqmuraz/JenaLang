@@ -14,7 +14,12 @@ public interface Source
 
     default SourceFlow split(CharacterKind kind)
     {
-        return new SingleCharacterSeparatedSourceFlow(this, kind);
+        return flow(s -> new SingleCharacterSeparatedSourceFlow(s, kind));
+    }
+
+    default SourceFlow flow(SourceFlatMapping mapping)
+    {
+        return mapping.map(this);
     }
 
     default SourceFlow single()
