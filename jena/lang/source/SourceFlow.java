@@ -1,5 +1,8 @@
 package jena.lang.source;
 
+import jena.lang.GenericBuffer;
+import jena.lang.GenericFlow;
+
 public interface SourceFlow
 {
     void read(SourceAction reader);
@@ -11,6 +14,12 @@ public interface SourceFlow
     default SourceFlow notFilter(SourceFilter filter)
     {
         return new FilterSourceFlow(this, s -> !filter.check(s));
+    }
+
+    default GenericBuffer<Source> collect()
+    {
+        GenericFlow<Source> flow = action -> read(action::call);
+        return flow.collect();
     }
 
     default SourceFlow kindFilter(CharacterKind kind)

@@ -19,4 +19,10 @@ public final class CharacterBufferSource implements Source
         int p = position.position(0, c);
         for(int i = 0; i < c; i++) action.call(buffer.at(i + p), i);
     }
+
+    @Override
+    public String toString()
+    {
+        return buffer.toString();
+    }
 }

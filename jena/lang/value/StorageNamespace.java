@@ -17,7 +17,7 @@ public final class StorageNamespace implements Namespace
         this.namespace = namespace.nested(
             new PairNamespace(
                 new SingleGenericFlow<Source>(
-                    new StringSource("import")).zip(
+                    new StringSource("source")).zip(
                         new SingleGenericFlow<Value>(new AnonymousMethodValue(1, args ->
                         {
                             Source[] name = new Source[1];
@@ -25,12 +25,12 @@ public final class StorageNamespace implements Namespace
                             if(name[0] == null) return NoneValue.instance;
                             Value[] value = { NoneValue.instance };
                             File file = new File(name[0].text().toString());
-                            
+
                             if(file.exists())
                             {
                                 new JenaSyntaxReader(new FileSource(file)).read(syntax ->
                                 {
-                                    value[0] = syntax.value(namespace);
+                                    value[0] = syntax.value(this);
                                 });
                             }
 

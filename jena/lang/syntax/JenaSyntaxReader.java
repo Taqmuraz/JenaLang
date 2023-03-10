@@ -16,6 +16,6 @@ public class JenaSyntaxReader
 
     public void read(SyntaxAction action)
     {
-        new SyntaxGuess(flow.span(), rule).guess((syntax, s) -> action.call(syntax));
+        new SyntaxGuess(flow.span(), rule).guess((syntax, s) -> action.call(syntax.decomposed()));
     }
 }
