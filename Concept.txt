@@ -22,13 +22,19 @@ method [argument list] [expression] -- method
 
 using [expression list] as [argument list] [expression] -- using expression
 
-[argument list | name] -> [expression] -- lambda expression
+[argument list | name] -> [expression] -- method arrow expression
 
 [name]:[expression] -- member
 
 ([member|,*]+) -- member list
 
-class[argument list][member list] -- class expression
+class[argument list][member list] -- classic class expression
+
+class[argument list][member] -- class single member expression
+
+class[member] -- class single member without arguments expression
+
+[argument list | name] -> [member] -- class arrow expression
 
 continuous syntaxes :
 
@@ -48,6 +54,9 @@ class expression
 
 non-continuable syntaxes :
 
-lambda expression
 method expression
+method arrow expression
 using expression
+class single member expression
+class single member without arguments expression
+class arrow expression
