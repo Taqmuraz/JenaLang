@@ -1,7 +1,34 @@
-using (source("sources/Person.jena"), source("sources/Employee.jena")) as (Person, Employee)
+using
 (
-    using(Person("Peter", "Parker"), Employee("Bob", "Smith", "Google")) as (peter, bob)
+    class(name, age)
     (
-        [peter, bob].map(p -> [p.display(print), print(line)])
-    )
+        info:printer -> ["Name : ", name, ", age : ", age].map(printer)
+    ),
+
+    class(name) info:p -> ["Name : ", name].map(p),
+
+    class() info:printer -> printer("Just Harry"),
+
+    class info:printer -> printer("Just Peter"),
+
+    (name, age, salary) -> info:reader -> ["Name : ", name, " Age : ", age, ", Worth : ", age * salary ].map(reader)
 )
+
+as (AgedPerson,
+    Person,
+    Harry,
+    Peter,
+    WorkingAgedPerson)
+
+using(
+    Person("Bob"),
+    AgedPerson("Jerry", 50),
+    Harry(),
+    Peter(),
+    WorkingAgedPerson("Garry", 25, 1000))
+
+as (bob,
+    jerry,
+    harry,
+    peter,
+    garry) [bob, jerry, garry, peter, harry].map(person -> [person.info(print), print(line)])

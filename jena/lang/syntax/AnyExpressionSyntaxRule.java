@@ -13,7 +13,7 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new NameExpressionSyntaxRule(),
             new ParenthesizedExpressionSyntaxRule(),
             new ArrayExpressionSyntaxRule(),
-            new ClassExpressionSyntaxRule()
+            new ClassClassicExpressionSyntaxRule()
         ),
         new CompositeContinuousSyntaxRule
         (
@@ -25,6 +25,7 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
     (
         new ArrowMethodSyntaxRule(),
         new ArrowClassSyntaxRule(),
+        new ClassSingleMemberExpressionSyntaxRule(),
         new MethodExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule()
     ));
