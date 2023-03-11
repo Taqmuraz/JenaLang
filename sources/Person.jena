@@ -5,3 +5,6 @@ class(firstName, lastName)
         ["Name : ", firstName, " ", lastName].map(printer)
     )
 )
+
+
+100.times(x -> 100.times(y -> 100.times(z -> [0, print](((x * x) + (y * y))==(z * z))([x, y, z]))))

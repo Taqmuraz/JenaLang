@@ -1,0 +1,19 @@
+using(
+    readInt(),
+    readInt())
+    as(start,
+    end)
+using
+    (end - start)
+    as (total)
+total.times(
+    x -> total.times(
+        y -> total.times(
+            z ->
+using(
+    x + start,
+    y + start,
+    z + start)
+    as (x, y, z)
+    
+[0, print](((x * x) + (y * y))==(z * z))([x, y, z]))))
