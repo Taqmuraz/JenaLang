@@ -29,10 +29,10 @@ public class Program
 
                 new JenaSyntaxReader(source).read(syntax ->
                 {
-                    /*syntax = syntax.decomposed();
+                    syntax = syntax.decomposed();
                     syntax.source(s -> System.out.print(s.text()));
                     System.out.println();
-                    */
+                    
                     syntax.value(namespace);
                     System.out.println();
                 });

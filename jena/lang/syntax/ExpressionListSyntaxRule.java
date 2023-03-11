@@ -4,26 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jena.lang.EmptyGenericBuffer;
-import jena.lang.GenericBuffer;
 import jena.lang.ListGenericBuffer;
 import jena.lang.source.CharacterBuffer;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.Source;
 import jena.lang.source.SourceSpan;
 
-public final class ExpressionListSyntaxRule
+public final class ExpressionListSyntaxRule implements SyntaxListRule
 {
-    public interface ArgumentListSpanAction
-    {
-        void call(GenericBuffer<Syntax> arguments, SourceSpan span);
-    }
-
     private class ExpressionListMatchAction implements SyntaxSpanAction
     {
         List<Syntax> expressions = new ArrayList<Syntax>();
-        ArgumentListSpanAction action;
+        SyntaxListSpanAction action;
         
-        public ExpressionListMatchAction(ArgumentListSpanAction action)
+        public ExpressionListMatchAction(SyntaxListSpanAction action)
         {
             this.action = action;
         }
@@ -54,7 +48,7 @@ public final class ExpressionListSyntaxRule
         this.closeBrace = closeBrace.text();
     }
 
-    public void match(SourceSpan span, ArgumentListSpanAction action)
+    public void match(SourceSpan span, SyntaxListSpanAction action)
     {
         if(span.at(0).text().compare(openBrace))
         {

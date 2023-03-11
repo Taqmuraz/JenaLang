@@ -9,7 +9,7 @@ public final class ClassExpressionSyntaxRule implements SyntaxRule
     {
         if(span.at(0).text().compareString("class"))
         {
-            new ArgumentListSyntaxRule().match(span.skip(1), (arguments, argSpan) ->
+            new ParameterListSyntaxRule().match(span.skip(1), (arguments, argSpan) ->
             {
                 new MemberListSyntaxRule().match(argSpan, (members, memberSpan) ->
                 {

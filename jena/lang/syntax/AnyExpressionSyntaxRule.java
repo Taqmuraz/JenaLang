@@ -23,7 +23,8 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
         )
     ), new CompositeSyntaxRule
     (
-        new LambdaExpressionSyntaxRule(),
+        new ArrowMethodSyntaxRule(),
+        new ArrowClassSyntaxRule(),
         new MethodExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule()
     ));

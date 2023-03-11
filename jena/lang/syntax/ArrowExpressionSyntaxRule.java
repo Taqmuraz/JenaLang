@@ -7,27 +7,36 @@ import jena.lang.SingleGenericBuffer;
 import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
 
-public final class LambdaExpressionSyntaxRule implements SyntaxRule
+public final class ArrowExpressionSyntaxRule
 {
-    @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    private SyntaxRule argumentRule;
+    private SyntaxRule expressionRule;
+
+
+    public ArrowExpressionSyntaxRule(SyntaxRule argumentRule, SyntaxRule expressionRule)
+    {
+        this.argumentRule = argumentRule;
+        this.expressionRule = expressionRule;
+    }
+
+    public void match(SourceSpan span, ArrowSpanAction action)
     {
         GenericAction<GenericPair<SourceSpan,GenericBuffer<Syntax>>> matchAfterName = pair -> pair.both((argSpan, args) ->
         {
             if(argSpan.at(0).text().compareString("->"))
             {
-                new AnyExpressionSyntaxRule().match(argSpan.skip(1), (expression, expressionSpan) ->
+                expressionRule.match(argSpan.skip(1), (expression, expressionSpan) ->
                 {
-                    action.call(new MethodExpressionSyntax(args, expression), expressionSpan);
+                    action.call(args, expression, expressionSpan);
                 });
             }
         });
 
-        new NameExpressionSyntaxRule().match(span, (arg, argSpan) ->
+        argumentRule.match(span, (arg, argSpan) ->
         {
             matchAfterName.call(new StructPair<>(argSpan, new SingleGenericBuffer<>(arg)));
         });
-        new ArgumentListSyntaxRule().match(span, (args, argSpan) ->
+        new ParenthesizedListSyntaxRule(argumentRule).match(span, (args, argSpan) ->
         {
             matchAfterName.call(new StructPair<>(argSpan, args));
         });
