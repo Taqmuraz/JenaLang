@@ -1,5 +1,8 @@
 package jena.lang.syntax;
 
+import jena.lang.GenericPair;
+import jena.lang.MutableOptional;
+import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
 
 public class SyntaxGuess
@@ -7,9 +10,8 @@ public class SyntaxGuess
     private SourceSpan span;
     private SyntaxRule rule;
 
-    private boolean hasGuess;
-    private Syntax guess;
-    private SourceSpan guessSpan;
+    MutableOptional<GenericPair<Syntax, SourceSpan>> guess = new MutableOptional<>();
+    MutableOptional<GenericPair<SyntaxMistake, SourceSpan>> mistake = new MutableOptional<>();
 
     public SyntaxGuess(SourceSpan span, SyntaxRule rule)
     {
@@ -17,28 +19,35 @@ public class SyntaxGuess
         this.rule = rule;
     }
 
-    public void guess(SyntaxSpanAction action)
+    private <Item> void guessAction(Item item, SourceSpan span, MutableOptional<GenericPair<Item, SourceSpan>> optional)
+    {
+        optional.ifPresentElse(pair -> pair.both((lastItem, lastSpan) ->
+        {
+            if (lastSpan.code() < span.code())
+            {
+                optional.apply(new StructPair<>(item, span));
+            }
+        }), () ->
+        {
+            optional.apply(new StructPair<>(item, span));
+        });
+    }
+
+    public void guess(SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         rule.match(span, (syntax, span) -> 
         {
-            if(hasGuess)
-            {
-                if(guessSpan.code() < span.code())
-                {
-                    guessSpan = span;
-                    guess = syntax;
-                }
-            }
-            else
-            {
-                hasGuess = true;
-                guess = syntax;
-                guessSpan = span;
-            }
-        });
-        if(hasGuess)
+            guessAction(syntax, span, guess);
+        }, (mistake, span) ->
         {
-            action.call(guess, guessSpan);
-        }
+            new LocatedSyntaxMistake(mistake, span.at(0).location(0)).print(s ->
+            {
+                System.out.print(s.text() + " ");
+            });
+            System.out.println();
+            guessAction(mistake, span, this.mistake);
+        });
+        guess.ifPresent(guess -> guess.both(action::call));
+        mistake.ifPresent(mistake -> mistake.both(mistakeAction::call));
     }
 }

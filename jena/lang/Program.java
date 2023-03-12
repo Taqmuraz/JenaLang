@@ -35,6 +35,14 @@ public class Program
                     
                     syntax.value(namespace);
                     System.out.println();
+                }, mistake ->
+                {
+                    mistake.print(s ->
+                    {
+                        System.out.print(s.text());
+                        System.out.print(' ');
+                    });
+                    System.out.println();
                 });
             }
         }

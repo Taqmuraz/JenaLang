@@ -18,7 +18,7 @@ public final class JenaSourceFlow implements SourceFlow
             .split(new SingleCharacterKind(':'))
             .flatMap(src -> src.flow(s -> new GroupCharacterSeparatedSourceFlow(s, new GroupCharacterKind('+', '-', '*', '/', '=', '!', '<', '>'))))
             .notFilter(new EmptySourceFilter())
-            .map(s -> new CharacterBufferSource(s.text()));
+            .map(s -> new BufferedSource(s));
     }
 
     @Override

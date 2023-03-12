@@ -14,8 +14,19 @@ public class JenaSyntaxReader
         flow = new JenaSourceFlow(source);
     }
 
-    public void read(SyntaxAction action)
+    public void read(SyntaxAction action, SyntaxMistakeAction mistakeAction)
     {
-        new SyntaxGuess(flow.span(), rule).guess((syntax, s) -> action.call(syntax.decomposed()));
+        boolean[] hasSyntax = { false };
+        new SyntaxGuess(flow.span(), rule).guess((syntax, span) ->
+        {
+            if(span.at(0).isEmpty())
+            {
+                hasSyntax[0] = true;
+                action.call(syntax.decomposed());
+            }
+        }, (mistake, span) ->
+        {
+            if(!hasSyntax[0]) mistakeAction.call(new LocatedSyntaxMistake(mistake, span.at(0).location(0)));
+        });
     }
 }

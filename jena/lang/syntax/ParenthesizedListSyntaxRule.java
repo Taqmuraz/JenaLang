@@ -14,10 +14,10 @@ public final class ParenthesizedListSyntaxRule implements SyntaxListRule
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxListSpanAction action)
+    public void match(SourceSpan span, SyntaxListSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         Source openBrace = new SingleCharacterSource('(');
         Source closeBrace = new SingleCharacterSource(')');
-        new ExpressionListSyntaxRule(elementRule, openBrace, closeBrace).match(span, action);
+        new ExpressionListSyntaxRule(elementRule, openBrace, closeBrace).match(span, action, mistakeAction);
     }
 }

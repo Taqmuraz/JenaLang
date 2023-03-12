@@ -12,8 +12,8 @@ public final class CompositeContinuousSyntaxRule implements ContinuousSyntaxRule
     }
 
     @Override
-    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action)
+    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        for(ContinuousSyntaxRule rule : rules) rule.match(span, last, action);
+        for(ContinuousSyntaxRule rule : rules) rule.match(span, last, action, mistakeAction);
     }
 }

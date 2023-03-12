@@ -5,11 +5,11 @@ import jena.lang.source.SourceSpan;
 public final class ClassClassicExpressionSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         new ClassExpressionSyntaxRule(
             new ParameterListSyntaxRule(),
             new MemberListSyntaxRule()
-        ).match(span, action);
+        ).match(span, action, mistakeAction);
     }
 }

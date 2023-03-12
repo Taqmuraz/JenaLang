@@ -6,7 +6,7 @@ import jena.lang.source.StringSource;
 public class BinaryExpressionSyntaxRule implements ContinuousSyntaxRule
 {
     @Override
-    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action)
+    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "==", "!=" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(span, (operator, operatorSpan) ->
         {
@@ -16,9 +16,13 @@ public class BinaryExpressionSyntaxRule implements ContinuousSyntaxRule
                 {                
                     Syntax result = new BinaryExpressionSyntax(last, (BinaryOperatorSyntax)operator, right);
                     action.call(result, rightSpan);
-                    this.match(rightSpan, result, action);
-                });
+                    this.match(rightSpan, result, action, mistakeAction);
+                }, mistakeAction);
             }
-        });
+            else
+            {
+                mistakeAction.call(new KindSourceMistake(span.at(0), new StringSource("binary operator")), operatorSpan);
+            }
+        }, mistakeAction);
     }
 }

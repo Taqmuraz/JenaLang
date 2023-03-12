@@ -52,7 +52,7 @@ public final class TupleValue implements Value
     {
         return arguments.number(0, args -> items.at(items.length() - 1), () -> arguments.number(1, args ->
         {
-            Source source = (p, c, a) -> args.at(0).print(s -> s.read(p, c, a));
+            Source source = new ValueSource(args.at(0));
             return items.at(Integer.valueOf(source.text().toString()));
         }, () -> NoneValue.instance));
     }

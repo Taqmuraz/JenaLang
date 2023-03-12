@@ -4,5 +4,5 @@ import jena.lang.source.SourceSpan;
 
 public interface ContinuousSyntaxRule
 {
-    void match(SourceSpan span, Syntax last, SyntaxSpanAction action);
+    void match(SourceSpan span, Syntax last, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction);
 }

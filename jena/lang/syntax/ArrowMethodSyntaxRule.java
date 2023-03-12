@@ -5,7 +5,7 @@ import jena.lang.source.SourceSpan;
 public final class ArrowMethodSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         new ArrowExpressionSyntaxRule(
             new NameExpressionSyntaxRule(),
@@ -13,6 +13,6 @@ public final class ArrowMethodSyntaxRule implements SyntaxRule
         ).match(span, (arguments, expression, endSpan) ->
         {
             action.call(new MethodExpressionSyntax(arguments, expression), endSpan);
-        });
+        }, mistakeAction);
     }
 }

@@ -1,7 +1,9 @@
 package jena.lang.source;
 
 import jena.lang.Count;
+import jena.lang.OneCount;
 import jena.lang.Position;
+import jena.lang.StartPosition;
 
 public interface Source
 {
@@ -31,6 +33,13 @@ public interface Source
     default boolean isKind(CharacterKind kind)
     {
         return new SourceCharacterKindCheck(this, kind).isKind();
+    }
+
+    default boolean isEmpty()
+    {
+        boolean[] empty = {true};
+        read(StartPosition.instance, OneCount.instance, (c, n) -> empty[0] = false);
+        return empty[0];
     }
 
     default CharacterBuffer text()

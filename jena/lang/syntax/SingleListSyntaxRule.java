@@ -13,11 +13,11 @@ public final class SingleListSyntaxRule implements SyntaxListRule
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxListSpanAction action)
+    public void match(SourceSpan span, SyntaxListSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         elementRule.match(span, (element, elementSpan) ->
         {
             action.call(new SingleGenericBuffer<Syntax>(element), elementSpan);
-        });
+        }, mistakeAction);
     }
 }

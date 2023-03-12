@@ -1,4 +1,4 @@
-package jena.lang.syntax;
+package jena.lang.value;
 
 import jena.lang.Count;
 import jena.lang.Position;
@@ -7,21 +7,21 @@ import jena.lang.source.SourceLocation;
 import jena.lang.source.SourceSymbolAction;
 import jena.lang.source.StringSource;
 
-public final class SyntaxSource implements Source
+public final class ValueSource implements Source
 {
     private Source source;
 
-    public SyntaxSource(Syntax syntax)
+    public ValueSource(Value value)
     {
         StringBuilder sb = new StringBuilder();
-        syntax.source(s -> sb.append(s.text()));
+        value.print(s -> sb.append(s.text()));
         source = new StringSource(sb.toString());
     }
 
     @Override
     public void read(Position position, Count count, SourceSymbolAction buffer)
     {
-        if(source != null) source.read(position, count, buffer);
+        source.read(position, count, buffer);
     }
 
     @Override

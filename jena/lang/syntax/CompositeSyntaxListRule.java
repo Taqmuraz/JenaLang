@@ -12,8 +12,8 @@ public final class CompositeSyntaxListRule implements SyntaxListRule
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxListSpanAction action)
+    public void match(SourceSpan span, SyntaxListSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        for(SyntaxListRule rule : rules) rule.match(span, action);
+        for(SyntaxListRule rule : rules) rule.match(span, action, mistakeAction);
     }
 }

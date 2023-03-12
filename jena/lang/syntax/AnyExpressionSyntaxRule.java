@@ -31,8 +31,8 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
     ));
 
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        rule.match(span, action);
+        rule.match(span, action, mistakeAction);
     }
 }

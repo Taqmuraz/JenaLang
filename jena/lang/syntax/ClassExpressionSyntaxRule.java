@@ -1,6 +1,7 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
+import jena.lang.source.StringSource;
 
 public final class ClassExpressionSyntaxRule implements SyntaxRule
 {
@@ -14,7 +15,7 @@ public final class ClassExpressionSyntaxRule implements SyntaxRule
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         if(span.at(0).text().compareString("class"))
         {
@@ -23,8 +24,12 @@ public final class ClassExpressionSyntaxRule implements SyntaxRule
                 memberListRule.match(argSpan, (members, memberSpan) ->
                 {
                     action.call(new ClassExpressionSyntax(arguments, members), memberSpan);
-                });
-            });
+                }, mistakeAction);
+            }, mistakeAction);
+        }
+        else
+        {
+            mistakeAction.call(new WrongSourceMistake(span.at(0), new StringSource("class")), span);
         }
     }
 }

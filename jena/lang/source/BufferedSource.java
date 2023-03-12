@@ -3,13 +3,15 @@ package jena.lang.source;
 import jena.lang.Count;
 import jena.lang.Position;
 
-public final class CharacterBufferSource implements Source
+public final class BufferedSource implements Source
 {
     private CharacterBuffer buffer;
+    private Source source;
 
-    public CharacterBufferSource(CharacterBuffer buffer)
+    public BufferedSource(Source source)
     {
-        this.buffer = buffer;
+        this.buffer = source.text();
+        this.source = source;
     }
 
     @Override
@@ -29,6 +31,6 @@ public final class CharacterBufferSource implements Source
     @Override
     public SourceLocation location(int position)
     {
-        return new CalculatedSourceLocation(this, position);
+        return source.location(position);
     }
 }

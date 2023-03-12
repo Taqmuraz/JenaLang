@@ -1,11 +1,12 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
+import jena.lang.source.StringSource;
 
 public final class UsingExpressionSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         if(span.at(0).text().compareString("using"))
         {
@@ -18,10 +19,14 @@ public final class UsingExpressionSyntaxRule implements SyntaxRule
                         new AnyExpressionSyntaxRule().match(namesSpan, (expression, exSpan) ->
                         {
                             action.call(new UsingExpressionSyntax(expressions, names, expression), exSpan);
-                        });
-                    });
+                        }, mistakeAction);
+                    }, mistakeAction);
                 }
-            });
+            }, mistakeAction);
+        }
+        else
+        {
+            mistakeAction.call(new WrongSourceMistake(span.at(0), new StringSource("using")), span);
         }
     }
 }

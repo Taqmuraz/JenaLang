@@ -13,18 +13,18 @@ public final class ContinuedSyntaxRule implements SyntaxRule
         this.continuous = continuous;
     }
 
-    void continued(Syntax lastSyntax, SourceSpan lastSpan, SyntaxSpanAction action)
+    void continued(Syntax lastSyntax, SourceSpan lastSpan, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         action.call(lastSyntax, lastSpan);
-        continuous.match(lastSpan, lastSyntax, (l, s) -> continued(l, s, action));
+        continuous.match(lastSpan, lastSyntax, (l, s) -> continued(l, s, action, mistakeAction), mistakeAction);
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         rule.match(span, (lastSyntax, lastSpan) ->
         {
-            continued(lastSyntax, lastSpan, action);
-        });
+            continued(lastSyntax, lastSpan, action, mistakeAction);
+        }, mistakeAction);
     }
 }

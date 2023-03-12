@@ -5,7 +5,7 @@ import jena.lang.source.SourceSpan;
 public class IntegerLiteralSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action)
+    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         if(span.at(0).isKind(Character::isDigit))
         {

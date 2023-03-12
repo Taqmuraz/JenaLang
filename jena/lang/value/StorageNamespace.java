@@ -31,7 +31,7 @@ public final class StorageNamespace implements Namespace
                                 new JenaSyntaxReader(new FileSource(file)).read(syntax ->
                                 {
                                     value[0] = syntax.value(this);
-                                });
+                                }, mistake -> {});
                             }
 
                             return value[0];
