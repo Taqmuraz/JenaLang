@@ -40,11 +40,11 @@ public class SyntaxGuess
             guessAction(syntax, span, guess);
         }, (mistake, span) ->
         {
-            new LocatedSyntaxMistake(mistake, span.at(0).location(0)).print(s ->
+            /*new LocatedSyntaxMistake(mistake, span.at(0).location(0)).print(s ->
             {
                 System.out.print(s.text() + " ");
             });
-            System.out.println();
+            System.out.println();*/
             guessAction(mistake, span, this.mistake);
         });
         guess.ifPresent(guess -> guess.both(action::call));

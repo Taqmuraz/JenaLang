@@ -18,8 +18,10 @@ public final class KindSourceMistake implements SyntaxMistake
     @Override
     public void print(SourceAction printer)
     {
-        printer.call(new StringSource("source does not match expected kind:"));
+        printer.call(new StringSource("source does not match expected kind."));
+        printer.call(new StringSource("source:"));
         printer.call(source);
+        printer.call(new StringSource("expected kind:"));
         printer.call(expectedKind);
     }
 }

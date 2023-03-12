@@ -7,12 +7,12 @@ import jena.lang.source.StringSource;
 public final class WrongSourceMistake implements SyntaxMistake
 {
     private Source source;
-    private Source expected;
+    //private Source expected;
 
     public WrongSourceMistake(Source source, Source expected)
     {
         this.source = source;
-        this.expected = expected;
+        //this.expected = expected;
     }
 
     @Override
