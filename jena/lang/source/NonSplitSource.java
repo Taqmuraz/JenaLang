@@ -23,4 +23,10 @@ public final class NonSplitSource implements Source
     {
         return new SingleSourceFlow(this);
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return source.location(position);
+    }
 }

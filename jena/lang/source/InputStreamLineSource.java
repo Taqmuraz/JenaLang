@@ -21,6 +21,7 @@ public final class InputStreamLineSource implements Source
         catch(Exception ex)
         {
             System.out.println(ex);
+            source = new EmptySource();
         }
     }
 
@@ -28,5 +29,11 @@ public final class InputStreamLineSource implements Source
     public void read(Position position, Count count, SourceSymbolAction buffer)
     {
         source.read(position, count, buffer);
+    }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return source.location(position);
     }
 }

@@ -12,4 +12,10 @@ public final class EmptySource implements Source
     {
         
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return new WrongSourceLocation();
+    }
 }

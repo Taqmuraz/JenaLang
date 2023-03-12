@@ -21,4 +21,10 @@ public class StringSource implements Source
 
         for (int i = 0; i < c; i++) buffer.call(source.charAt(i + start), i);
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return new CalculatedSourceLocation(this, position);
+    }
 }

@@ -24,4 +24,10 @@ public class RelativeSource implements Source
         int c = count.count(this.count);
         source.read(new OffsetPosition(position, this.position), new MinCount(c), reader);
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return source.location(position + this.position);
+    }
 }

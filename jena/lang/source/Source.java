@@ -6,6 +6,7 @@ import jena.lang.Position;
 public interface Source
 {
     void read(Position position, Count count, SourceSymbolAction buffer);
+    SourceLocation location(int position);
 
     default Source subsource(int position, int count)
     {

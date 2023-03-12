@@ -35,4 +35,10 @@ public class FileSource implements Source
     {
         source.read(position, count, buffer);
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return source.location(position);
+    }
 }

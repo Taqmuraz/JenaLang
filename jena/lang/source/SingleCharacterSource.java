@@ -18,4 +18,11 @@ public final class SingleCharacterSource implements Source
         int start = position.position(0, 1);
         if(c >= 1 && start == 0) buffer.call(character, 0);
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        if(position == 0) return new FixedSourceLocation(0, 0);
+        else return new WrongSourceLocation();
+    }
 }

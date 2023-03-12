@@ -25,4 +25,10 @@ public final class CharacterBufferSource implements Source
     {
         return buffer.toString();
     }
+
+    @Override
+    public SourceLocation location(int position)
+    {
+        return new CalculatedSourceLocation(this, position);
+    }
 }
