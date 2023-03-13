@@ -2,7 +2,7 @@ package jena.lang.value;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
-import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
@@ -11,20 +11,17 @@ public final class ObjectValue implements Value
     private GenericBuffer<GenericPair<Text, Value>> members;
     private Namespace namespace;
 
-    public ObjectValue(GenericBuffer<GenericPair<Text, Value>> members)
+    public ObjectValue(Namespace namespace, GenericBuffer<GenericPair<Text, ValueProducer>> members)
     {
-        this.members = members;
-        this.namespace = new HashMapNamespace(members);
+        Namespace arguments = namespace.nested(new SingleNamespace(new StringText("this"), this));
+        this.members = members.map(p -> action -> p.both((name, producer) -> action.call(name, producer.value(arguments))));
+        this.namespace = new HashMapNamespace(this.members);
     }
 
     @Override
     public void print(TextWriter writer) 
     {
-        members.flow().read(p -> p.both((n, v) ->
-        {
-            writer.write(n);
-            writer.write(new SingleCharacterText(';'));
-        }));
+        new MemberListPrinter(members).print(writer);
     }
 
     @Override

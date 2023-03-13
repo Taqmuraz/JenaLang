@@ -12,12 +12,12 @@ import jena.lang.text.TextWriter;
 public final class IntegerValue implements Value
 {
     private int value;
-    private ObjectValue members;
+    private Value members;
 
     public IntegerValue(int value)
     {
         this.value = value;
-        this.members = new ObjectValue(
+        this.members = new NamespaceValue(
             new ArrayBuffer<String>(new String[]
             {
                 "add",    

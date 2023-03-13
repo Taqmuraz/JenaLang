@@ -1,13 +1,18 @@
 using
 (
-    class(element)
-        each:action -> action(element),
-
-    class(list, element)
+    class(list)
     (
-        each:action -> [list.each(action), action(element)]
+        each:list.each,
+        add:element -> class(
+            ((l, e) -> each:a -> [l.each(a), a(e)])
+            (this, element)
+        )
     )
 )
-as(
-    SingleList,
-    ContinuedList) ContinuedList(ContinuedList(SingleList("one"), 2), "three").each(item -> [print(item), print(" ")])
+as(List) List([1])
+    .add(2)
+    .add(3)
+    .add(11)
+    .add(55)
+    .each(n -> [print(n), print(" ")])
+    

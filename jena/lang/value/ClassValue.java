@@ -2,6 +2,7 @@ package jena.lang.value;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
+import jena.lang.StructPair;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
@@ -40,8 +41,11 @@ public final class ClassValue implements Value
     {
         return arguments.number(this.arguments.length(), args ->
         {
-            Namespace argumentsSpace = namespace.nested(new PairNamespace(this.arguments.flow().zip(args.flow()).collect()));
-            return new ObjectValue(members.map(p -> action -> p.both((name, syntax) -> action.call(name, syntax.value(argumentsSpace)))));
+            Namespace argumentsSpace = namespace.nested(
+                new PairNamespace(this.arguments.flow().zip(args.flow())
+                .append(new StructPair<>(new StringText("class"), this)).collect()
+            ));
+            return new ObjectValue(argumentsSpace, members.map(p -> action -> p.both((name, syntax) -> action.call(name, syntax))));
         },
         () -> NoneValue.instance);
     }

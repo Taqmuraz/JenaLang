@@ -12,11 +12,11 @@ import jena.lang.text.Text;
 
 public final class IONamespace implements Namespace
 {
-    private ObjectValue members;
+    private Value members;
 
     public IONamespace()
     {
-        members = new ObjectValue(new EmptyGenericFlow<GenericPair<Text, Value>>()
+        members = new NamespaceValue(new EmptyGenericFlow<GenericPair<Text, Value>>()
         .append(new StructPair<>(new StringText("print"), new MethodValue(new SingleBuffer<Text>(new StringText("text")), args ->
         {
             Value arg = args.at(0);
