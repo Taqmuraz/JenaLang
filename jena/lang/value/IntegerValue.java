@@ -47,7 +47,7 @@ public final class IntegerValue implements Value
             ))
             .append(new StructPair<Source, Value>
             (
-                new StringSource("times"), new AnonymousMethodValue(1, args ->
+                new StringSource("times"), new AnonymousMethodValue(0, args ->
                 {
                     int times = value;
                     return new TupleValue(new GenericBuffer<Value>()
@@ -60,9 +60,9 @@ public final class IntegerValue implements Value
                         @Override
                         public Value at(int index)
                         {
-                            return args.at(0).call(new SingleArgumentList(new IntegerValue(index)));
+                            return new IntegerValue(index);
                         }
-                    }.flow().collect());
+                    });
                 })
             ))
             .collect());

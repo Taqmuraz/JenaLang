@@ -26,8 +26,23 @@ public final class TupleValue implements Value
                         new StructPair<>(
                             new StringSource("map"),
                             new AnonymousMethodValue(1, args ->
-                                new TupleValue(items.flow().map(item ->
-                                args.at(0).call(new SingleArgumentList(item))).collect())))).collect());
+                                new TupleValue(items.map(item ->
+                                args.at(0).call(new SingleArgumentList(item)))))))
+                    .append(
+                        new StructPair<>(
+                            new StringSource("each"),
+                            new AnonymousMethodValue(1, args ->
+                            {
+                                items.flow().read(item -> args.at(0).call(new SingleArgumentList(item)));
+                                return this;
+                            })
+                    ))
+                    .append(
+                        new StructPair<>(
+                            new StringSource("join"),
+                            new AnonymousMethodValue(1, args -> new TupleValue(items.join(args.at(0))))
+                        )
+                    ).collect());
     }
 
     @Override

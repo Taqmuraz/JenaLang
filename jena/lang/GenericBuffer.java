@@ -18,6 +18,10 @@ public interface GenericBuffer<Element>
 
     default<Out> GenericBuffer<Out> map(GenericFunction<Element, Out> map)
     {
-        return new MapBuffer<Element, Out>(this, map);
+        return new MapGenericBuffer<Element, Out>(this, map);
+    }
+    default GenericBuffer<Element> join(Element element)
+    {
+        return new JoinGenericBuffer<Element>(this, element);
     }
 }
