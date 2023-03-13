@@ -9,7 +9,7 @@ public final class ValueText implements Text
     public ValueText(Value value)
     {
         StringBuilder sb = new StringBuilder();
-        value.print(text -> sb.append(text));
+        value.print(text -> sb.append(text.string()));
         text = new StringText(sb.toString());
     }
 

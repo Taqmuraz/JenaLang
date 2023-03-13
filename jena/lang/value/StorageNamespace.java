@@ -21,7 +21,7 @@ public final class StorageNamespace implements Namespace
             new PairNamespace(
                 new SingleGenericFlow<Text>(
                     new StringText("source")).zip(
-                        new SingleGenericFlow<Value>(new AnonymousMethodValue(new SingleBuffer<>(new StringText("fileName")), args ->
+                        new SingleGenericFlow<Value>(new MethodValue(new SingleBuffer<>(new StringText("fileName")), args ->
                         {
                             Text name = new ValueText(args.at(0));
                             Value[] value = { NoneValue.instance };

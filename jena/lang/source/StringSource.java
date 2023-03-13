@@ -2,13 +2,16 @@ package jena.lang.source;
 
 import jena.lang.Count;
 import jena.lang.Position;
+import jena.lang.text.Text;
 
 public class StringSource implements Source
 {
+    private Text sourceName;
     private String source;
 
-    public StringSource(String source)
+    public StringSource(Text sourceName, String source)
     {
+        this.sourceName = sourceName;
         this.source = source;
     }
 
@@ -25,6 +28,6 @@ public class StringSource implements Source
     @Override
     public SourceLocation location()
     {
-        return new CalculatedSourceLocation(this);
+        return new CalculatedSourceLocation(sourceName, this);
     }
 }

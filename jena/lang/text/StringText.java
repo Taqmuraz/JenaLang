@@ -20,4 +20,10 @@ public final class StringText implements Text
     {
         return string.length();
     }
+
+    @Override
+    public String toString()
+    {
+        return "deprecated";
+    }
 }

@@ -11,7 +11,7 @@ public final class IntegerMethodValue implements Value
 
     public IntegerMethodValue(Text argument, IntegerFunction function, GenericFunction<IntegerValue, Integer> value)
     {
-        method = new AnonymousMethodValue(new SingleBuffer<Text>(argument), args ->
+        method = new MethodValue(new SingleBuffer<Text>(argument), args ->
         {
             Value arg = args.at(0);
             if(arg instanceof IntegerValue) return new IntegerValue(function.call(value.call((IntegerValue)arg)));

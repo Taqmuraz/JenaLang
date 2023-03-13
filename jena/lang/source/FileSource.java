@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import jena.lang.Count;
 import jena.lang.Position;
+import jena.lang.text.StringText;
 
 public class FileSource implements Source
 {
@@ -27,7 +28,7 @@ public class FileSource implements Source
         {
             if(scanner != null) scanner.close();
         }
-        source = new StringSource(text.toString());
+        source = new StringSource(new StringText(file.getName()), text.toString());
     }
 
     @Override

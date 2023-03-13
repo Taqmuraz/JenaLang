@@ -2,15 +2,18 @@ package jena.lang.source;
 
 import jena.lang.MinCount;
 import jena.lang.StartPosition;
+import jena.lang.text.Text;
 
 public final class CalculatedSourceLocation implements SourceLocation
 {
+    private Text origin;
     private Source source;
     private int line;
     private int symbol;
 
-    public CalculatedSourceLocation(Source source)
+    public CalculatedSourceLocation(Text origin, Source source)
     {
+        this.origin = origin;
         this.source = source;
     }
 
@@ -27,6 +30,6 @@ public final class CalculatedSourceLocation implements SourceLocation
                 default: symbol++;
             }
         });
-        action.call(line, symbol);
+        action.call(origin, line, symbol);
     }
 }

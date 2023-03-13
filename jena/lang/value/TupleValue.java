@@ -26,13 +26,13 @@ public final class TupleValue implements Value
                     .append(
                         new StructPair<>(
                             new StringText("map"),
-                            new AnonymousMethodValue(new SingleBuffer<>(new StringText("function")), args ->
+                            new MethodValue(new SingleBuffer<>(new StringText("function")), args ->
                                 new TupleValue(items.map(item ->
                                 args.at(0).call(new SingleArgumentList(item)))))))
                     .append(
                         new StructPair<>(
                             new StringText("each"),
-                            new AnonymousMethodValue(new SingleBuffer<>(new StringText("action")), args ->
+                            new MethodValue(new SingleBuffer<>(new StringText("action")), args ->
                             {
                                 items.flow().read(item -> args.at(0).call(new SingleArgumentList(item)));
                                 return this;
@@ -41,7 +41,7 @@ public final class TupleValue implements Value
                     .append(
                         new StructPair<>(
                             new StringText("join"),
-                            new AnonymousMethodValue(new SingleBuffer<>(new StringText("separator")), args -> new TupleValue(items.join(args.at(0))))
+                            new MethodValue(new SingleBuffer<>(new StringText("separator")), args -> new TupleValue(items.join(args.at(0))))
                         )
                     ).collect());
     }

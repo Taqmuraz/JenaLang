@@ -15,8 +15,10 @@ public final class LocationPrinter
 
     public void print(TextWriter writer)
     {
-        location.location(0, (line, symbol) ->
+        location.location(0, (origin, line, symbol) ->
         {
+            writer.write(new StringText("origin:"));
+            writer.write(origin);
             writer.write(new StringText("line:"));
             writer.write(new StringText(String.valueOf(line)));
             writer.write(new StringText("symbol:"));

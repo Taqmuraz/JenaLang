@@ -9,7 +9,7 @@ public final class SyntaxText implements Text
     public SyntaxText(Syntax syntax)
     {
         StringBuilder sb = new StringBuilder();
-        syntax.text(text -> sb.append(text));
+        syntax.text(text -> sb.append(text.string()));
         text = new StringText(sb.toString());
     }
 

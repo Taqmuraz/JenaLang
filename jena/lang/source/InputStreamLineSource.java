@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import jena.lang.Count;
 import jena.lang.Position;
+import jena.lang.text.StringText;
 
 public final class InputStreamLineSource implements Source
 {
@@ -16,7 +17,7 @@ public final class InputStreamLineSource implements Source
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         try
         {
-            source = new StringSource(reader.readLine());
+            source = new StringSource(new StringText("command line"), reader.readLine());
         }
         catch(Exception ex)
         {

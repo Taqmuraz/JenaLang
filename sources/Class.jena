@@ -2,16 +2,16 @@ using
 (
     class(name, age)
     (
-        info:printer -> ["Name : ", name, ", age : ", age].map(printer)
+        info:printer -> ["Name : ", name, ", age : ", age].each(printer)
     ),
 
-    class(name) info:p -> ["Name : ", name].map(p),
+    class(name) info:p -> ["Name : ", name].each(p),
 
     class() info:printer -> printer("Just Harry"),
 
     class info:printer -> printer("Just Peter"),
 
-    (name, age, salary) -> info:reader -> ["Name : ", name, " Age : ", age, ", Worth : ", age * salary ].map(reader)
+    (name, age, salary) -> info:reader -> ["Name : ", name, " Age : ", age, ", Worth : ", age * salary ].each(reader)
 )
 
 as (AgedPerson,
@@ -31,4 +31,4 @@ as (bob,
     jerry,
     harry,
     peter,
-    garry) [bob, jerry, garry, peter, harry].map(person -> [person.info(print), print(line)])
+    garry) [bob, jerry, garry, peter, harry].each(person -> [person.info(print), print(line)])

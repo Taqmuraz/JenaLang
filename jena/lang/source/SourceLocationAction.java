@@ -1,6 +1,8 @@
 package jena.lang.source;
 
+import jena.lang.text.Text;
+
 public interface SourceLocationAction
 {
-    void call(int line, int symbol);
+    void call(Text origin, int line, int symbol);
 }

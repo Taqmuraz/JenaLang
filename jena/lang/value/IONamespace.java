@@ -17,14 +17,14 @@ public final class IONamespace implements Namespace
     public IONamespace()
     {
         members = new ObjectValue(new EmptyGenericFlow<GenericPair<Text, Value>>()
-        .append(new StructPair<>(new StringText("print"), new AnonymousMethodValue(new SingleBuffer<Text>(new StringText("text")), args ->
+        .append(new StructPair<>(new StringText("print"), new MethodValue(new SingleBuffer<Text>(new StringText("text")), args ->
         {
             Value arg = args.at(0);
             arg.print(s -> System.out.print(s.string()));
             return arg;
         })))
-        .append(new StructPair<Text, Value>(new StringText("read"), new AnonymousMethodValue(new EmptyBuffer<>(), args -> new TextValue(new InputStreamLineSource(System.in).text()))))
-        .append(new StructPair<Text, Value>(new StringText("readInt"), new AnonymousMethodValue(new EmptyBuffer<>(), args -> new IntegerValue(Integer.valueOf(new InputStreamLineSource(System.in).text().string())))))
+        .append(new StructPair<Text, Value>(new StringText("read"), new MethodValue(new EmptyBuffer<>(), args -> new TextValue(new InputStreamLineSource(System.in).text()))))
+        .append(new StructPair<Text, Value>(new StringText("readInt"), new MethodValue(new EmptyBuffer<>(), args -> new IntegerValue(Integer.valueOf(new InputStreamLineSource(System.in).text().string())))))
         .append(new StructPair<Text, Value>(new StringText("line"), new TextValue(new SingleCharacterText('\n'))))
         .append(new StructPair<Text, Value>(new StringText("space"), new TextValue(new SingleCharacterText(' '))))
         .collect());

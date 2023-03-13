@@ -6,9 +6,9 @@ using(
 using
     (end - start)
     as (total)
-total.times(
-    x -> total.times(
-        y -> total.times(
+total.times().each(
+    x -> total.times().each(
+        y -> total.times().each(
             z ->
 using(
     x + start,

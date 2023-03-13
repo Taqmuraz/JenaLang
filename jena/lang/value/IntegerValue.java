@@ -44,11 +44,11 @@ public final class IntegerValue implements Value
             .flow()).<GenericPair<Text, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(n, f, i -> i.value))))
             .append(new StructPair<Text, Value>
             (
-                new StringText("sqrt"), new AnonymousMethodValue(new EmptyBuffer<Text>(), args -> new IntegerValue((int)Math.sqrt(value)))
+                new StringText("sqrt"), new MethodValue(new EmptyBuffer<Text>(), args -> new IntegerValue((int)Math.sqrt(value)))
             ))
             .append(new StructPair<Text, Value>
             (
-                new StringText("times"), new AnonymousMethodValue(new EmptyBuffer<Text>(), args ->
+                new StringText("times"), new MethodValue(new EmptyBuffer<Text>(), args ->
                 {
                     int times = value;
                     return new TupleValue(new GenericBuffer<Value>()

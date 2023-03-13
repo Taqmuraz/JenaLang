@@ -6,12 +6,12 @@ import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
-public final class AnonymousMethodValue implements Value
+public final class MethodValue implements Value
 {
     private GenericBuffer<Text> arguments;
     private ValueListFunction function;
 
-    public AnonymousMethodValue(GenericBuffer<Text> arguments, ValueListFunction function)
+    public MethodValue(GenericBuffer<Text> arguments, ValueListFunction function)
     {
         this.arguments = arguments;
         this.function = function;
@@ -20,7 +20,7 @@ public final class AnonymousMethodValue implements Value
     @Override
     public void print(TextWriter writer)
     {
-        writer.write(new StringText("anonymous_method"));
+        writer.write(new StringText("method"));
         writer.write(new SingleCharacterText('('));
         Text separator = new SingleCharacterText(',');
         arguments.join(separator).each(writer::write);

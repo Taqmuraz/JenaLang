@@ -7,7 +7,7 @@ public final class TextSyntaxMistakePrinter implements SyntaxMistakeAction
     {
         mistake.print(text ->
         {
-            System.out.print(text);
+            System.out.print(text.string());
             System.out.print(" ");
         });
         System.out.println();
