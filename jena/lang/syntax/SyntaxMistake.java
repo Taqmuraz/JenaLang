@@ -1,8 +1,8 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SourceAction;
+import jena.lang.text.TextWriter;
 
 public interface SyntaxMistake
 {
-    void print(SourceAction printer);
+    void print(TextWriter printer);
 }

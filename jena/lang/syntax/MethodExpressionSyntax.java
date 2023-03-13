@@ -41,7 +41,7 @@ public final class MethodExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new AnonymousMethodValue(arguments.length(), ps ->
+        return new AnonymousMethodValue(arguments.map(SyntaxText::new), ps ->
         {
             return expression.value(namespace.nested(new PairNamespace(arguments.flow().<Text>map(SyntaxText::new).zip(ps.flow()).collect())));
         });

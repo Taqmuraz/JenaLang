@@ -37,7 +37,7 @@ public interface GenericFlow<Element>
     {
         List<Element> list = new ArrayList<Element>();
         read(e -> list.add(e));
-        return new ListGenericBuffer<Element>(list);
+        return new ListBuffer<Element>(list);
     }
     default <Other> GenericFlow<GenericPair<Element, Other>> connect(GenericFunction<Element, Other> connection)
     {

@@ -1,21 +1,21 @@
 package jena.lang.value;
 
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
-import jena.lang.source.StringSource;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class NoneValue implements Value
 {
     public static final Value instance = new NoneValue();
 
     @Override
-    public void print(SourceAction action)
+    public void print(TextWriter writer)
     {
-        action.call(new StringSource("none"));
+        writer.write(new StringText("none"));
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return instance;
     }

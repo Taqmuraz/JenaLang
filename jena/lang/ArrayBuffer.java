@@ -1,10 +1,11 @@
 package jena.lang;
 
-public final class ArrayGenericBuffer<Element> implements GenericBuffer<Element>
+public final class ArrayBuffer<Element> implements GenericBuffer<Element>
 {
     private Element[] elements;
 
-    public ArrayGenericBuffer(Element[] elements)
+    @SafeVarargs
+    public ArrayBuffer(Element... elements)
     {
         this.elements = elements;
     }

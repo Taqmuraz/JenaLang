@@ -1,6 +1,6 @@
 package jena.lang.value;
 
-import jena.lang.source.Source;
+import jena.lang.text.Text;
 
 public final class NestedNamespace implements Namespace
 {
@@ -13,7 +13,7 @@ public final class NestedNamespace implements Namespace
     }
 
     @Override
-    public Value name(Source name)
+    public Value name(Text name)
     {
         Value innerName = inner.name(name);
         if(innerName instanceof NoneValue) return outer.name(name);

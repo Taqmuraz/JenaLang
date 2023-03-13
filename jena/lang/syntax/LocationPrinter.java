@@ -1,8 +1,8 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SourceAction;
 import jena.lang.source.SourceLocation;
-import jena.lang.source.StringSource;
+import jena.lang.text.StringText;
+import jena.lang.text.TextWriter;
 
 public final class LocationPrinter
 {
@@ -13,14 +13,14 @@ public final class LocationPrinter
         this.location = location;
     }
 
-    public void print(SourceAction printer)
+    public void print(TextWriter writer)
     {
         location.location(0, (line, symbol) ->
         {
-            printer.call(new StringSource("line:"));
-            printer.call(new StringSource(String.valueOf(line)));
-            printer.call(new StringSource("symbol:"));
-            printer.call(new StringSource(String.valueOf(symbol)));
+            writer.write(new StringText("line:"));
+            writer.write(new StringText(String.valueOf(line)));
+            writer.write(new StringText("symbol:"));
+            writer.write(new StringText(String.valueOf(symbol)));
         });
     }
 }

@@ -1,6 +1,7 @@
 package jena.lang.value;
 
-import jena.lang.ArrayGenericBuffer;
+import jena.lang.ArrayBuffer;
+import jena.lang.EmptyBuffer;
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
 import jena.lang.StructPair;
@@ -17,7 +18,7 @@ public final class IntegerValue implements Value
     {
         this.value = value;
         this.members = new ObjectValue(
-            new ArrayGenericBuffer<String>(new String[]
+            new ArrayBuffer<String>(new String[]
             {
                 "add",    
                 "sub",    
@@ -29,7 +30,7 @@ public final class IntegerValue implements Value
                 "notEquals",
             })
             .flow().map(n -> new StringText(n))
-            .zip(new ArrayGenericBuffer<IntegerFunction>(new IntegerFunction[]
+            .zip(new ArrayBuffer<IntegerFunction>(new IntegerFunction[]
             {
                 arg -> value + arg,
                 arg -> value - arg,
@@ -40,14 +41,14 @@ public final class IntegerValue implements Value
                 arg -> value == arg ? 1 : 0,
                 arg -> value != arg ? 1 : 0,
             })
-            .flow()).<GenericPair<Text, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(f, i -> i.value))))
+            .flow()).<GenericPair<Text, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(n, f, i -> i.value))))
             .append(new StructPair<Text, Value>
             (
-                new StringText("sqrt"), new AnonymousMethodValue(0, args -> new IntegerValue((int)Math.sqrt(value)))
+                new StringText("sqrt"), new AnonymousMethodValue(new EmptyBuffer<Text>(), args -> new IntegerValue((int)Math.sqrt(value)))
             ))
             .append(new StructPair<Text, Value>
             (
-                new StringText("times"), new AnonymousMethodValue(0, args ->
+                new StringText("times"), new AnonymousMethodValue(new EmptyBuffer<Text>(), args ->
                 {
                     int times = value;
                     return new TupleValue(new GenericBuffer<Value>()

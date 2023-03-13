@@ -1,7 +1,7 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SourceAction;
 import jena.lang.source.SourceLocation;
+import jena.lang.text.TextWriter;
 
 public final class LocatedSyntaxMistake implements SyntaxMistake
 {
@@ -15,9 +15,9 @@ public final class LocatedSyntaxMistake implements SyntaxMistake
     }
 
     @Override
-    public void print(SourceAction printer)
+    public void print(TextWriter writer)
     {
-        mistake.print(printer);
-        new LocationPrinter(location).print(printer);
+        mistake.print(writer);
+        new LocationPrinter(location).print(writer);
     }
 }

@@ -2,11 +2,11 @@ package jena.lang;
 
 import java.util.Objects;
 
-public final class SingleGenericBuffer<Element> implements GenericBuffer<Element>
+public final class SingleBuffer<Element> implements GenericBuffer<Element>
 {
     private Element element;
 
-    public SingleGenericBuffer(Element element)
+    public SingleBuffer(Element element)
     {
         this.element = element;
     }

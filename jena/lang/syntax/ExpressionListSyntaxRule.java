@@ -3,8 +3,8 @@ package jena.lang.syntax;
 import java.util.ArrayList;
 import java.util.List;
 
-import jena.lang.EmptyGenericBuffer;
-import jena.lang.ListGenericBuffer;
+import jena.lang.EmptyBuffer;
+import jena.lang.ListBuffer;
 import jena.lang.source.SingleCharacterKind;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.Text;
@@ -29,7 +29,7 @@ public final class ExpressionListSyntaxRule implements SyntaxListRule
             expressions.add(expression);
             if(expressionSpan.at(0).text().compare(closeBrace))
             {
-                action.call(new ListGenericBuffer<Syntax>(expressions), expressionSpan.skip(1));
+                action.call(new ListBuffer<Syntax>(expressions), expressionSpan.skip(1));
             }
             else if(expressionSpan.at(0).isKind(new SingleCharacterKind(',')))
             {
@@ -56,7 +56,7 @@ public final class ExpressionListSyntaxRule implements SyntaxListRule
         {
             if(span.at(1).text().compare(closeBrace))
             {
-                action.call(new EmptyGenericBuffer<Syntax>(), span.skip(2));
+                action.call(new EmptyBuffer<Syntax>(), span.skip(2));
             }
             else
             {

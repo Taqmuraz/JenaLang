@@ -1,9 +1,11 @@
 package jena.lang.syntax;
 
 import jena.lang.GenericBuffer;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
-import jena.lang.source.StringSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.SyntaxText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.PairNamespace;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
@@ -22,16 +24,16 @@ public final class UsingExpressionSyntax implements Syntax
     }
 
     @Override
-    public void text(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(new StringSource("using"));
-        writer.source(new SingleCharacterSource('('));
-        expressions.flow().join(e -> e.text(writer), () -> writer.source(new SingleCharacterSource(',')));
-        writer.source(new SingleCharacterSource(')'));
-        writer.source(new StringSource("as"));
-        writer.source(new SingleCharacterSource('('));
-        names.flow().join(n -> n.text(writer), () -> writer.source(new SingleCharacterSource(',')));
-        writer.source(new SingleCharacterSource(')'));
+        writer.write(new StringText("using"));
+        writer.write(new SingleCharacterText('('));
+        expressions.flow().join(e -> e.text(writer), () -> writer.write(new SingleCharacterText(',')));
+        writer.write(new SingleCharacterText(')'));
+        writer.write(new StringText("as"));
+        writer.write(new SingleCharacterText('('));
+        names.flow().join(n -> n.text(writer), () -> writer.write(new SingleCharacterText(',')));
+        writer.write(new SingleCharacterText(')'));
         expression.text(writer);
     }
 
@@ -44,6 +46,6 @@ public final class UsingExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return expression.value(namespace.nested(new PairNamespace(names.flow().<Source>map(SyntaxText::new).zip(expressions.flow().map(e -> e.value(namespace))).collect())));
+        return expression.value(namespace.nested(new PairNamespace(names.flow().<Text>map(SyntaxText::new).zip(expressions.flow().map(e -> e.value(namespace))).collect())));
     }
 }

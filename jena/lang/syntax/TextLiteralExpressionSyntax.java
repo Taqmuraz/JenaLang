@@ -1,20 +1,21 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.TextValue;
 import jena.lang.value.Value;
 
 public final class TextLiteralExpressionSyntax implements Syntax
 {
-    private Source source;
+    private Text text;
     private Value value;
 
-    public TextLiteralExpressionSyntax(Source source)
+    public TextLiteralExpressionSyntax(Text text)
     {
-        this.source = source;
-        value = new TextValue(source);
+        this.text = text;
+        value = new TextValue(text);
     }
 
     @Override
@@ -24,12 +25,12 @@ public final class TextLiteralExpressionSyntax implements Syntax
     }
 
     @Override
-    public void text(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        Source separator = new SingleCharacterSource('\"');
-        writer.source(separator);
-        writer.source(source);
-        writer.source(separator);
+        Text separator = new SingleCharacterText('\"');
+        writer.write(separator);
+        writer.write(text);
+        writer.write(separator);
     }
 
     @Override

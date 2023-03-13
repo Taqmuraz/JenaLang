@@ -1,14 +1,14 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
-import jena.lang.source.StringSource;
+import jena.lang.text.StringText;
 
 public class BinaryExpressionSyntaxRule implements ContinuousSyntaxRule
 {
     @Override
     public void match(SourceSpan span, Syntax last, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "==", "!=" }) new OperatorSyntaxRule(new StringSource(operatorSymbol)).match(span, (operator, operatorSpan) ->
+        for(String operatorSymbol : new String[] { "+", "-", "*", "/", "<", ">", "==", "!=" }) new OperatorSyntaxRule(new StringText(operatorSymbol)).match(span, (operator, operatorSpan) ->
         {
             if(operator instanceof BinaryOperatorSyntax)
             {
@@ -21,7 +21,7 @@ public class BinaryExpressionSyntaxRule implements ContinuousSyntaxRule
             }
             else
             {
-                mistakeAction.call(new KindSourceMistake(span.at(0), new StringSource("binary operator")), operatorSpan);
+                mistakeAction.call(new KindSourceMistake(span.at(0), new StringText("binary operator")), operatorSpan);
             }
         }, mistakeAction);
     }

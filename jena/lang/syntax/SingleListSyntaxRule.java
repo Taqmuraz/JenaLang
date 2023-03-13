@@ -1,6 +1,6 @@
 package jena.lang.syntax;
 
-import jena.lang.SingleGenericBuffer;
+import jena.lang.SingleBuffer;
 import jena.lang.source.SourceSpan;
 
 public final class SingleListSyntaxRule implements SyntaxListRule
@@ -17,7 +17,7 @@ public final class SingleListSyntaxRule implements SyntaxListRule
     {
         elementRule.match(span, (element, elementSpan) ->
         {
-            action.call(new SingleGenericBuffer<Syntax>(element), elementSpan);
+            action.call(new SingleBuffer<Syntax>(element), elementSpan);
         }, mistakeAction);
     }
 }

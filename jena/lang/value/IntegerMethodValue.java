@@ -1,6 +1,7 @@
 package jena.lang.value;
 
 import jena.lang.GenericFunction;
+import jena.lang.SingleBuffer;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
@@ -8,9 +9,9 @@ public final class IntegerMethodValue implements Value
 {
     private Value method;
 
-    public IntegerMethodValue(IntegerFunction function, GenericFunction<IntegerValue, Integer> value)
+    public IntegerMethodValue(Text argument, IntegerFunction function, GenericFunction<IntegerValue, Integer> value)
     {
-        method = new AnonymousMethodValue(1, args ->
+        method = new AnonymousMethodValue(new SingleBuffer<Text>(argument), args ->
         {
             Value arg = args.at(0);
             if(arg instanceof IntegerValue) return new IntegerValue(function.call(value.call((IntegerValue)arg)));

@@ -2,7 +2,7 @@ package jena.lang.value;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
-import jena.lang.SingleGenericBuffer;
+import jena.lang.SingleBuffer;
 import jena.lang.StructPair;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.StringText;
@@ -19,20 +19,20 @@ public final class TupleValue implements Value
     {
         this.items = items;
         members = new ObjectValue(
-            new SingleGenericBuffer<GenericPair<Text, Value>>(
+            new SingleBuffer<GenericPair<Text, Value>>(
                 new StructPair<>(
                     new StringText("count"),
                     new IntegerValue(items.length()))).flow()
                     .append(
                         new StructPair<>(
                             new StringText("map"),
-                            new AnonymousMethodValue(1, args ->
+                            new AnonymousMethodValue(new SingleBuffer<>(new StringText("function")), args ->
                                 new TupleValue(items.map(item ->
                                 args.at(0).call(new SingleArgumentList(item)))))))
                     .append(
                         new StructPair<>(
                             new StringText("each"),
-                            new AnonymousMethodValue(1, args ->
+                            new AnonymousMethodValue(new SingleBuffer<>(new StringText("action")), args ->
                             {
                                 items.flow().read(item -> args.at(0).call(new SingleArgumentList(item)));
                                 return this;
@@ -41,7 +41,7 @@ public final class TupleValue implements Value
                     .append(
                         new StructPair<>(
                             new StringText("join"),
-                            new AnonymousMethodValue(1, args -> new TupleValue(items.join(args.at(0))))
+                            new AnonymousMethodValue(new SingleBuffer<>(new StringText("separator")), args -> new TupleValue(items.join(args.at(0))))
                         )
                     ).collect());
     }

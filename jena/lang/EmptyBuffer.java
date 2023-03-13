@@ -2,9 +2,9 @@ package jena.lang;
 
 import java.util.Objects;
 
-public final class EmptyGenericBuffer<Element> implements GenericBuffer<Element>
+public final class EmptyBuffer<Element> implements GenericBuffer<Element>
 {
-    public EmptyGenericBuffer()
+    public EmptyBuffer()
     {
     }
 

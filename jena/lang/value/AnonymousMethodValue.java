@@ -1,28 +1,34 @@
 package jena.lang.value;
 
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
-import jena.lang.source.StringSource;
+import jena.lang.GenericBuffer;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class AnonymousMethodValue implements Value
 {
-    private int arguments;
+    private GenericBuffer<Text> arguments;
     private ValueListFunction function;
 
-    public AnonymousMethodValue(int arguments, ValueListFunction function)
+    public AnonymousMethodValue(GenericBuffer<Text> arguments, ValueListFunction function)
     {
         this.arguments = arguments;
         this.function = function;
     }
 
     @Override
-    public void print(SourceAction action)
+    public void print(TextWriter writer)
     {
-        action.call(new StringSource("anonymous_method"));
+        writer.write(new StringText("anonymous_method"));
+        writer.write(new SingleCharacterText('('));
+        Text separator = new SingleCharacterText(',');
+        arguments.join(separator).each(writer::write);
+        writer.write(new SingleCharacterText(')'));
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return NoneValue.instance;
     }
@@ -30,6 +36,6 @@ public final class AnonymousMethodValue implements Value
     @Override
     public Value call(ArgumentList arguments)
     {
-        return arguments.number(this.arguments, function, () -> NoneValue.instance);
+        return arguments.number(this.arguments.length(), function, () -> NoneValue.instance);
     }
 }

@@ -1,8 +1,8 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
 import jena.lang.source.SourceSpan;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.Text;
 
 public final class ParenthesizedListSyntaxRule implements SyntaxListRule
 {
@@ -16,8 +16,8 @@ public final class ParenthesizedListSyntaxRule implements SyntaxListRule
     @Override
     public void match(SourceSpan span, SyntaxListSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        Source openBrace = new SingleCharacterSource('(');
-        Source closeBrace = new SingleCharacterSource(')');
+        Text openBrace = new SingleCharacterText('(');
+        Text closeBrace = new SingleCharacterText(')');
         new ExpressionListSyntaxRule(elementRule, openBrace, closeBrace).match(span, action, mistakeAction);
     }
 }

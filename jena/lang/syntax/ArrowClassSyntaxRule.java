@@ -1,6 +1,6 @@
 package jena.lang.syntax;
 
-import jena.lang.SingleGenericBuffer;
+import jena.lang.SingleBuffer;
 import jena.lang.source.SourceSpan;
 
 public final class ArrowClassSyntaxRule implements SyntaxRule
@@ -13,7 +13,7 @@ public final class ArrowClassSyntaxRule implements SyntaxRule
             new MemberExpressionSyntaxRule()
         ).match(span, (arguments, expression, endSpan) ->
         {
-            action.call(new ClassExpressionSyntax(arguments, new SingleGenericBuffer<Syntax>(expression)), endSpan);
+            action.call(new ClassExpressionSyntax(arguments, new SingleBuffer<Syntax>(expression)), endSpan);
         }, mistakeAction);
     }
 }

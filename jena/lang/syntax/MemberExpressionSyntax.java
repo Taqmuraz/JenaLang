@@ -1,6 +1,6 @@
 package jena.lang.syntax;
 
-import jena.lang.ArrayGenericBuffer;
+import jena.lang.ArrayBuffer;
 import jena.lang.GenericPair;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
@@ -39,7 +39,7 @@ public final class MemberExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new TupleValue(new ArrayGenericBuffer<Value>(new Value[] { new TextValue(name), expression.value(namespace) }));
+        return new TupleValue(new ArrayBuffer<Value>(new Value[] { new TextValue(name), expression.value(namespace) }));
     }
 
     public GenericPair<Text, ValueProducer> nameExpression()

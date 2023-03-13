@@ -3,7 +3,7 @@ package jena.lang.syntax;
 import jena.lang.GenericAction;
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
-import jena.lang.SingleGenericBuffer;
+import jena.lang.SingleBuffer;
 import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.StringText;
@@ -39,7 +39,7 @@ public final class ArrowExpressionSyntaxRule
 
         argumentRule.match(span, (arg, argSpan) ->
         {
-            matchAfterName.call(new StructPair<>(argSpan, new SingleGenericBuffer<>(arg)));
+            matchAfterName.call(new StructPair<>(argSpan, new SingleBuffer<>(arg)));
         }, mistakeAction);
         new ParenthesizedListSyntaxRule(argumentRule).match(span, (args, argSpan) ->
         {

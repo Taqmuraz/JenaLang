@@ -1,7 +1,6 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
-import jena.lang.source.StringSource;
 import jena.lang.text.StringText;
 
 public final class UsingExpressionSyntaxRule implements SyntaxRule

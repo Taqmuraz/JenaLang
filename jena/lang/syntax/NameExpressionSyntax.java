@@ -1,22 +1,23 @@
 package jena.lang.syntax;
 
-import jena.lang.source.Source;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
 public final class NameExpressionSyntax implements Syntax
 {
-    private Source name;
+    private Text name;
 
-    public NameExpressionSyntax(Source name)
+    public NameExpressionSyntax(Text name)
     {
         this.name = name;
     }
 
     @Override
-    public void text(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(name);
+        writer.write(name);
     }
 
     @Override

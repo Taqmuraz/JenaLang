@@ -2,6 +2,7 @@ package jena.lang.value;
 
 import java.io.File;
 
+import jena.lang.SingleBuffer;
 import jena.lang.SingleGenericFlow;
 import jena.lang.source.FileSource;
 import jena.lang.syntax.JenaSyntaxReader;
@@ -20,7 +21,7 @@ public final class StorageNamespace implements Namespace
             new PairNamespace(
                 new SingleGenericFlow<Text>(
                     new StringText("source")).zip(
-                        new SingleGenericFlow<Value>(new AnonymousMethodValue(1, args ->
+                        new SingleGenericFlow<Value>(new AnonymousMethodValue(new SingleBuffer<>(new StringText("fileName")), args ->
                         {
                             Text name = new ValueText(args.at(0));
                             Value[] value = { NoneValue.instance };

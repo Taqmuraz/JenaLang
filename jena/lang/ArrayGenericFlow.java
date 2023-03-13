@@ -4,7 +4,8 @@ public final class ArrayGenericFlow<Element> implements GenericFlow<Element>
 {
     private Element[] elements;
 
-    public ArrayGenericFlow(Element[] elements)
+    @SafeVarargs
+    public ArrayGenericFlow(Element... elements)
     {
         this.elements = elements;
     }

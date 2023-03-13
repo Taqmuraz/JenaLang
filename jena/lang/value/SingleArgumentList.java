@@ -1,7 +1,7 @@
 package jena.lang.value;
 
 import jena.lang.GenericBuffer;
-import jena.lang.SingleGenericBuffer;
+import jena.lang.SingleBuffer;
 
 public final class SingleArgumentList implements ArgumentList
 {
@@ -9,7 +9,7 @@ public final class SingleArgumentList implements ArgumentList
 
     public SingleArgumentList(Value argument)
     {
-        this.argument = new SingleGenericBuffer<Value>(argument);
+        this.argument = new SingleBuffer<Value>(argument);
     }
 
     @Override
