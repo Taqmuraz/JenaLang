@@ -1,0 +1,13 @@
+using
+(
+    class(element)
+        each:action -> action(element),
+
+    class(list, element)
+    (
+        each:action -> [list.each(action), action(element)]
+    )
+)
+as(
+    SingleList,
+    ContinuedList) ContinuedList(ContinuedList(SingleList("one"), 2), "three").each(item -> [print(item), print(" ")])

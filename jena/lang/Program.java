@@ -5,6 +5,7 @@ import java.io.File;
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.source.Source;
 import jena.lang.syntax.JenaSyntaxReader;
+import jena.lang.syntax.TextSyntaxMistakePrinter;
 import jena.lang.value.IONamespace;
 import jena.lang.value.Namespace;
 import jena.lang.value.StorageNamespace;
@@ -35,15 +36,7 @@ public class Program
                     
                     syntax.value(namespace);
                     System.out.println();
-                }, mistake ->
-                {
-                    mistake.print(s ->
-                    {
-                        System.out.print(s.text());
-                        System.out.print(' ');
-                    });
-                    System.out.println();
-                });
+                }, new TextSyntaxMistakePrinter());
             }
         }
         catch(Throwable error)

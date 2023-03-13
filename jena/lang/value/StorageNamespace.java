@@ -7,6 +7,7 @@ import jena.lang.source.FileSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
 import jena.lang.syntax.JenaSyntaxReader;
+import jena.lang.syntax.TextSyntaxMistakePrinter;
 
 public final class StorageNamespace implements Namespace
 {
@@ -31,7 +32,7 @@ public final class StorageNamespace implements Namespace
                                 new JenaSyntaxReader(new FileSource(file)).read(syntax ->
                                 {
                                     value[0] = syntax.value(this);
-                                }, mistake -> {});
+                                }, new TextSyntaxMistakePrinter());
                             }
 
                             return value[0];
