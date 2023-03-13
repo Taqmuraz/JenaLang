@@ -4,10 +4,11 @@ import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
 import jena.lang.SingleGenericBuffer;
 import jena.lang.StructPair;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
-import jena.lang.source.StringSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
+import jena.lang.text.ValueText;
 
 public final class TupleValue implements Value
 {
@@ -18,19 +19,19 @@ public final class TupleValue implements Value
     {
         this.items = items;
         members = new ObjectValue(
-            new SingleGenericBuffer<GenericPair<Source, Value>>(
+            new SingleGenericBuffer<GenericPair<Text, Value>>(
                 new StructPair<>(
-                    new StringSource("count"),
+                    new StringText("count"),
                     new IntegerValue(items.length()))).flow()
                     .append(
                         new StructPair<>(
-                            new StringSource("map"),
+                            new StringText("map"),
                             new AnonymousMethodValue(1, args ->
                                 new TupleValue(items.map(item ->
                                 args.at(0).call(new SingleArgumentList(item)))))))
                     .append(
                         new StructPair<>(
-                            new StringSource("each"),
+                            new StringText("each"),
                             new AnonymousMethodValue(1, args ->
                             {
                                 items.flow().read(item -> args.at(0).call(new SingleArgumentList(item)));
@@ -39,25 +40,25 @@ public final class TupleValue implements Value
                     ))
                     .append(
                         new StructPair<>(
-                            new StringSource("join"),
+                            new StringText("join"),
                             new AnonymousMethodValue(1, args -> new TupleValue(items.join(args.at(0))))
                         )
                     ).collect());
     }
 
     @Override
-    public void print(SourceAction action)
+    public void print(TextWriter writer)
     {
-        action.call(new SingleCharacterSource('['));
-        Source separator = new SingleCharacterSource(',');
+        writer.write(new SingleCharacterText('['));
+        Text separator = new SingleCharacterText(',');
         
-        items.flow().join(item -> item.print(action), () -> action.call(separator));
+        items.flow().join(item -> item.print(writer), () -> writer.write(separator));
 
-        action.call(new SingleCharacterSource(']'));
+        writer.write(new SingleCharacterText(']'));
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return members.member(name);
     }
@@ -67,8 +68,8 @@ public final class TupleValue implements Value
     {
         return arguments.number(0, args -> items.at(items.length() - 1), () -> arguments.number(1, args ->
         {
-            Source source = new ValueSource(args.at(0));
-            return items.at(Integer.valueOf(source.text().toString()));
+            Text text = new ValueText(args.at(0));
+            return items.at(Integer.valueOf(text.string()));
         }, () -> NoneValue.instance));
     }
 }

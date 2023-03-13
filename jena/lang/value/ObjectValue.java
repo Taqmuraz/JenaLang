@@ -2,33 +2,33 @@ package jena.lang.value;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class ObjectValue implements Value
 {
-    private GenericBuffer<GenericPair<Source, Value>> members;
+    private GenericBuffer<GenericPair<Text, Value>> members;
     private Namespace namespace;
 
-    public ObjectValue(GenericBuffer<GenericPair<Source, Value>> members)
+    public ObjectValue(GenericBuffer<GenericPair<Text, Value>> members)
     {
         this.members = members;
         this.namespace = new HashMapNamespace(members);
     }
 
     @Override
-    public void print(SourceAction action) 
+    public void print(TextWriter writer) 
     {
         members.flow().read(p -> p.both((n, v) ->
         {
-            action.call(n);
-            action.call(new SingleCharacterSource(';'));
+            writer.write(n);
+            writer.write(new SingleCharacterText(';'));
         }));
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return namespace.name(name);
     }

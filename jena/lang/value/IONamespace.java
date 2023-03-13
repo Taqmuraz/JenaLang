@@ -3,9 +3,9 @@ package jena.lang.value;
 import jena.lang.ArrayGenericFlow;
 import jena.lang.SingleGenericFlow;
 import jena.lang.source.InputStreamLineSource;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
-import jena.lang.source.StringSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
 
 public final class IONamespace implements Namespace
 {
@@ -20,22 +20,22 @@ public final class IONamespace implements Namespace
             "readInt",
             "line",
             "space",
-        }).<Source>map(StringSource::new).zip(new SingleGenericFlow<Value>(
+        }).<Text>map(StringText::new).zip(new SingleGenericFlow<Value>(
             new AnonymousMethodValue(1, args ->
             {
                 Value arg = args.at(0);
-                arg.print(s -> System.out.print(s.text().toString()));
+                arg.print(s -> System.out.print(s.string()));
                 return arg;
             })
         )
-        .append(new AnonymousMethodValue(0, args -> new TextValue(new InputStreamLineSource(System.in))))
-        .append(new AnonymousMethodValue(0, args -> new IntegerValue(Integer.valueOf(new InputStreamLineSource(System.in).text().toString()))))
-        .append(new TextValue(new SingleCharacterSource('\n')))
-        .append(new TextValue(new SingleCharacterSource(' ')))).collect());
+        .append(new AnonymousMethodValue(0, args -> new TextValue(new InputStreamLineSource(System.in).text())))
+        .append(new AnonymousMethodValue(0, args -> new IntegerValue(Integer.valueOf(new InputStreamLineSource(System.in).text().string()))))
+        .append(new TextValue(new SingleCharacterText('\n')))
+        .append(new TextValue(new SingleCharacterText(' ')))).collect());
     }
 
     @Override
-    public Value name(Source name)
+    public Value name(Text name)
     {
         return members.member(name);
     }

@@ -1,7 +1,7 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
-import jena.lang.source.StringSource;
+import jena.lang.text.StringText;
 
 public final class ClassExpressionSyntaxRule implements SyntaxRule
 {
@@ -29,7 +29,7 @@ public final class ClassExpressionSyntaxRule implements SyntaxRule
         }
         else
         {
-            mistakeAction.call(new WrongSourceMistake(span.at(0), new StringSource("class")), span);
+            mistakeAction.call(new WrongSourceMistake(span.at(0), new StringText("class")), span);
         }
     }
 }

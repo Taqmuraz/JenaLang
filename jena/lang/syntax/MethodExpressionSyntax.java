@@ -1,9 +1,11 @@
 package jena.lang.syntax;
 
 import jena.lang.GenericBuffer;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
-import jena.lang.source.StringSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.SyntaxText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.PairNamespace;
 import jena.lang.value.AnonymousMethodValue;
 import jena.lang.value.Namespace;
@@ -21,13 +23,13 @@ public final class MethodExpressionSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(new StringSource("method"));
-        writer.source(new SingleCharacterSource('('));
-        arguments.flow().join(a -> a.source(writer), () -> writer.source(new SingleCharacterSource(',')));
-        writer.source(new SingleCharacterSource(')'));
-        expression.source(writer);
+        writer.write(new StringText("method"));
+        writer.write(new SingleCharacterText('('));
+        arguments.flow().join(a -> a.text(writer), () -> writer.write(new SingleCharacterText(',')));
+        writer.write(new SingleCharacterText(')'));
+        expression.text(writer);
     }
 
     @Override
@@ -41,7 +43,7 @@ public final class MethodExpressionSyntax implements Syntax
     {
         return new AnonymousMethodValue(arguments.length(), ps ->
         {
-            return expression.value(namespace.nested(new PairNamespace(arguments.flow().<Source>map(SyntaxSource::new).zip(ps.flow()).collect())));
+            return expression.value(namespace.nested(new PairNamespace(arguments.flow().<Text>map(SyntaxText::new).zip(ps.flow()).collect())));
         });
     }
 }

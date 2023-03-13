@@ -2,8 +2,9 @@ package jena.lang.syntax;
 
 import jena.lang.ArrayGenericBuffer;
 import jena.lang.GenericPair;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.TextValue;
 import jena.lang.value.TupleValue;
@@ -12,21 +13,21 @@ import jena.lang.value.ValueProducer;
 
 public final class MemberExpressionSyntax implements Syntax
 {
-    private Source name;
+    private Text name;
     private Syntax expression;
 
-    public MemberExpressionSyntax(Source name, Syntax expression)
+    public MemberExpressionSyntax(Text name, Syntax expression)
     {
         this.name = name;
         this.expression = expression;
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(name);
-        writer.source(new SingleCharacterSource(':'));
-        expression.source(writer);
+        writer.write(name);
+        writer.write(new SingleCharacterText(':'));
+        expression.text(writer);
     }
 
     @Override
@@ -41,7 +42,7 @@ public final class MemberExpressionSyntax implements Syntax
         return new TupleValue(new ArrayGenericBuffer<Value>(new Value[] { new TextValue(name), expression.value(namespace) }));
     }
 
-    public GenericPair<Source, ValueProducer> nameExpression()
+    public GenericPair<Text, ValueProducer> nameExpression()
     {
         return action -> action.call(name, expression);
     }

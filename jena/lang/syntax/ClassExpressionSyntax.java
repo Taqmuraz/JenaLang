@@ -1,8 +1,10 @@
 package jena.lang.syntax;
 
 import jena.lang.GenericBuffer;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.StringSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.SyntaxText;
+import jena.lang.text.TextWriter;
 import jena.lang.value.ClassValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
@@ -18,10 +20,10 @@ public final class ClassExpressionSyntax implements Syntax
         this.members = members;
     }
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(new StringSource("class"));
-        ExpressionListWriter listWriter = new ExpressionListWriter(new SingleCharacterSource('('), new SingleCharacterSource(')'));
+        writer.write(new StringText("class"));
+        ExpressionListWriter listWriter = new ExpressionListWriter(new SingleCharacterText('('), new SingleCharacterText(')'));
         listWriter.write(arguments, writer);
         listWriter.write(members, writer);
     }
@@ -35,6 +37,6 @@ public final class ClassExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new ClassValue(arguments.map(SyntaxSource::new), members.flow().map(m -> ((MemberExpressionSyntax)m).nameExpression()).collect(), namespace);
+        return new ClassValue(arguments.map(SyntaxText::new), members.flow().map(m -> ((MemberExpressionSyntax)m).nameExpression()).collect(), namespace);
     }
 }

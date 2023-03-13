@@ -22,17 +22,17 @@ public final class UsingExpressionSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(SyntaxSerializer writer)
     {
         writer.source(new StringSource("using"));
         writer.source(new SingleCharacterSource('('));
-        expressions.flow().join(e -> e.source(writer), () -> writer.source(new SingleCharacterSource(',')));
+        expressions.flow().join(e -> e.text(writer), () -> writer.source(new SingleCharacterSource(',')));
         writer.source(new SingleCharacterSource(')'));
         writer.source(new StringSource("as"));
         writer.source(new SingleCharacterSource('('));
-        names.flow().join(n -> n.source(writer), () -> writer.source(new SingleCharacterSource(',')));
+        names.flow().join(n -> n.text(writer), () -> writer.source(new SingleCharacterSource(',')));
         writer.source(new SingleCharacterSource(')'));
-        expression.source(writer);
+        expression.text(writer);
     }
 
     @Override
@@ -44,6 +44,6 @@ public final class UsingExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return expression.value(namespace.nested(new PairNamespace(names.flow().<Source>map(SyntaxSource::new).zip(expressions.flow().map(e -> e.value(namespace))).collect())));
+        return expression.value(namespace.nested(new PairNamespace(names.flow().<Source>map(SyntaxText::new).zip(expressions.flow().map(e -> e.value(namespace))).collect())));
     }
 }

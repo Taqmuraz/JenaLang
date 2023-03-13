@@ -1,11 +1,11 @@
 package jena.lang.value;
 
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public interface Value
 {
-    void print(SourceAction action);
-    Value member(Source name);
+    void print(TextWriter writer);
+    Value member(Text name);
     Value call(ArgumentList arguments);
 }

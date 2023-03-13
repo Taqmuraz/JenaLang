@@ -24,7 +24,7 @@ public final class TextLiteralExpressionSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(SyntaxSerializer writer)
     {
         Source separator = new SingleCharacterSource('\"');
         writer.source(separator);

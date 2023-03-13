@@ -1,6 +1,7 @@
 package jena.lang.syntax;
 
-import jena.lang.source.Source;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.TupleValue;
 import jena.lang.value.Value;
@@ -9,19 +10,19 @@ import jena.lang.JoinAction;
 
 public final class JoinExpressionSyntax implements Syntax
 {
-    private Source separator;
+    private Text separator;
     private GenericFlow<Syntax> expressions;
 
-    public JoinExpressionSyntax(Source separator, GenericFlow<Syntax> expressions)
+    public JoinExpressionSyntax(Text separator, GenericFlow<Syntax> expressions)
     {
         this.separator = separator;
         this.expressions = expressions;
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        new JoinAction<Syntax>(expressions, e -> e.source(writer), () -> writer.source(separator)).join();
+        new JoinAction<Syntax>(expressions, e -> e.text(writer), () -> writer.write(separator)).join();
     }
 
     @Override

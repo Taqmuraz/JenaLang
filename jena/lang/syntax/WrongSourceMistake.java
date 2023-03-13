@@ -3,13 +3,14 @@ package jena.lang.syntax;
 import jena.lang.source.Source;
 import jena.lang.source.SourceAction;
 import jena.lang.source.StringSource;
+import jena.lang.text.Text;
 
 public final class WrongSourceMistake implements SyntaxMistake
 {
     private Source source;
     //private Source expected;
 
-    public WrongSourceMistake(Source source, Source expected)
+    public WrongSourceMistake(Source source, Text expected)
     {
         this.source = source;
         //this.expected = expected;

@@ -1,25 +1,25 @@
 package jena.lang.value;
 
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class TextValue implements Value
 {
-    private Source text;
+    private Text text;
 
-    public TextValue(Source text)
+    public TextValue(Text text)
     {
         this.text = text;
     }
 
     @Override
-    public void print(SourceAction action)
+    public void print(TextWriter writer)
     {
-        action.call(text);
+        writer.write(text);
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return NoneValue.instance;
     }

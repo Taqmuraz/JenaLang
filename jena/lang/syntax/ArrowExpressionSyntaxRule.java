@@ -6,7 +6,7 @@ import jena.lang.GenericPair;
 import jena.lang.SingleGenericBuffer;
 import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
-import jena.lang.source.StringSource;
+import jena.lang.text.StringText;
 
 public final class ArrowExpressionSyntaxRule
 {
@@ -33,7 +33,7 @@ public final class ArrowExpressionSyntaxRule
             }
             else
             {
-                mistakeAction.call(new WrongSourceMistake(argSpan.at(0), new StringSource("->")), span);
+                mistakeAction.call(new WrongSourceMistake(argSpan.at(0), new StringText("->")), span);
             }
         });
 

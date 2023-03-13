@@ -1,10 +1,10 @@
-package jena.lang.source;
+package jena.lang.text;
 
-public final class StringCharacterBuffer implements CharacterBuffer
+public final class StringText implements Text
 {
     private String string;
 
-    public StringCharacterBuffer(String string)
+    public StringText(String string)
     {
         this.string = string;
     }

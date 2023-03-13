@@ -4,6 +4,8 @@ import jena.lang.Count;
 import jena.lang.OneCount;
 import jena.lang.Position;
 import jena.lang.StartPosition;
+import jena.lang.text.SourceText;
+import jena.lang.text.Text;
 
 public interface Source
 {
@@ -42,8 +44,8 @@ public interface Source
         return empty[0];
     }
 
-    default CharacterBuffer text()
+    default Text text()
     {
-        return new SourceCharacterBuffer(this);
+        return new SourceText(this);
     }
 }

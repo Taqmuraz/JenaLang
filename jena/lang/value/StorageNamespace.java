@@ -4,10 +4,11 @@ import java.io.File;
 
 import jena.lang.SingleGenericFlow;
 import jena.lang.source.FileSource;
-import jena.lang.source.Source;
-import jena.lang.source.StringSource;
 import jena.lang.syntax.JenaSyntaxReader;
 import jena.lang.syntax.TextSyntaxMistakePrinter;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
+import jena.lang.text.ValueText;
 
 public final class StorageNamespace implements Namespace
 {
@@ -17,15 +18,13 @@ public final class StorageNamespace implements Namespace
     {
         this.namespace = namespace.nested(
             new PairNamespace(
-                new SingleGenericFlow<Source>(
-                    new StringSource("source")).zip(
+                new SingleGenericFlow<Text>(
+                    new StringText("source")).zip(
                         new SingleGenericFlow<Value>(new AnonymousMethodValue(1, args ->
                         {
-                            Source[] name = new Source[1];
-                            args.at(0).print(s -> name[0] = s);
-                            if(name[0] == null) return NoneValue.instance;
+                            Text name = new ValueText(args.at(0));
                             Value[] value = { NoneValue.instance };
-                            File file = new File(name[0].text().toString());
+                            File file = new File(name.string());
 
                             if(file.exists())
                             {
@@ -41,7 +40,7 @@ public final class StorageNamespace implements Namespace
     }
 
     @Override
-    public Value name(Source name)
+    public Value name(Text name)
     {
         return namespace.name(name);
     }

@@ -1,7 +1,8 @@
 package jena.lang.syntax;
 
 import jena.lang.GenericBuffer;
-import jena.lang.source.Source;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.TupleValue;
 import jena.lang.value.Value;
@@ -9,10 +10,10 @@ import jena.lang.value.Value;
 public final class ExpressionListSyntax implements Syntax
 {
     private GenericBuffer<Syntax> expressions;
-    private Source openBrace;
-    private Source closeBrace;
+    private Text openBrace;
+    private Text closeBrace;
 
-    public ExpressionListSyntax(GenericBuffer<Syntax> expressions, Source openBrace, Source closeBrace)
+    public ExpressionListSyntax(GenericBuffer<Syntax> expressions, Text openBrace, Text closeBrace)
     {
         this.expressions = expressions;
         this.openBrace = openBrace;
@@ -20,7 +21,7 @@ public final class ExpressionListSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
         new ExpressionListWriter(openBrace, closeBrace).write(expressions, writer);
     }

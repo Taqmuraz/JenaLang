@@ -10,7 +10,7 @@ public final class MemberAccessExpressionSyntaxRule implements ContinuousSyntaxR
     {
         if(span.at(0).isKind(new SingleCharacterKind('.')))
         {
-            action.call(new MemberAccessExpressionSyntax(last, span.at(1)), span.skip(2));
+            action.call(new MemberAccessExpressionSyntax(last, span.at(1).text()), span.skip(2));
         }
     }
 }

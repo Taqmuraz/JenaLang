@@ -1,8 +1,8 @@
 package jena.lang.value;
 
 import jena.lang.GenericFunction;
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class IntegerMethodValue implements Value
 {
@@ -19,13 +19,13 @@ public final class IntegerMethodValue implements Value
     }
 
     @Override
-    public void print(SourceAction action)
+    public void print(TextWriter writer)
     {
-        method.print(action);
+        method.print(writer);
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return method.member(name);
     }

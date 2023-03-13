@@ -1,24 +1,25 @@
 package jena.lang.syntax;
 
 import jena.lang.GenericBuffer;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class ExpressionListWriter
 {
-    private Source openBrace;
-    private Source closeBrace;
+    private Text openBrace;
+    private Text closeBrace;
 
-    public ExpressionListWriter(Source openBrace, Source closeBrace)
+    public ExpressionListWriter(Text openBrace, Text closeBrace)
     {
         this.openBrace = openBrace;
         this.closeBrace = closeBrace;
     }
 
-    public void write(GenericBuffer<Syntax> list, SyntaxSerializer writer)
+    public void write(GenericBuffer<Syntax> list, TextWriter writer)
     {
-        writer.source(openBrace);
-        list.flow().join(arg -> arg.source(writer), () -> writer.source(new SingleCharacterSource(',')));
-        writer.source(closeBrace);
+        writer.write(openBrace);
+        list.flow().join(arg -> arg.text(writer), () -> writer.write(new SingleCharacterText(',')));
+        writer.write(closeBrace);
     }
 }

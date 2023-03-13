@@ -1,16 +1,17 @@
-package jena.lang.source;
+package jena.lang.text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import jena.lang.MaxCount;
 import jena.lang.StartPosition;
+import jena.lang.source.Source;
 
-public final class SourceCharacterBuffer implements CharacterBuffer
+public final class SourceText implements Text
 {
-    List<Character> buffer;
+    private List<Character> buffer;
 
-    public SourceCharacterBuffer(Source source)
+    public SourceText(Source source)
     {
         buffer = new ArrayList<Character>();
         source.read(StartPosition.instance, MaxCount.instance, (c, n) -> buffer.add(c));
@@ -26,13 +27,5 @@ public final class SourceCharacterBuffer implements CharacterBuffer
     public int length()
     {
         return buffer.size();
-    }
-
-    @Override
-    public String toString()
-    {
-        char[] text = new char[buffer.size()];
-        for(int i = 0; i < text.length; i++) text[i] = buffer.get(i);
-        return String.valueOf(text);
     }
 }

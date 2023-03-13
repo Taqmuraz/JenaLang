@@ -1,31 +1,32 @@
 package jena.lang.syntax;
 
 import jena.lang.SingleGenericBuffer;
-import jena.lang.source.Source;
-import jena.lang.source.StringSource;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.NoneValue;
 import jena.lang.value.Value;
 
 public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
 {
-    private Source operator;
+    private Text operator;
 
-    public MathBinaryOperatorSyntax(Source operator)
+    public MathBinaryOperatorSyntax(Text operator)
     {
         this.operator = operator;
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(operator);
+        writer.write(operator);
     }
 
     @Override
     public Syntax classicExpression(Syntax left, Syntax right)
     {
-        String value = operator.text().toString();
+        String value = operator.string();
         String name;
         switch(value)
         {
@@ -39,7 +40,7 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
             case "!=":name = "notEquals"; break;
             default:name = "unknownOperator";
         }
-        return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringSource(name)), new SingleGenericBuffer<Syntax>(right));
+        return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringText(name)), new SingleGenericBuffer<Syntax>(right));
     }
 
     @Override

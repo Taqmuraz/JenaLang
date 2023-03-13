@@ -2,18 +2,18 @@ package jena.lang.value;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
-import jena.lang.source.SingleCharacterSource;
-import jena.lang.source.Source;
-import jena.lang.source.SourceAction;
-import jena.lang.source.StringSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.StringText;
+import jena.lang.text.Text;
+import jena.lang.text.TextWriter;
 
 public final class ClassValue implements Value
 {
-    private GenericBuffer<Source> arguments;
-    private GenericBuffer<GenericPair<Source, ValueProducer>> members;
+    private GenericBuffer<Text> arguments;
+    private GenericBuffer<GenericPair<Text, ValueProducer>> members;
     private Namespace namespace;
     
-    public ClassValue(GenericBuffer<Source> arguments, GenericBuffer<GenericPair<Source, ValueProducer>> members, Namespace namespace)
+    public ClassValue(GenericBuffer<Text> arguments, GenericBuffer<GenericPair<Text, ValueProducer>> members, Namespace namespace)
     {
         this.arguments = arguments;
         this.members = members;
@@ -21,16 +21,16 @@ public final class ClassValue implements Value
     }
 
     @Override
-    public void print(SourceAction action)
+    public void print(TextWriter writer)
     {
-        action.call(new StringSource("class"));
-        action.call(new SingleCharacterSource('('));
-        arguments.flow().join(a -> action.call(a), () -> action.call(new SingleCharacterSource(',')));
-        action.call(new SingleCharacterSource(')'));
+        writer.write(new StringText("class"));
+        writer.write(new SingleCharacterText('('));
+        arguments.flow().join(a -> writer.write(a), () -> writer.write(new SingleCharacterText(',')));
+        writer.write(new SingleCharacterText(')'));
     }
 
     @Override
-    public Value member(Source name)
+    public Value member(Text name)
     {
         return NoneValue.instance;
     }

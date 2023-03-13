@@ -2,10 +2,11 @@ package jena.lang.source;
 
 import jena.lang.Count;
 import jena.lang.Position;
+import jena.lang.text.Text;
 
 public final class BufferedSource implements Source
 {
-    private CharacterBuffer buffer;
+    private Text buffer;
     private Source source;
 
     public BufferedSource(Source source)
@@ -20,12 +21,6 @@ public final class BufferedSource implements Source
         int c = count.count(buffer.length());
         int p = position.position(0, c);
         for(int i = 0; i < c; i++) action.call(buffer.at(i + p), i);
-    }
-
-    @Override
-    public String toString()
-    {
-        return buffer.toString();
     }
 
     @Override

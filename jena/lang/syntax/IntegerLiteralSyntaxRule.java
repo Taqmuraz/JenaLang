@@ -9,7 +9,7 @@ public class IntegerLiteralSyntaxRule implements SyntaxRule
     {
         if(span.at(0).isKind(Character::isDigit))
         {
-            action.call(new IntegerLiteralSyntax(span.at(0)), span.skip(1));
+            action.call(new IntegerLiteralSyntax(span.at(0).text()), span.skip(1));
         }
     }
 }

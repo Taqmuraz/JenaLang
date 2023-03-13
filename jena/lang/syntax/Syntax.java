@@ -1,9 +1,10 @@
 package jena.lang.syntax;
 
+import jena.lang.text.TextWriter;
 import jena.lang.value.ValueProducer;
 
 public interface Syntax extends ValueProducer
 {
-    void source(SyntaxSerializer writer);
+    void text(TextWriter writer);
     Syntax decomposed();
 }

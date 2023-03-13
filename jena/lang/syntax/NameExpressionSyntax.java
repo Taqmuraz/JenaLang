@@ -14,7 +14,7 @@ public final class NameExpressionSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(SyntaxSerializer writer)
     {
         writer.source(name);
     }

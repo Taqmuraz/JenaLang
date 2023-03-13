@@ -1,6 +1,7 @@
 package jena.lang.syntax;
 
-import jena.lang.source.SingleCharacterSource;
+import jena.lang.text.SingleCharacterText;
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
@@ -14,11 +15,11 @@ public final class ParenthesizedSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        writer.source(new SingleCharacterSource('('));
-        expression.source(writer);
-        writer.source(new SingleCharacterSource(')'));
+        writer.write(new SingleCharacterText('('));
+        expression.text(writer);
+        writer.write(new SingleCharacterText(')'));
     }
 
     @Override

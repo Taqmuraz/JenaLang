@@ -1,5 +1,6 @@
 package jena.lang.syntax;
 
+import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
@@ -17,11 +18,11 @@ public class BinaryExpressionSyntax implements Syntax
     }
 
     @Override
-    public void source(SyntaxSerializer writer)
+    public void text(TextWriter writer)
     {
-        left.source(writer);
-        operator.source(writer);
-        right.source(writer);
+        left.text(writer);
+        operator.text(writer);
+        right.text(writer);
     }
 
     @Override

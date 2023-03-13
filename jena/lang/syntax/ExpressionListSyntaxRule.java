@@ -6,8 +6,8 @@ import java.util.List;
 import jena.lang.EmptyGenericBuffer;
 import jena.lang.ListGenericBuffer;
 import jena.lang.source.SingleCharacterKind;
-import jena.lang.source.Source;
 import jena.lang.source.SourceSpan;
+import jena.lang.text.Text;
 
 public final class ExpressionListSyntaxRule implements SyntaxListRule
 {
@@ -27,7 +27,7 @@ public final class ExpressionListSyntaxRule implements SyntaxListRule
         public void call(Syntax expression, SourceSpan expressionSpan)
         {
             expressions.add(expression);
-            if(expressionSpan.at(0).text().compare(closeBrace.text()))
+            if(expressionSpan.at(0).text().compare(closeBrace))
             {
                 action.call(new ListGenericBuffer<Syntax>(expressions), expressionSpan.skip(1));
             }
@@ -39,10 +39,10 @@ public final class ExpressionListSyntaxRule implements SyntaxListRule
     }
 
     private SyntaxRule rule;
-    private Source openBrace;
-    private Source closeBrace;
+    private Text openBrace;
+    private Text closeBrace;
 
-    public ExpressionListSyntaxRule(SyntaxRule rule, Source openBrace, Source closeBrace)
+    public ExpressionListSyntaxRule(SyntaxRule rule, Text openBrace, Text closeBrace)
     {
         this.rule = rule;
         this.openBrace = openBrace;
@@ -52,9 +52,9 @@ public final class ExpressionListSyntaxRule implements SyntaxListRule
     @Override
     public void match(SourceSpan span, SyntaxListSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        if(span.at(0).text().compare(openBrace.text()))
+        if(span.at(0).text().compare(openBrace))
         {
-            if(span.at(1).text().compare(closeBrace.text()))
+            if(span.at(1).text().compare(closeBrace))
             {
                 action.call(new EmptyGenericBuffer<Syntax>(), span.skip(2));
             }
