@@ -26,7 +26,7 @@ public class JenaSyntaxReader
             }
         }, (mistake, span) ->
         {
-            if(!hasSyntax[0]) mistakeAction.call(new LocatedSyntaxMistake(mistake, span.at(0).location(0)));
+            if(!hasSyntax[0]) mistakeAction.call(new LocatedSyntaxMistake(mistake, span.at(0).location()));
         });
     }
 }

@@ -29,7 +29,11 @@ public class SourceSpanFromFlow implements SourceSpan
             {
                 int i = start + index;
                 if(i < buffer.length) return buffer[i];
-                else return EmptySource.instance;
+                else
+                {
+                    SourceLocation location = buffer.length == 0 ? new ZeroSourceLocation() : buffer[buffer.length - 1].location();
+                    return new EmptySource(location);
+                }
             }
 
             @Override

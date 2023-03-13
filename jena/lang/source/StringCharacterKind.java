@@ -10,10 +10,4 @@ public final class StringCharacterKind implements CharacterKind
     {
         return position < string.length() && string.charAt(position++) == c;
     }
-
-    public Source charactersLeft()
-    {
-        if(position < string.length()) return new StringSource(string.substring(position));
-        return new EmptySource();
-    }
 }

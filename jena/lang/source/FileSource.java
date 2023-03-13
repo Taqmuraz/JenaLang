@@ -37,8 +37,8 @@ public class FileSource implements Source
     }
 
     @Override
-    public SourceLocation location(int position)
+    public SourceLocation location()
     {
-        return source.location(position);
+        return source.location();
     }
 }

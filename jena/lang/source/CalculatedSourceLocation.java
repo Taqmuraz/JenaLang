@@ -5,11 +5,20 @@ import jena.lang.StartPosition;
 
 public final class CalculatedSourceLocation implements SourceLocation
 {
-    private int line = 1;
-    private int symbol = 1;
+    private Source source;
+    private int line;
+    private int symbol;
 
-    public CalculatedSourceLocation(Source source, int position)
+    public CalculatedSourceLocation(Source source)
     {
+        this.source = source;
+    }
+
+    @Override
+    public void location(int position, SourceLocationAction action)
+    {
+        line = 1;
+        symbol = 1;
         source.read(StartPosition.instance, new MinCount(position), (c, n) ->
         {
             switch(c)
@@ -18,11 +27,6 @@ public final class CalculatedSourceLocation implements SourceLocation
                 default: symbol++;
             }
         });
-    }
-
-    @Override
-    public void location(SourceLocationAction action)
-    {
         action.call(line, symbol);
     }
 }

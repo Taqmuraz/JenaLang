@@ -13,21 +13,23 @@ public final class StringLiteralFlow implements SourceFlow
     public void read(SourceAction reader)
     {
         CharacterKind separatorKind = c -> c == '\"';
-        Source separatorSource = new SingleCharacterSource('\"');
 
-        new SingleCharacterSeparatedSourceFlow(source, separatorKind).notKindFilter(separatorKind).read(new SourceAction()
+        new SingleCharacterSeparatedSourceFlow(source, separatorKind).read(new SourceAction()
         {
             int index;
 
             @Override
             public void call(Source source)
             {
+                if(source.isKind(separatorKind))
+                {
+                    reader.call(source);
+                    return;
+                }
                 if((index & 1) == 0) source.split(SpaceCharacterKind.instance).notKindFilter(SpaceCharacterKind.instance).read(reader);
                 else
                 {
-                    reader.call(separatorSource);
                     reader.call(new NonSplitSource(source));
-                    reader.call(separatorSource);
                 }
                 index++;
             }

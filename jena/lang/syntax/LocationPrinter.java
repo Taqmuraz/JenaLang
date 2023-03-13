@@ -15,7 +15,7 @@ public final class LocationPrinter
 
     public void print(SourceAction printer)
     {
-        location.location((line, symbol) ->
+        location.location(0, (line, symbol) ->
         {
             printer.call(new StringSource("line:"));
             printer.call(new StringSource(String.valueOf(line)));

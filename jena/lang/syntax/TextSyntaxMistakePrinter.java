@@ -8,6 +8,7 @@ public final class TextSyntaxMistakePrinter implements SyntaxMistakeAction
         mistake.print(s ->
         {
             System.out.print(s.text());
+            System.out.print(" ");
         });
         System.out.println();
     }

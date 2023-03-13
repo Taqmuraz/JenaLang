@@ -8,7 +8,7 @@ import jena.lang.StartPosition;
 public interface Source
 {
     void read(Position position, Count count, SourceSymbolAction buffer);
-    SourceLocation location(int position);
+    SourceLocation location();
 
     default Source subsource(int position, int count)
     {

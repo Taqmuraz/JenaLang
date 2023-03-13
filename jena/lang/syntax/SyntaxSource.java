@@ -25,8 +25,8 @@ public final class SyntaxSource implements Source
     }
 
     @Override
-    public SourceLocation location(int position)
+    public SourceLocation location()
     {
-        return source.location(position);
+        return source.location();
     }
 }

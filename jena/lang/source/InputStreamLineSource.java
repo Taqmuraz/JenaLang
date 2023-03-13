@@ -21,7 +21,7 @@ public final class InputStreamLineSource implements Source
         catch(Exception ex)
         {
             System.out.println(ex);
-            source = new EmptySource();
+            source = new EmptySource(new ZeroSourceLocation());
         }
     }
 
@@ -32,8 +32,8 @@ public final class InputStreamLineSource implements Source
     }
 
     @Override
-    public SourceLocation location(int position)
+    public SourceLocation location()
     {
-        return source.location(position);
+        return source.location();
     }
 }

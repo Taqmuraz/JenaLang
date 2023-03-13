@@ -2,5 +2,5 @@ package jena.lang.source;
 
 public interface SourceLocation
 {
-    void location(SourceLocationAction action);
+    void location(int position, SourceLocationAction action);
 }

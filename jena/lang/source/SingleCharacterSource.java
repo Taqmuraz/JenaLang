@@ -7,7 +7,8 @@ public final class SingleCharacterSource implements Source
 {
     private char character;
 
-    public SingleCharacterSource(char character) {
+    public SingleCharacterSource(char character)
+    {
         this.character = character;
     }
 
@@ -20,9 +21,8 @@ public final class SingleCharacterSource implements Source
     }
 
     @Override
-    public SourceLocation location(int position)
+    public SourceLocation location()
     {
-        if(position == 0) return new FixedSourceLocation(0, 0);
-        else return new WrongSourceLocation();
+        return new ZeroSourceLocation();
     }
 }

@@ -26,8 +26,8 @@ public class RelativeSource implements Source
     }
 
     @Override
-    public SourceLocation location(int position)
+    public SourceLocation location()
     {
-        return source.location(position + this.position);
+        return new RelativeSourceLocation(source.location(), this.position);
     }
 }

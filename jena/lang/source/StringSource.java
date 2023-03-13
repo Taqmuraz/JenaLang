@@ -5,7 +5,7 @@ import jena.lang.Position;
 
 public class StringSource implements Source
 {
-    String source;
+    private String source;
 
     public StringSource(String source)
     {
@@ -23,8 +23,8 @@ public class StringSource implements Source
     }
 
     @Override
-    public SourceLocation location(int position)
+    public SourceLocation location()
     {
-        return new CalculatedSourceLocation(this, position);
+        return new CalculatedSourceLocation(this);
     }
 }
