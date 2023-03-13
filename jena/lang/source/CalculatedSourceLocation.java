@@ -5,8 +5,8 @@ import jena.lang.StartPosition;
 
 public final class CalculatedSourceLocation implements SourceLocation
 {
-    private int line;
-    private int symbol;
+    private int line = 1;
+    private int symbol = 1;
 
     public CalculatedSourceLocation(Source source, int position)
     {
@@ -14,7 +14,7 @@ public final class CalculatedSourceLocation implements SourceLocation
         {
             switch(c)
             {
-                case '\n': line++; symbol = 0; break;
+                case '\n': line++; symbol = 1; break;
                 default: symbol++;
             }
         });
