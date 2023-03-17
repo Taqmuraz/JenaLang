@@ -48,6 +48,10 @@ public final class IntegerValue implements Value
             ))
             .append(new StructPair<Text, Value>
             (
+                new StringText("negative"), new MethodValue(new EmptyBuffer<Text>(), args -> new IntegerValue(-value))
+            ))
+            .append(new StructPair<Text, Value>
+            (
                 new StringText("times"), new MethodValue(new EmptyBuffer<Text>(), args ->
                 {
                     int times = value;

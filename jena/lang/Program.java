@@ -31,7 +31,7 @@ public class Program
                 new JenaSyntaxReader(source).read(syntax ->
                 {
                     //syntax = syntax.decomposed();
-                    //syntax.source(s -> System.out.print(s.text()));
+                    //syntax.text(s -> System.out.print(s.string()));
                     //System.out.println();
                     
                     syntax.value(namespace);

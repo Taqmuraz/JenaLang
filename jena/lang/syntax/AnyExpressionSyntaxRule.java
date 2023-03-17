@@ -13,7 +13,8 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new NameExpressionSyntaxRule(),
             new ParenthesizedExpressionSyntaxRule(),
             new ArrayExpressionSyntaxRule(),
-            new ClassClassicExpressionSyntaxRule()
+            new ClassClassicExpressionSyntaxRule(),
+            new NegativeExpressionSyntaxRule()
         ),
         new CompositeContinuousSyntaxRule
         (
