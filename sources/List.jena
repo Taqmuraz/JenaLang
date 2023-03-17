@@ -9,10 +9,6 @@ using
         )
     )
 )
-as(List) List([1])
-    .add(2)
-    .add(3)
-    .add(11)
-    .add(55)
+as(List) (List([1]) + 1 + 2 + 11 + 15 + 55)
     .each(n -> [print(n), print(" ")])
     
