@@ -1,6 +1,7 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceLocation;
+import jena.lang.text.SingleCharacterText;
 import jena.lang.text.StringText;
 import jena.lang.text.TextWriter;
 
@@ -19,6 +20,7 @@ public final class LocationPrinter
         {
             writer.write(new StringText("origin:"));
             writer.write(origin);
+            writer.write(new SingleCharacterText('.'));
             writer.write(new StringText("line:"));
             writer.write(new StringText(String.valueOf(line)));
             writer.write(new StringText("symbol:"));
