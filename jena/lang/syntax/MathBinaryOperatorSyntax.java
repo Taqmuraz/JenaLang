@@ -38,6 +38,8 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
             case ">":name = "greater"; break;
             case "==":name = "equals"; break;
             case "!=":name = "notEquals"; break;
+            case "&":name = "and"; break;
+            case "|":name = "or"; break;
             default:name = "unknownOperator";
         }
         return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringText(name)), new SingleBuffer<Syntax>(right));

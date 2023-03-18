@@ -28,6 +28,8 @@ public final class IntegerValue implements Value, IntegerNumber
                 "less",
                 "equals",
                 "notEquals",
+                "and",
+                "or",
             })
             .flow().map(n -> new StringText(n))
             .zip(new ArrayBuffer<IntegerFunction>(new IntegerFunction[]
@@ -40,6 +42,8 @@ public final class IntegerValue implements Value, IntegerNumber
                 arg -> value < arg ? 1 : 0,
                 arg -> value == arg ? 1 : 0,
                 arg -> value != arg ? 1 : 0,
+                arg -> value & arg,
+                arg -> value | arg,
             })
             .flow()).<GenericPair<Text, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(n, f))))
             .append(new StructPair<Text, Value>
