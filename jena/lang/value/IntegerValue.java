@@ -9,7 +9,7 @@ import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
-public final class IntegerValue implements Value
+public final class IntegerValue implements Value, IntegerNumber
 {
     private int value;
     private Value members;
@@ -41,7 +41,7 @@ public final class IntegerValue implements Value
                 arg -> value == arg ? 1 : 0,
                 arg -> value != arg ? 1 : 0,
             })
-            .flow()).<GenericPair<Text, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(n, f, i -> i.value))))
+            .flow()).<GenericPair<Text, Value>>map(p -> action -> p.both((n, f) -> action.call(n, new IntegerMethodValue(n, f))))
             .append(new StructPair<Text, Value>
             (
                 new StringText("sqrt"), new MethodValue(new EmptyBuffer<Text>(), args -> new IntegerValue((int)Math.sqrt(value)))
@@ -89,5 +89,11 @@ public final class IntegerValue implements Value
     public Value call(ArgumentList arguments)
     {
         return this;
+    }
+
+    @Override
+    public int integer()
+    {
+        return value;
     }
 }

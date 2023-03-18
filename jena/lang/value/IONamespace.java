@@ -12,11 +12,11 @@ import jena.lang.text.Text;
 
 public final class IONamespace implements Namespace
 {
-    private Value members;
+    private Namespace names;
 
     public IONamespace()
     {
-        members = new NamespaceValue(new EmptyGenericFlow<GenericPair<Text, Value>>()
+        names = new HashMapNamespace(new EmptyGenericFlow<GenericPair<Text, Value>>()
         .append(new StructPair<>(new StringText("print"), new MethodValue(new SingleBuffer<Text>(new StringText("text")), args ->
         {
             Value arg = args.at(0);
@@ -24,7 +24,18 @@ public final class IONamespace implements Namespace
             return arg;
         })))
         .append(new StructPair<Text, Value>(new StringText("read"), new MethodValue(new EmptyBuffer<>(), args -> new TextValue(new InputStreamLineSource(System.in).text()))))
-        .append(new StructPair<Text, Value>(new StringText("readInt"), new MethodValue(new EmptyBuffer<>(), args -> new IntegerValue(Integer.valueOf(new InputStreamLineSource(System.in).text().string())))))
+        .append(new StructPair<Text, Value>(new StringText("readInt"), new MethodValue(new EmptyBuffer<>(), args ->
+        {
+            try
+            {
+                int value = Integer.valueOf(new InputStreamLineSource(System.in).text().string());
+                return new IntegerValue(value);
+            }
+            catch(Throwable error)
+            {
+                return NoneValue.instance;
+            }
+        })))
         .append(new StructPair<Text, Value>(new StringText("line"), new TextValue(new SingleCharacterText('\n'))))
         .append(new StructPair<Text, Value>(new StringText("space"), new TextValue(new SingleCharacterText(' '))))
         .collect());
@@ -33,6 +44,6 @@ public final class IONamespace implements Namespace
     @Override
     public Value name(Text name)
     {
-        return members.member(name);
+        return names.name(name);
     }
 }

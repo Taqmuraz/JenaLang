@@ -8,7 +8,6 @@ import jena.lang.text.SingleCharacterText;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
-import jena.lang.text.ValueText;
 
 public final class TupleValue implements Value
 {
@@ -21,7 +20,7 @@ public final class TupleValue implements Value
         members = new NamespaceValue(
             new SingleBuffer<GenericPair<Text, Value>>(
                 new StructPair<>(
-                    new StringText("count"),
+                    new StringText("size"),
                     new IntegerValue(items.length()))).flow()
                     .append(
                         new StructPair<>(
@@ -68,8 +67,7 @@ public final class TupleValue implements Value
     {
         return arguments.number(0, args -> items.at(items.length() - 1), () -> arguments.number(1, args ->
         {
-            Text text = new ValueText(args.at(0));
-            return items.at(Integer.valueOf(text.string()));
+            return items.at(new ExpressionIntegerNumber(args.at(0)).integer());
         }, () -> NoneValue.instance));
     }
 }

@@ -9,6 +9,7 @@ import jena.lang.syntax.TextSyntaxMistakePrinter;
 import jena.lang.value.IONamespace;
 import jena.lang.value.Namespace;
 import jena.lang.value.StorageNamespace;
+import jena.lang.value.SwingNamespace;
 
 public class Program
 {
@@ -16,7 +17,7 @@ public class Program
     {
         try
         {
-            Namespace namespace = new StorageNamespace(new File("sources"), new IONamespace());
+            Namespace namespace = new StorageNamespace(new File("sources"), new IONamespace().nested(new SwingNamespace()));
             while(true)
             {
                 Source source = new InputStreamLineSource(System.in);
