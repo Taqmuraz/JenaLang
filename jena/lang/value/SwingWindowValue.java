@@ -2,11 +2,17 @@ package jena.lang.value;
 
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Label;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import jena.lang.ArrayBuffer;
 import jena.lang.EmptyBuffer;
@@ -21,6 +27,30 @@ import jena.lang.text.ValueText;
 public final class SwingWindowValue implements Value
 {
     private Value members;
+
+    private static class ImagePanel extends JPanel
+    {
+        BufferedImage image;
+
+        public ImagePanel(Text file)
+        {
+            try
+            {
+                image = ImageIO.read(new File(file.string()));
+            }
+            catch(Throwable error)
+            {
+                image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+            }
+        }
+
+        @Override
+        public void paint(Graphics graphics)
+        {
+            Graphics2D g2 = (Graphics2D)graphics;
+            g2.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+        }
+    }
 
     private static class SwingWindowMember implements GenericPair<Text, ValueProducer>
     {
@@ -94,6 +124,24 @@ public final class SwingWindowValue implements Value
                     new ExpressionIntegerNumber(args.at(3)).integer(),
                     new ExpressionIntegerNumber(args.at(4)).integer());
                 components.add(button);
+                return this;
+            }),
+            new SwingWindowMember("image",
+                new ArrayBuffer<Text>(
+                    new StringText("file"),
+                    new StringText("x"),
+                    new StringText("y"),
+                    new StringText("width"),
+                    new StringText("height")), args ->
+            {
+                ImagePanel panel = new ImagePanel(new ValueText(args.at(0)));
+                panel.setLocation(
+                    new ExpressionIntegerNumber(args.at(1)).integer(),
+                    new ExpressionIntegerNumber(args.at(2)).integer());
+                panel.setSize(
+                    new ExpressionIntegerNumber(args.at(3)).integer(),
+                    new ExpressionIntegerNumber(args.at(4)).integer());
+                components.add(panel);
                 return this;
             })
         ));
