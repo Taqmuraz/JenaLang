@@ -12,7 +12,7 @@ public final class CompositeContinuousSyntaxRule implements ContinuousSyntaxRule
     }
 
     @Override
-    public void match(SourceSpan span, Syntax last, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
+    public void match(SourceSpan span, Syntax last, ContinuousSyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         for(ContinuousSyntaxRule rule : rules) rule.match(span, last, action, mistakeAction);
     }

@@ -16,12 +16,7 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new ClassClassicExpressionSyntaxRule(),
             new NegativeExpressionSyntaxRule()
         ),
-        new CompositeContinuousSyntaxRule
-        (
-            new BinaryExpressionSyntaxRule(),
-            new MemberAccessExpressionSyntaxRule(),
-            new InvocationExpressionSyntaxRule()
-        )
+        new AnyContinuousSyntaxRule()
     ), new CompositeSyntaxRule
     (
         new ArrowMethodSyntaxRule(),

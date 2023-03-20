@@ -5,18 +5,18 @@ import jena.lang.source.SourceSpan;
 public final class ContinuedSyntaxRule implements SyntaxRule
 {
     private SyntaxRule rule;
-    private ContinuousSyntaxRule continuous;
+    private ContinuousSyntaxRule continuousRule;
 
     public ContinuedSyntaxRule(SyntaxRule rule, ContinuousSyntaxRule continuous)
     {
         this.rule = rule;
-        this.continuous = continuous;
+        this.continuousRule = continuous;
     }
 
-    void continued(Syntax lastSyntax, SourceSpan lastSpan, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
+    void continued(Syntax lastSyntax, SourceSpan lastSpan, ContinuousSyntaxRule continuous, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         action.call(lastSyntax, lastSpan);
-        continuous.match(lastSpan, lastSyntax, (l, s) -> continued(l, s, action, mistakeAction), mistakeAction);
+        continuous.match(lastSpan, lastSyntax, (l, s, c) -> continued(l, s, c, action, mistakeAction), mistakeAction);
     }
 
     @Override
@@ -24,7 +24,7 @@ public final class ContinuedSyntaxRule implements SyntaxRule
     {
         rule.match(span, (lastSyntax, lastSpan) ->
         {
-            continued(lastSyntax, lastSpan, action, mistakeAction);
+            continued(lastSyntax, lastSpan, continuousRule, action, mistakeAction);
         }, mistakeAction);
     }
 }
