@@ -14,7 +14,8 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new ParenthesizedExpressionSyntaxRule(),
             new ArrayExpressionSyntaxRule(),
             new ClassClassicExpressionSyntaxRule(),
-            new NegativeExpressionSyntaxRule()
+            new NegativeExpressionSyntaxRule(),
+            new NotExpressionSyntaxRule()
         ),
         new AnyContinuousSyntaxRule()
     ), new CompositeSyntaxRule

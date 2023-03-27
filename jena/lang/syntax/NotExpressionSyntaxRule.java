@@ -4,14 +4,14 @@ import jena.lang.source.SourceSpan;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.StringText;
 
-public class NegativeExpressionSyntaxRule implements SyntaxRule
+public class NotExpressionSyntaxRule implements SyntaxRule
 {
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         new PrefixExpressionSyntaxRule(
-            new SingleCharacterText('-'),
-            new StringText("negative")
+            new SingleCharacterText('!'),
+            new StringText("not")
         ).match(span, action, mistakeAction);
     }
 }

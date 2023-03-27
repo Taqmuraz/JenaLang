@@ -56,6 +56,10 @@ public final class IntegerValue implements Value, IntegerNumber
             ))
             .append(new StructPair<Text, Value>
             (
+                new StringText("not"), new MethodValue(new EmptyBuffer<Text>(), args -> new IntegerValue(value == 0 ? 1 : 0))
+            ))
+            .append(new StructPair<Text, Value>
+            (
                 new StringText("times"), new MethodValue(new EmptyBuffer<Text>(), args ->
                 {
                     int times = value;
