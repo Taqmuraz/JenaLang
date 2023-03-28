@@ -11,12 +11,12 @@ import jena.lang.value.TupleValue;
 import jena.lang.value.Value;
 import jena.lang.value.ValueProducer;
 
-public final class MemberExpressionSyntax implements Syntax
+public final class PairExpressionSyntax implements Syntax
 {
     private Text name;
     private Syntax expression;
 
-    public MemberExpressionSyntax(Text name, Syntax expression)
+    public PairExpressionSyntax(Text name, Syntax expression)
     {
         this.name = name;
         this.expression = expression;
@@ -33,7 +33,7 @@ public final class MemberExpressionSyntax implements Syntax
     @Override
     public Syntax decomposed()
     {
-        return new MemberExpressionSyntax(name, expression.decomposed());
+        return new PairExpressionSyntax(name, expression.decomposed());
     }
 
     @Override

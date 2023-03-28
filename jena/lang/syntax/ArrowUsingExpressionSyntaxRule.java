@@ -3,6 +3,7 @@ package jena.lang.syntax;
 import jena.lang.GenericBuffer;
 import jena.lang.GenericFlow;
 import jena.lang.source.SourceSpan;
+import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
 
 public class ArrowUsingExpressionSyntaxRule implements SyntaxRule
@@ -11,11 +12,11 @@ public class ArrowUsingExpressionSyntaxRule implements SyntaxRule
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         new ArrowExpressionSyntaxRule(
-            new MemberExpressionSyntaxRule(),
+            new PairExpressionSyntaxRule(new SingleCharacterText('=')),
             new AnyExpressionSyntaxRule()
         ).match(span, (usings, expression, endSpan) ->
         {
-            GenericFlow<MemberExpressionSyntax> members = usings.flow().map(u -> (MemberExpressionSyntax)u);
+            GenericFlow<PairExpressionSyntax> members = usings.flow().map(u -> (PairExpressionSyntax)u);
             GenericBuffer<Text> names = members.map(m -> m.nameSyntax().struct().a).collect();
             GenericBuffer<Syntax> expressions = members.map(m -> m.nameSyntax().struct().b).collect();
             action.call(new UsingExpressionSyntax(expressions, names, expression), endSpan);
