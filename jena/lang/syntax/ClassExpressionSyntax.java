@@ -37,6 +37,6 @@ public final class ClassExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new ClassValue(arguments.map(SyntaxText::new), members.flow().map(m -> ((MemberExpressionSyntax)m).nameExpression()).collect(), namespace);
+        return new ClassValue(arguments.map(SyntaxText::new), members.flow().map(m -> ((MemberExpressionSyntax)m).nameValue()).collect(), namespace);
     }
 }

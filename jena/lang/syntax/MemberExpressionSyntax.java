@@ -42,7 +42,11 @@ public final class MemberExpressionSyntax implements Syntax
         return new TupleValue(new ArrayBuffer<Value>(new Value[] { new TextValue(name), expression.value(namespace) }));
     }
 
-    public GenericPair<Text, ValueProducer> nameExpression()
+    public GenericPair<Text, ValueProducer> nameValue()
+    {
+        return action -> action.call(name, expression);
+    }
+    public GenericPair<Text, Syntax> nameSyntax()
     {
         return action -> action.call(name, expression);
     }

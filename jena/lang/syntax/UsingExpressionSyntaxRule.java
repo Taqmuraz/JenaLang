@@ -2,6 +2,8 @@ package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
 import jena.lang.text.StringText;
+import jena.lang.text.SyntaxText;
+import jena.lang.text.Text;
 
 public final class UsingExpressionSyntaxRule implements SyntaxRule
 {
@@ -18,7 +20,7 @@ public final class UsingExpressionSyntaxRule implements SyntaxRule
                     {
                         new AnyExpressionSyntaxRule().match(namesSpan, (expression, exSpan) ->
                         {
-                            action.call(new UsingExpressionSyntax(expressions, names, expression), exSpan);
+                            action.call(new UsingExpressionSyntax(expressions, names.flow().<Text>map(SyntaxText::new).collect(), expression), exSpan);
                         }, mistakeAction);
                     }, mistakeAction);
                 }

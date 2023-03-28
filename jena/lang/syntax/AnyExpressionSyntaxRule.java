@@ -22,6 +22,7 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
     (
         new ArrowMethodSyntaxRule(),
         new ArrowClassSyntaxRule(),
+        new ArrowUsingExpressionSyntaxRule(),
         new ClassSingleMemberExpressionSyntaxRule(),
         new MethodExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule()

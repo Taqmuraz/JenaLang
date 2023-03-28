@@ -1,5 +1,4 @@
-using(Window(300, 350)) as (window)
-using(["Start", "Options", "Author", "Exit"]) as (labels)
+window:Window(300, 350) -> labels:["Start", "Options", "Author", "Exit"] ->
 [
     labels.size.times().each(i ->
     (
