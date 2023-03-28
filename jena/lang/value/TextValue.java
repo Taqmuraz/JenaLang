@@ -6,10 +6,12 @@ import jena.lang.text.TextWriter;
 public final class TextValue implements Value
 {
     private Text text;
+    private Value elements;
 
     public TextValue(Text text)
     {
         this.text = text;
+        elements = new TupleValue(text.buffer().flow().<Value>map(SymbolValue::new).collect());
     }
 
     @Override
@@ -21,12 +23,12 @@ public final class TextValue implements Value
     @Override
     public Value member(Text name)
     {
-        return NoneValue.instance;
+        return elements.member(name);
     }
 
     @Override
     public Value call(ArgumentList arguments)
     {
-        return this;
+        return elements.call(arguments);
     }
 }
