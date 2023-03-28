@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.Label;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
@@ -27,6 +26,46 @@ import jena.lang.text.ValueText;
 public final class SwingWindowValue implements Value
 {
     private Value members;
+    private WindowBuilder builder;
+
+    private interface WindowBuilder
+    {
+        JFrame build();
+    }
+
+    private static class InitialBuilder implements WindowBuilder
+    {
+        private int width;
+        private int height;
+
+        public InitialBuilder(int width, int height)
+        {
+            this.width = width;
+            this.height = height;
+        }
+
+        public JFrame build()
+        {
+            JFrame frame = new JFrame();
+            frame.setSize(width, height);
+            return frame;
+        }
+    }
+
+    private class AddComponentBuilder implements WindowBuilder
+    {
+        public AddComponentBuilder(Component component)
+        {
+            this.component = component;
+        }
+        private Component component;
+        public JFrame build()
+        {
+            JFrame frame = builder.build();
+            frame.add(component);
+            return frame;
+        }
+    }
 
     private static class ImagePanel extends JPanel
     {
@@ -72,17 +111,19 @@ public final class SwingWindowValue implements Value
 
     public SwingWindowValue(IntegerNumber width, IntegerNumber height)
     {
-        ArrayList<Component> components = new ArrayList<Component>();
+        this(new InitialBuilder(width.integer(), height.integer()));
+    }
+
+    private SwingWindowValue(WindowBuilder builder)
+    {
+        this.builder = builder;
 
         members = new ObjectValue(EmptyNamespace.instance, new ArrayBuffer<GenericPair<Text, ValueProducer>>(
             new NamePair<ValueProducer>("show", namespace -> new MethodValue(new EmptyBuffer<Text>(), args ->
             {
                 EventQueue.invokeLater(() ->
                 {
-                    JFrame frame = new JFrame();
-                    frame.setLayout(null);
-                    frame.setSize(width.integer(), height.integer());
-                    for(Component c : components) frame.add(c);
+                    JFrame frame = builder.build();
                     frame.setVisible(true);
                 });
                 return NoneValue.instance;
@@ -102,8 +143,7 @@ public final class SwingWindowValue implements Value
                     new ExpressionIntegerNumber(args.at(2)).integer(),
                     new ExpressionIntegerNumber(args.at(3)).integer(),
                     new ExpressionIntegerNumber(args.at(4)).integer());
-                components.add(label);
-                return this;
+                return new SwingWindowValue(new AddComponentBuilder(label));
             }),
             new SwingWindowMember("button",
                 new ArrayBuffer<Text>(
@@ -123,8 +163,7 @@ public final class SwingWindowValue implements Value
                 button.setSize(
                     new ExpressionIntegerNumber(args.at(3)).integer(),
                     new ExpressionIntegerNumber(args.at(4)).integer());
-                components.add(button);
-                return this;
+                return new SwingWindowValue(new AddComponentBuilder(button));
             }),
             new SwingWindowMember("image",
                 new ArrayBuffer<Text>(
@@ -141,8 +180,7 @@ public final class SwingWindowValue implements Value
                 panel.setSize(
                     new ExpressionIntegerNumber(args.at(3)).integer(),
                     new ExpressionIntegerNumber(args.at(4)).integer());
-                components.add(panel);
-                return this;
+                return new SwingWindowValue(new AddComponentBuilder(panel));
             })
         ));
     }

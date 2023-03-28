@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import jena.lang.ArrayBuffer;
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
 import jena.lang.SingleBuffer;
@@ -35,6 +36,22 @@ public final class TupleValue implements Value
                             {
                                 items.flow().read(item -> args.at(0).call(new SingleArgumentList(item)));
                                 return this;
+                            })
+                    ))
+                    .append(
+                        new StructPair<>(
+                            new StringText("pipe"),
+                            new MethodValue(new ArrayBuffer<>(
+                                new StringText("input"),
+                                new StringText("function")
+                            ), args ->
+                            {
+                                Value[] output = { args.at(0) };
+                                Value function = args.at(1);
+                                items.each(item -> output[0] = function.call(
+                                    new BufferArgumentList(
+                                        new ArrayBuffer<>(output[0], item))));
+                                return output[0];
                             })
                     ))
                     .append(
