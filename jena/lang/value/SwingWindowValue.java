@@ -47,22 +47,29 @@ public final class SwingWindowValue implements Value
         public JFrame build()
         {
             JFrame frame = new JFrame();
+            frame.setLayout(null);
             frame.setSize(width, height);
             return frame;
         }
     }
 
+    private interface ComponentBuilder
+    {
+        Component build();
+    }
+
+
     private class AddComponentBuilder implements WindowBuilder
     {
-        public AddComponentBuilder(Component component)
+        public AddComponentBuilder(ComponentBuilder component)
         {
             this.component = component;
         }
-        private Component component;
+        private ComponentBuilder component;
         public JFrame build()
         {
             JFrame frame = builder.build();
-            frame.add(component);
+            frame.add(component.build());
             return frame;
         }
     }
@@ -123,7 +130,7 @@ public final class SwingWindowValue implements Value
             {
                 EventQueue.invokeLater(() ->
                 {
-                    JFrame frame = builder.build();
+                    JFrame frame = this.builder.build();
                     frame.setVisible(true);
                 });
                 return NoneValue.instance;
@@ -136,14 +143,18 @@ public final class SwingWindowValue implements Value
                     new StringText("width"),
                     new StringText("height")), args ->
             {
-                Label label = new Label();
-                label.setText(new ValueText(args.at(0)).string());
-                label.setBounds(
-                    new ExpressionIntegerNumber(args.at(1)).integer(),
-                    new ExpressionIntegerNumber(args.at(2)).integer(),
-                    new ExpressionIntegerNumber(args.at(3)).integer(),
-                    new ExpressionIntegerNumber(args.at(4)).integer());
-                return new SwingWindowValue(new AddComponentBuilder(label));
+                
+                return new SwingWindowValue(new AddComponentBuilder(() ->
+                {
+                    Label label = new Label();
+                    label.setText(new ValueText(args.at(0)).string());
+                    label.setBounds(
+                        new ExpressionIntegerNumber(args.at(1)).integer(),
+                        new ExpressionIntegerNumber(args.at(2)).integer(),
+                        new ExpressionIntegerNumber(args.at(3)).integer(),
+                        new ExpressionIntegerNumber(args.at(4)).integer());
+                    return label;
+                }));
             }),
             new SwingWindowMember("button",
                 new ArrayBuffer<Text>(
@@ -154,16 +165,19 @@ public final class SwingWindowValue implements Value
                     new StringText("height"),
                     new StringText("click")), args ->
             {
-                JButton button = new JButton(new ValueText(args.at(0)).string());
-                button.doLayout();
-                button.addActionListener(e -> args.at(5).call(new EmptyArgumentList()));
-                button.setLocation(
-                    new ExpressionIntegerNumber(args.at(1)).integer(),
-                    new ExpressionIntegerNumber(args.at(2)).integer());
-                button.setSize(
-                    new ExpressionIntegerNumber(args.at(3)).integer(),
-                    new ExpressionIntegerNumber(args.at(4)).integer());
-                return new SwingWindowValue(new AddComponentBuilder(button));
+                
+                return new SwingWindowValue(new AddComponentBuilder(() ->
+                {
+                    JButton button = new JButton(new ValueText(args.at(0)).string());
+                    button.addActionListener(e -> args.at(5).call(new EmptyArgumentList()));
+                    button.setLocation(
+                        new ExpressionIntegerNumber(args.at(1)).integer(),
+                        new ExpressionIntegerNumber(args.at(2)).integer());
+                    button.setSize(
+                        new ExpressionIntegerNumber(args.at(3)).integer(),
+                        new ExpressionIntegerNumber(args.at(4)).integer());
+                    return button;
+                }));
             }),
             new SwingWindowMember("image",
                 new ArrayBuffer<Text>(
@@ -173,14 +187,17 @@ public final class SwingWindowValue implements Value
                     new StringText("width"),
                     new StringText("height")), args ->
             {
-                ImagePanel panel = new ImagePanel(new ValueText(args.at(0)));
-                panel.setLocation(
-                    new ExpressionIntegerNumber(args.at(1)).integer(),
-                    new ExpressionIntegerNumber(args.at(2)).integer());
-                panel.setSize(
-                    new ExpressionIntegerNumber(args.at(3)).integer(),
-                    new ExpressionIntegerNumber(args.at(4)).integer());
-                return new SwingWindowValue(new AddComponentBuilder(panel));
+                return new SwingWindowValue(new AddComponentBuilder(() ->
+                {
+                    ImagePanel panel = new ImagePanel(new ValueText(args.at(0)));
+                    panel.setLocation(
+                        new ExpressionIntegerNumber(args.at(1)).integer(),
+                        new ExpressionIntegerNumber(args.at(2)).integer());
+                    panel.setSize(
+                        new ExpressionIntegerNumber(args.at(3)).integer(),
+                        new ExpressionIntegerNumber(args.at(4)).integer());
+                    return panel;
+                }));
             })
         ));
     }

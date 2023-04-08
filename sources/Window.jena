@@ -1,9 +1,12 @@
-window=Window(300, 350) -> labels=["Start", "Options", "Author", "Exit"] ->
+labels=["Start", "Options", "Author", "Exit", "Missclick", "one more"] ->
+height=150 + (50 * labels.size()) ->
+window=Window(300, height) ->
 [
-    labels.size.times().pipe(window, (window, i) ->
+    first = (labels.size.times().pipe(window, (window, i) ->
     (
         window.button(labels(i), 50, 50 * (i + 1), 200, 50, () -> ["Click! ", labels(i), line].each(print))
     ))
-    .image("resources/Sea.jpeg", 0, 0, 300, 350)
-    .show()
+    .image("resources/Sea.jpeg", 0, 0, 300, height)) -> 
+    second = first.button("Second", 0, 0, 150, 25, () -> [ print("other click!"), print(line) ]) ->
+    [first, second].each(w -> w.show())
 ]
