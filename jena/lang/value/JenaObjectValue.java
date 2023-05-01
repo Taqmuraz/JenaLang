@@ -6,12 +6,12 @@ import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
-public final class ObjectValue implements Value
+public final class JenaObjectValue implements Value
 {
     private GenericBuffer<GenericPair<Text, Value>> members;
     private Namespace namespace;
 
-    public ObjectValue(Namespace namespace, GenericBuffer<GenericPair<Text, ValueProducer>> members)
+    public JenaObjectValue(Namespace namespace, GenericBuffer<GenericPair<Text, ValueProducer>> members)
     {
         Namespace arguments = namespace.nested(new SingleNamespace(new StringText("this"), this));
         this.members = members.map(p -> action -> p.both((name, producer) -> action.call(name, producer.value(arguments))));

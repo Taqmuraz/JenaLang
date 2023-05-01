@@ -45,7 +45,7 @@ public final class ClassValue implements Value
                 new PairNamespace(this.arguments.flow().zip(args.flow())
                 .append(new StructPair<>(new StringText("class"), this)).collect()
             ));
-            return new ObjectValue(argumentsSpace, members.map(p -> action -> p.both((name, syntax) -> action.call(name, syntax))));
+            return new JenaObjectValue(argumentsSpace, members.map(p -> action -> p.both((name, syntax) -> action.call(name, syntax))));
         },
         () -> NoneValue.instance);
     }

@@ -125,7 +125,7 @@ public final class SwingWindowValue implements Value
     {
         this.builder = builder;
 
-        members = new ObjectValue(EmptyNamespace.instance, new ArrayBuffer<GenericPair<Text, ValueProducer>>(
+        members = new JenaObjectValue(EmptyNamespace.instance, new ArrayBuffer<GenericPair<Text, ValueProducer>>(
             new NamePair<ValueProducer>("show", namespace -> new MethodValue(new EmptyBuffer<Text>(), args ->
             {
                 EventQueue.invokeLater(() ->
