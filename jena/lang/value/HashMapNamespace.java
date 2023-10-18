@@ -15,6 +15,10 @@ public final class HashMapNamespace implements Namespace
     {
         names.flow().read(p -> p.both((n, v) -> this.names.put(n.string(), v)));
     }
+    public HashMapNamespace(SymbolValuePair pairs)
+    {
+        pairs.use((t, v) -> names.put(t, v.call()));
+    }
 
     @Override
     public Value name(Text name)

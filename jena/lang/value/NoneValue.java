@@ -1,7 +1,6 @@
 package jena.lang.value;
 
 import jena.lang.text.StringText;
-import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
 public final class NoneValue implements Value
@@ -15,14 +14,14 @@ public final class NoneValue implements Value
     }
 
     @Override
-    public Value member(Text name)
+    public Value call(Value argument)
     {
         return instance;
     }
 
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return instance;
+        return v instanceof NoneValue;   
     }
 }

@@ -1,11 +1,17 @@
 package jena.lang.value;
 
-import jena.lang.text.Text;
+import jena.lang.GenericBuffer;
+import jena.lang.SingleBuffer;
 import jena.lang.text.TextWriter;
 
 public interface Value
 {
     void print(TextWriter writer);
-    Value member(Text name);
-    Value call(ArgumentList arguments);
+    Value call(Value argument);
+    boolean valueEquals(Value v);
+
+    default GenericBuffer<Value> decompose()
+    {
+        return new SingleBuffer<>(this);
+    }
 }

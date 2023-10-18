@@ -1,19 +1,22 @@
 package jena.lang.value;
 
-import jena.lang.GenericBuffer;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.StringText;
-import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
 public final class MethodValue implements Value
 {
-    private GenericBuffer<Text> arguments;
-    private ValueListFunction function;
+    private Value argument;
+    private ValueCallFunction function;
 
-    public MethodValue(GenericBuffer<Text> arguments, ValueListFunction function)
+    public MethodValue(Value argument, ValueCallFunction function)
     {
-        this.arguments = arguments;
+        this.argument = argument;
+        this.function = function;
+    }
+    public MethodValue(ValueCallFunction function)
+    {
+        this.argument = new EmptyTuple();
         this.function = function;
     }
 
@@ -22,20 +25,18 @@ public final class MethodValue implements Value
     {
         writer.write(new StringText("method"));
         writer.write(new SingleCharacterText('('));
-        Text separator = new SingleCharacterText(',');
-        arguments.join(separator).each(writer::write);
+        argument.print(writer::write);
         writer.write(new SingleCharacterText(')'));
     }
 
     @Override
-    public Value member(Text name)
+    public Value call(Value arg)
     {
-        return NoneValue.instance;
+        return function.call(arg);
     }
-
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return arguments.number(this.arguments.length(), function, () -> NoneValue.instance);
+        return v == this;
     }
 }

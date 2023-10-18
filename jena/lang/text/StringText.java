@@ -26,4 +26,10 @@ public final class StringText implements Text
     {
         return "deprecated";
     }
+
+    @Override
+    public String string()
+    {
+        return string;
+    }
 }

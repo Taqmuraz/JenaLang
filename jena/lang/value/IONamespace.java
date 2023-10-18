@@ -1,13 +1,7 @@
 package jena.lang.value;
 
-import jena.lang.EmptyBuffer;
-import jena.lang.EmptyGenericFlow;
-import jena.lang.GenericPair;
-import jena.lang.SingleBuffer;
-import jena.lang.StructPair;
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.text.SingleCharacterText;
-import jena.lang.text.StringText;
 import jena.lang.text.Text;
 
 public final class IONamespace implements Namespace
@@ -16,29 +10,29 @@ public final class IONamespace implements Namespace
 
     public IONamespace()
     {
-        names = new HashMapNamespace(new EmptyGenericFlow<GenericPair<Text, Value>>()
-        .append(new StructPair<>(new StringText("print"), new MethodValue(new SingleBuffer<Text>(new StringText("text")), args ->
+        names = new HashMapNamespace(action ->
         {
-            Value arg = args.at(0);
-            arg.print(s -> System.out.print(s.string()));
-            return arg;
-        })))
-        .append(new StructPair<Text, Value>(new StringText("read"), new MethodValue(new EmptyBuffer<>(), args -> new TextValue(new InputStreamLineSource(System.in).text()))))
-        .append(new StructPair<Text, Value>(new StringText("readInt"), new MethodValue(new EmptyBuffer<>(), args ->
-        {
-            try
+            action.call("print", () -> new MethodValue(new TextValue("text"), arg ->
             {
-                int value = Integer.valueOf(new InputStreamLineSource(System.in).text().string());
-                return new IntegerValue(value);
-            }
-            catch(Throwable error)
+                arg.print(s -> System.out.print(s.string()));
+                return arg;
+            }));
+            action.call("read", () -> new MethodValue(new EmptyTuple(), args -> new TextValue(new InputStreamLineSource(System.in).text())));
+            action.call("readInt", () -> new MethodValue(new EmptyTuple(), args ->
             {
-                return NoneValue.instance;
-            }
-        })))
-        .append(new StructPair<Text, Value>(new StringText("line"), new TextValue(new SingleCharacterText('\n'))))
-        .append(new StructPair<Text, Value>(new StringText("space"), new TextValue(new SingleCharacterText(' '))))
-        .collect());
+                try
+                {
+                    int value = Integer.valueOf(new InputStreamLineSource(System.in).text().string());
+                    return new NumberValue(value);
+                }
+                catch(Throwable error)
+                {
+                    return NoneValue.instance;
+                }
+            }));
+            action.call("line", () -> new TextValue(new SingleCharacterText('\n')));
+            action.call("space", () -> new TextValue(new SingleCharacterText(' ')));
+        });
     }
 
     @Override

@@ -7,9 +7,9 @@ public final class InvocationExpressionSyntaxRule implements ContinuousSyntaxRul
     @Override
     public void match(SourceSpan span, Syntax last, ContinuousSyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        new ArgumentListSyntaxRule().match(span, (args, argsSpan) ->
+        new AnyExpressionSyntaxRule().match(span, (arg, argSpan) ->
         {
-            action.call(new InvocationExpressionSyntax(last, args), argsSpan, new AnyContinuousSyntaxRule());
+            action.call(new InvocationExpressionSyntax(last, arg), argSpan, new AnyContinuousSyntaxRule());
         }, mistakeAction);
     }
 }

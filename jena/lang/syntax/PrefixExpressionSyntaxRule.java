@@ -1,6 +1,5 @@
 package jena.lang.syntax;
 
-import jena.lang.EmptyBuffer;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.Text;
 
@@ -24,8 +23,8 @@ public class PrefixExpressionSyntaxRule implements SyntaxRule
             {
                 action.call(
                     new InvocationExpressionSyntax(
-                        new MemberAccessExpressionSyntax(expression, methodName),
-                        new EmptyBuffer<Syntax>()), expressionSpan);
+                        new InvocationExpressionSyntax(expression, new SymbolLiteralSyntax(methodName)),
+                        new ParenthesizedSyntax(expression)), expressionSpan);
             }, mistakeAction);
         }
         else

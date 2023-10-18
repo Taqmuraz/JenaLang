@@ -6,46 +6,39 @@
 
 [a-z|A-Z]+ -- name
 
-([name|,*]+) -- argument list
+([name|,*]+) -- designation list
 
-([expression|,*]+) -- expression list
+([expression|,*]+) -- tuple
 
-\[[expression|,*]+)\] -- array
+\[[expression|,*]+\] -- array
 
-method [argument list] [expression] -- method
+function [designation list] [expression] -- function
 
 [expression] [+|-|*|/|<|>|==|!=] [expression] -- binary expression
 
-[expression].[name] -- member access expression
+\.[name] -- symbol expression
 
-[expression][expression list] -- invocation expression
+[expression][expression] -- invocation expression
 
 ([expression]) -- parenthesized expression
 
-using [expression list] as [argument list] [expression] -- using expression
+using [expression list] as [designation list] [expression] -- using expression
 
-[argument list | name] -> [expression] -- method arrow expression
+[designation list | name] -> [expression] -- function arrow expression
 
-[name]:[expression] -- member
-[name]=[expression] -- pair
+[name]:[expression] -- key-value-pair
+[name]=[expression] -- binding
 
-([member|,*]+) -- member list
-([name|,*]+) -- pair list
+([name|,*]+) -- binding list
 
-class[argument list][member list] -- classic class expression
+\{[key-value-pair|,]+\} -- map expression
+[key-value-pair] -- single element map
 
-class[argument list][member] -- class single member expression
-
-class[member] -- class single member without arguments expression
-
-[argument list | name] -> [member] -- class arrow expression
-
-[pair list | pair] -> [expression] -- using arrow expression
+[binding list | binding] -> [expression] -- using arrow expression
 
 continuous syntaxes :
 
 invocation expression
-member access expression
 binary expression
 
 continuable syntaxes :
@@ -54,9 +47,8 @@ int literal
 text literal
 name
 array
-member access expression
 parenthesized expression
-class expression
+map expression
 negative expression
 invocation expression
 member access expression
@@ -64,10 +56,10 @@ binary expression
 
 non-continuable syntaxes :
 
-method expression
-method arrow expression
+function expression
+function arrow expression
 using expression
 using arrow expression
-class single member expression
-class single member without arguments expression
-class arrow expression
+map single member expression
+map single member without arguments expression
+map arrow expression

@@ -3,11 +3,12 @@ package jena.lang.syntax;
 import jena.lang.GenericBuffer;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
+import jena.lang.value.EmptyTuple;
 import jena.lang.value.Namespace;
 import jena.lang.value.TupleValue;
 import jena.lang.value.Value;
 
-public final class ExpressionListSyntax implements Syntax
+public class ExpressionListSyntax implements Syntax
 {
     private GenericBuffer<Syntax> expressions;
     private Text openBrace;
@@ -35,6 +36,7 @@ public final class ExpressionListSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
+        if(expressions.length() == 0) return new EmptyTuple();
         return new TupleValue(expressions.flow().map(a -> a.value(namespace)).collect());
     }
 }

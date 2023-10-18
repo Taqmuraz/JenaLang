@@ -1,17 +1,22 @@
 package jena.lang.value;
 
+import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
 public final class TextValue implements Value
 {
     private Text text;
-    private Value elements;
+    private ValueFunction elements;
 
     public TextValue(Text text)
     {
         this.text = text;
-        elements = new TupleValue(text.buffer().flow().<Value>map(SymbolValue::new).collect());
+        elements = () -> new TupleValue(text.buffer().<Value>map(CharacterValue::new));
+    }
+    public TextValue(String text)
+    {
+        this(new StringText(text));
     }
 
     @Override
@@ -21,14 +26,13 @@ public final class TextValue implements Value
     }
 
     @Override
-    public Value member(Text name)
+    public Value call(Value argument)
     {
-        return elements.member(name);
+        return elements.call().call(argument);
     }
-
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return elements.call(arguments);
+        return v instanceof TextValue t && t.text.compare(text);
     }
 }

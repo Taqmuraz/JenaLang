@@ -2,7 +2,7 @@ package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
 
-public final class ArgumentListSyntaxRule implements SyntaxListRule
+public final class ListSyntaxRule implements SyntaxListRule
 {
     public void match(SourceSpan span, SyntaxListSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {

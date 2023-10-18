@@ -23,14 +23,15 @@ public final class NamespaceValue implements Value
     }
 
     @Override
-    public Value member(Text name)
+    public Value call(Value argument)
     {
-        return namespace.name(name);
+        if(argument instanceof SymbolValue symbol) return namespace.name(symbol.name);
+        return NoneValue.instance; 
     }
 
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return NoneValue.instance;
+        return v == this;
     }
 }

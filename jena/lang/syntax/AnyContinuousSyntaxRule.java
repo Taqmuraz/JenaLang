@@ -7,7 +7,6 @@ public class AnyContinuousSyntaxRule implements ContinuousSyntaxRule
     private ContinuousSyntaxRule rule = new CompositeContinuousSyntaxRule
     (
         new BinaryExpressionSyntaxRule(),
-        new MemberAccessExpressionSyntaxRule(),
         new InvocationExpressionSyntaxRule()
     );
 

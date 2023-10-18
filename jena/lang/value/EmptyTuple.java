@@ -1,23 +1,16 @@
 package jena.lang.value;
 
-import jena.lang.text.ConcatText;
+import jena.lang.EmptyBuffer;
+import jena.lang.GenericBuffer;
 import jena.lang.text.StringText;
-import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
-public class SymbolValue implements Value
+public final class EmptyTuple implements Value
 {
-    Text name;
-
-    public SymbolValue(Text name)
-    {
-        this.name = name;
-    }
-
     @Override
     public void print(TextWriter writer)
     {
-        writer.write(new ConcatText(new StringText("."), name));
+        writer.write(new StringText("()"));
     }
 
     @Override
@@ -27,8 +20,14 @@ public class SymbolValue implements Value
     }
 
     @Override
+    public GenericBuffer<Value> decompose()
+    {
+        return new EmptyBuffer<Value>();
+    }
+
+    @Override
     public boolean valueEquals(Value v)
     {
-        return v instanceof SymbolValue s && s.name.compare(name);
+        return v.decompose().length() == 0;
     }
 }

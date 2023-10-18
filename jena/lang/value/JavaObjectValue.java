@@ -28,14 +28,14 @@ public final class JavaObjectValue implements Value
     }
 
     @Override
-    public Value member(Text name)
+    public Value call(Value argument)
     {
-        return members.name(name);
+        return NoneValue.instance;
     }
 
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return NoneValue.instance;
+        return v instanceof JavaObjectValue j && j.object.equals(object);
     }
 }

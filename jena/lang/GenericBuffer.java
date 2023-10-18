@@ -33,4 +33,12 @@ public interface GenericBuffer<Element>
     {
         return new ZipBuffer<Element, Other>(this, others);
     }
+    default boolean all(Condition<Element> condition)
+    {
+        for(int i = 0, length = length(); i < length; i++)
+        {
+            if(!condition.match(at(i))) return false;
+        }
+        return true;
+    }
 }

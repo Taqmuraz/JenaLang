@@ -13,12 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import jena.lang.ArrayBuffer;
-import jena.lang.EmptyBuffer;
-import jena.lang.GenericBuffer;
-import jena.lang.GenericPair;
-import jena.lang.GenericPairBothAction;
-import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.text.ValueText;
@@ -98,35 +92,18 @@ public final class SwingWindowValue implements Value
         }
     }
 
-    private static class SwingWindowMember implements GenericPair<Text, ValueProducer>
+    public SwingWindowValue(Single width, Single height)
     {
-        private Text name;
-        private ValueProducer value;
-
-        public SwingWindowMember(String name, GenericBuffer<Text> arguments, ValueListFunction function)
-        {
-            this.name = new StringText(name);
-            value = n -> new MethodValue(arguments, function);
-        }
-
-        @Override
-        public void both(GenericPairBothAction<Text, ValueProducer> action)
-        {
-            action.call(name, value);
-        }
-    }
-
-    public SwingWindowValue(IntegerNumber width, IntegerNumber height)
-    {
-        this(new InitialBuilder(width.integer(), height.integer()));
+        this(new InitialBuilder((int)width.single(), (int)height.single()));
     }
 
     private SwingWindowValue(WindowBuilder builder)
     {
         this.builder = builder;
 
-        members = new JenaObjectValue(EmptyNamespace.instance, new ArrayBuffer<GenericPair<Text, ValueProducer>>(
-            new NamePair<ValueProducer>("show", namespace -> new MethodValue(new EmptyBuffer<Text>(), args ->
+        members = new SymbolMatchValue(action ->
+        {
+            action.call("show", () -> new MethodValue(new EmptyTuple(), arg ->
             {
                 EventQueue.invokeLater(() ->
                 {
@@ -134,72 +111,71 @@ public final class SwingWindowValue implements Value
                     frame.setVisible(true);
                 });
                 return NoneValue.instance;
-            })),
-            new SwingWindowMember("label",
-                new ArrayBuffer<Text>(
-                    new StringText("text"),
-                    new StringText("x"),
-                    new StringText("y"),
-                    new StringText("width"),
-                    new StringText("height")), args ->
+            }));
+            action.call("label", () -> new MethodValue(new TupleValue(
+                    new TextValue("text"),
+                    new TextValue("x"),
+                    new TextValue("y"),
+                    new TextValue("width"),
+                    new TextValue("height")), arg ->
             {
-                
+                var args = arg.decompose();
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
                     Label label = new Label();
                     label.setText(new ValueText(args.at(0)).string());
                     label.setBounds(
-                        new ExpressionIntegerNumber(args.at(1)).integer(),
-                        new ExpressionIntegerNumber(args.at(2)).integer(),
-                        new ExpressionIntegerNumber(args.at(3)).integer(),
-                        new ExpressionIntegerNumber(args.at(4)).integer());
+                        new ExpressionNumber(args.at(1)).integer(),
+                        new ExpressionNumber(args.at(2)).integer(),
+                        new ExpressionNumber(args.at(3)).integer(),
+                        new ExpressionNumber(args.at(4)).integer());
                     return label;
                 }));
-            }),
-            new SwingWindowMember("button",
-                new ArrayBuffer<Text>(
-                    new StringText("text"),
-                    new StringText("x"),
-                    new StringText("y"),
-                    new StringText("width"),
-                    new StringText("height"),
-                    new StringText("click")), args ->
+            }));
+            action.call("button", () -> new MethodValue(new TupleValue(
+                    new TextValue("text"),
+                    new TextValue("x"),
+                    new TextValue("y"),
+                    new TextValue("width"),
+                    new TextValue("height"),
+                    new TextValue("click")), arg ->
             {
-                
+                var args = arg.decompose();
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
                     JButton button = new JButton(new ValueText(args.at(0)).string());
-                    button.addActionListener(e -> args.at(5).call(new EmptyArgumentList()));
+                    button.addActionListener(e -> args.at(5).call(new EmptyTuple()));
                     button.setLocation(
-                        new ExpressionIntegerNumber(args.at(1)).integer(),
-                        new ExpressionIntegerNumber(args.at(2)).integer());
+                        new ExpressionNumber(args.at(1)).integer(),
+                        new ExpressionNumber(args.at(2)).integer());
                     button.setSize(
-                        new ExpressionIntegerNumber(args.at(3)).integer(),
-                        new ExpressionIntegerNumber(args.at(4)).integer());
+                        new ExpressionNumber(args.at(3)).integer(),
+                        new ExpressionNumber(args.at(4)).integer());
                     return button;
                 }));
-            }),
-            new SwingWindowMember("image",
-                new ArrayBuffer<Text>(
-                    new StringText("file"),
-                    new StringText("x"),
-                    new StringText("y"),
-                    new StringText("width"),
-                    new StringText("height")), args ->
+            }));
+            action.call("image", () -> new MethodValue(new TupleValue(
+                    new TextValue("file"),
+                    new TextValue("x"),
+                    new TextValue("y"),
+                    new TextValue("width"),
+                    new TextValue("height")), arg ->
             {
+                var args = arg.decompose();
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
                     ImagePanel panel = new ImagePanel(new ValueText(args.at(0)));
                     panel.setLocation(
-                        new ExpressionIntegerNumber(args.at(1)).integer(),
-                        new ExpressionIntegerNumber(args.at(2)).integer());
+                        new ExpressionNumber(args.at(1)).integer(),
+                        new ExpressionNumber(args.at(2)).integer());
                     panel.setSize(
-                        new ExpressionIntegerNumber(args.at(3)).integer(),
-                        new ExpressionIntegerNumber(args.at(4)).integer());
+                        new ExpressionNumber(args.at(3)).integer(),
+                        new ExpressionNumber(args.at(4)).integer());
                     return panel;
                 }));
-            })
-        ));
+            }));
+        },
+        args -> NoneValue.instance);
     }
 
     @Override
@@ -207,16 +183,15 @@ public final class SwingWindowValue implements Value
     {
         members.print(writer);
     }
-
     @Override
-    public Value member(Text name)
+    public Value call(Value argument)
     {
-        return members.member(name);
+        return members.call(argument);
     }
 
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return members.call(arguments);
+        return v == this;
     }
 }

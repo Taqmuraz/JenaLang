@@ -2,11 +2,8 @@ package jena.lang.value;
 
 import jena.lang.ArrayBuffer;
 import jena.lang.GenericBuffer;
-import jena.lang.GenericPair;
-import jena.lang.SingleBuffer;
 import jena.lang.StructPair;
 import jena.lang.text.SingleCharacterText;
-import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
@@ -15,51 +12,42 @@ public final class TupleValue implements Value
     private GenericBuffer<Value> items;
     private Value members;
 
+    public TupleValue(Value... items)
+    {
+        this(new ArrayBuffer<>(items));
+    }
+
     public TupleValue(GenericBuffer<Value> items)
     {
         this.items = items;
-        members = new NamespaceValue(
-            new SingleBuffer<GenericPair<Text, Value>>(
-                new StructPair<>(
-                    new StringText("size"),
-                    new IntegerValue(items.length()))).flow()
-                    .append(
-                        new StructPair<>(
-                            new StringText("map"),
-                            new MethodValue(new SingleBuffer<>(new StringText("function")), args ->
-                                new TupleValue(items.map(item ->
-                                args.at(0).call(new SingleArgumentList(item)))))))
-                    .append(
-                        new StructPair<>(
-                            new StringText("each"),
-                            new MethodValue(new SingleBuffer<>(new StringText("action")), args ->
-                            {
-                                items.flow().read(item -> args.at(0).call(new SingleArgumentList(item)));
-                                return this;
-                            })
-                    ))
-                    .append(
-                        new StructPair<>(
-                            new StringText("pipe"),
-                            new MethodValue(new ArrayBuffer<>(
-                                new StringText("input"),
-                                new StringText("function")
-                            ), args ->
-                            {
-                                Value[] output = { args.at(0) };
-                                Value function = args.at(1);
-                                items.each(item -> output[0] = function.call(
-                                    new BufferArgumentList(
-                                        new ArrayBuffer<>(output[0], item))));
-                                return output[0];
-                            })
-                    ))
-                    .append(
-                        new StructPair<>(
-                            new StringText("join"),
-                            new MethodValue(new SingleBuffer<>(new StringText("separator")), args -> new TupleValue(items.join(args.at(0))))
-                        )
-                    ).collect());
+        members = new SymbolMatchValue(action ->
+        {
+            action.call("size", () -> new NumberValue(items.length()));
+            action.call("map", () -> new MethodValue(new TextValue("function"), arg ->
+                new TupleValue(items.map(item ->
+                arg.call(item)))));
+            action.call("each", () -> new MethodValue(new TextValue("action"), arg ->
+            {
+                items.flow().read(item -> arg.call(item));
+                return this;
+            }));
+            action.call("pipe", () -> new MethodValue(new TupleValue(
+                new TextValue("input"),
+                new TextValue("function")
+            ), arg ->
+            {
+                var args = arg.decompose();
+
+                Value[] output = { args.at(0) };
+                Value function = args.at(1);
+                items.each(item -> output[0] = function.call(
+                        new TupleValue(output[0], item)));
+                return output[0];
+            }));
+            action.call("join", () -> new MethodValue(new TextValue("separator"),
+                arg -> new TupleValue(items.join(arg))));
+        },
+        argument -> items.at(new ExpressionNumber(argument).integer()));
     }
 
     @Override
@@ -74,17 +62,23 @@ public final class TupleValue implements Value
     }
 
     @Override
-    public Value member(Text name)
+    public GenericBuffer<Value> decompose()
     {
-        return members.member(name);
+        return items;
     }
 
     @Override
-    public Value call(ArgumentList arguments)
+    public Value call(Value argument)
     {
-        return arguments.number(0, args -> items.at(items.length() - 1), () -> arguments.number(1, args ->
-        {
-            return items.at(new ExpressionIntegerNumber(args.at(0)).integer());
-        }, () -> NoneValue.instance));
+        var arguments = argument.decompose();
+        if(arguments.length() == 0) return items.at(items.length() - 1);
+        return members.call(argument);
+    }
+
+    @Override
+    public boolean valueEquals(Value v)
+    {
+        var d = v.decompose();
+        return d.length() == items.length() && items.zip(d).map(StructPair::new).all(s -> s.a.valueEquals(s.b));
     }
 }

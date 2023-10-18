@@ -9,21 +9,20 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
         new CompositeSyntaxRule
         (
             new IntegerLiteralSyntaxRule(),
+            new SymbolLiteralSyntaxRule(),
             new TextLiteralExpressionSyntaxRule(),
             new NameExpressionSyntaxRule(),
             new ParenthesizedExpressionSyntaxRule(),
             new ArrayExpressionSyntaxRule(),
-            new ClassClassicExpressionSyntaxRule(),
             new NegativeExpressionSyntaxRule(),
+            new BindingExpressionSyntaxRule(),
             new NotExpressionSyntaxRule()
         ),
         new AnyContinuousSyntaxRule()
     ), new CompositeSyntaxRule
     (
         new ArrowMethodSyntaxRule(),
-        new ArrowClassSyntaxRule(),
         new ArrowUsingExpressionSyntaxRule(),
-        new ClassSingleMemberExpressionSyntaxRule(),
         new MethodExpressionSyntaxRule(),
         new UsingExpressionSyntaxRule()
     ));

@@ -1,6 +1,5 @@
 package jena.lang.value;
 
-import jena.lang.ArrayBuffer;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
 
@@ -10,19 +9,17 @@ public final class SwingNamespace implements Namespace
 
     public SwingNamespace()
     {
-        names = new SingleNamespace(new StringText("Window"),
-            new MethodValue(
-                new ArrayBuffer<Text>(
-                    new StringText("width"),
-                    new StringText("height")
-                ),
-                args ->
-                {
-                    return new SwingWindowValue(
-                        new ExpressionIntegerNumber(args.at(0)),
-                        new ExpressionIntegerNumber(args.at(1)));
-                }
-            ));
+        names = new SingleNamespace(new StringText("Window"), new MethodValue(new TupleValue(
+            new TextValue("width"),
+            new TextValue("height")
+        ),
+        arg ->
+        {
+            var args = arg.decompose();
+            return new SwingWindowValue(
+                new ExpressionNumber(args.at(0)),
+                new ExpressionNumber(args.at(1)));
+        }));
     }
 
     @Override

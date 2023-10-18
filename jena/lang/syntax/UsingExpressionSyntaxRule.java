@@ -12,7 +12,7 @@ public final class UsingExpressionSyntaxRule implements SyntaxRule
     {
         if(span.at(0).text().compareString("using"))
         {
-            new ArgumentListSyntaxRule().match(span.skip(1), (expressions, expressionsSpan) ->
+            new ListSyntaxRule().match(span.skip(1), (expressions, expressionsSpan) ->
             {
                 if(expressionsSpan.at(0).text().compareString("as"))
                 {

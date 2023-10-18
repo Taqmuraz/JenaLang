@@ -1,41 +1,38 @@
 package jena.lang.syntax;
 
-import jena.lang.GenericBuffer;
-import jena.lang.text.SingleCharacterText;
 import jena.lang.text.TextWriter;
-import jena.lang.value.BufferArgumentList;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
 public final class InvocationExpressionSyntax implements Syntax
 {
     private Syntax expression;
-    private GenericBuffer<Syntax> arguments;
-    private Syntax argumentList;
+    private Syntax argument;
 
-    public InvocationExpressionSyntax(Syntax expression, GenericBuffer<Syntax> arguments)
+    public InvocationExpressionSyntax(Syntax expression, Syntax argument)
     {
         this.expression = expression;
-        this.arguments = arguments;
-        this.argumentList = new ExpressionListSyntax(arguments, new SingleCharacterText('('), new SingleCharacterText(')'));
+        this.argument = argument;
     }
 
     @Override
     public void text(TextWriter writer)
     {
         expression.text(writer);
-        argumentList.text(writer);
+        writer.write("(");
+        argument.text(writer);
+        writer.write(")");
     }
 
     @Override
     public Syntax decomposed()
     {
-        return new InvocationExpressionSyntax(expression.decomposed(), arguments.flow().map(a -> a.decomposed()).collect());
+        return new InvocationExpressionSyntax(expression.decomposed(), argument.decomposed());
     }
 
     @Override
     public Value value(Namespace namespace)
     {
-        return expression.value(namespace).call(new BufferArgumentList(arguments.flow().map(a -> a.value(namespace)).collect()));
+        return expression.value(namespace).call(argument.value(namespace));
     }
 }

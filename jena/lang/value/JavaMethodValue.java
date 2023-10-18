@@ -3,7 +3,6 @@ package jena.lang.value;
 import java.lang.reflect.Method;
 
 import jena.lang.text.StringText;
-import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
 public final class JavaMethodValue implements Value
@@ -22,14 +21,14 @@ public final class JavaMethodValue implements Value
     }
 
     @Override
-    public Value member(Text name)
+    public Value call(Value argument)
     {
-        return NoneValue.instance;
+        return new TextValue(new StringText(method.toString()));
     }
 
     @Override
-    public Value call(ArgumentList arguments)
+    public boolean valueEquals(Value v)
     {
-        return new TextValue(new StringText(method.toString()));
+        return v instanceof JavaMethodValue m && m.method.equals(method);
     }
 }

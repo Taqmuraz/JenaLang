@@ -1,7 +1,6 @@
 package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
-import jena.lang.text.SingleCharacterText;
 import jena.lang.text.SyntaxText;
 import jena.lang.text.Text;
 
@@ -27,7 +26,7 @@ public final class PairExpressionSyntaxRule implements SyntaxRule
             }
             else
             {
-                mistakeAction.call(new WrongSourceMistake(nameSpan.at(0), new SingleCharacterText(':')), nameSpan);
+                mistakeAction.call(new WrongSourceMistake(nameSpan.at(0), symbol), nameSpan);
             }
         }, mistakeAction);
     }

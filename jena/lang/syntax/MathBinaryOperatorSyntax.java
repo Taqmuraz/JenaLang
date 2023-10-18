@@ -1,6 +1,5 @@
 package jena.lang.syntax;
 
-import jena.lang.SingleBuffer;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
@@ -42,7 +41,7 @@ public final class MathBinaryOperatorSyntax implements BinaryOperatorSyntax
             case "|":name = "or"; break;
             default:name = "unknownOperator";
         }
-        return new InvocationExpressionSyntax(new MemberAccessExpressionSyntax(left, new StringText(name)), new SingleBuffer<Syntax>(right));
+        return new InvocationExpressionSyntax(new InvocationExpressionSyntax(left, new SymbolLiteralSyntax(new StringText(name))), new ParenthesizedSyntax(right));
     }
 
     @Override

@@ -11,7 +11,7 @@ public final class MemberListSyntaxRule implements SyntaxListRule
     {
         Text openBrace = new SingleCharacterText('(');
         Text closeBrace = new SingleCharacterText(')');
-        new ExpressionListSyntaxRule(new MemberExpressionSyntaxRule(), openBrace, closeBrace).match(span, (parameters, endSpan) ->
+        new ExpressionListSyntaxRule(new BindingExpressionSyntaxRule(), openBrace, closeBrace).match(span, (parameters, endSpan) ->
         {
             action.call(parameters, endSpan);
         }, mistakeAction);
