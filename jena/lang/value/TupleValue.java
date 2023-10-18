@@ -20,7 +20,7 @@ public final class TupleValue implements Value
     public TupleValue(GenericBuffer<Value> items)
     {
         this.items = items;
-        members = new SymbolMatchValue(action ->
+        members = new SymbolMapValue(action ->
         {
             action.call("size", () -> new NumberValue(items.length()));
             action.call("map", () -> new MethodValue(new TextValue("function"), arg ->

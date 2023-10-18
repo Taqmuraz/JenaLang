@@ -3,6 +3,7 @@ package jena.lang.syntax;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
+import jena.lang.value.TupleValue;
 
 public final class ArrayExpressionSyntaxRule implements SyntaxRule
 {
@@ -13,7 +14,11 @@ public final class ArrayExpressionSyntaxRule implements SyntaxRule
         Text closeBrace = new SingleCharacterText(']');
         new ExpressionListSyntaxRule(new AnyExpressionSyntaxRule(), openBrace, closeBrace).match(span, (elements, endSpan) ->
         {
-            action.call(new ExpressionListSyntax(elements, openBrace, closeBrace), endSpan);
+            action.call(new ExpressionListSyntax(
+                elements,
+                openBrace,
+                closeBrace,
+                TupleValue::new), endSpan);
         }, mistakeAction);
     }
 }

@@ -16,7 +16,9 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new ArrayExpressionSyntaxRule(),
             new NegativeExpressionSyntaxRule(),
             new BindingExpressionSyntaxRule(),
-            new NotExpressionSyntaxRule()
+            new NotExpressionSyntaxRule(),
+            new TupleExpressionSyntaxRule(),
+            new BindingListSyntaxRule()
         ),
         new AnyContinuousSyntaxRule()
     ), new CompositeSyntaxRule

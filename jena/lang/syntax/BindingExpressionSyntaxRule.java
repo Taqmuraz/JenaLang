@@ -8,6 +8,6 @@ public final class BindingExpressionSyntaxRule implements SyntaxRule
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        new PairExpressionSyntaxRule(new SingleCharacterText(':')).match(span, action, mistakeAction);
+        new BindingSyntaxRule(new SingleCharacterText(':')).match(span, action, mistakeAction);
     }
 }

@@ -2,16 +2,18 @@ package jena.lang.value;
 
 import java.util.HashMap;
 
+import jena.lang.GenericFlow;
 import jena.lang.IterableFlow;
 import jena.lang.text.StringText;
+import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
-public class SymbolMatchValue implements Value
+public class SymbolMapValue implements Value
 {
     HashMap<String, ValueFunction> map = new HashMap<>();
     ValueCallFunction defaultValue;
 
-    public SymbolMatchValue(SymbolValuePair pairs, ValueCallFunction defaultValue)
+    public SymbolMapValue(SymbolValuePair pairs, ValueCallFunction defaultValue)
     {
         pairs.use((t, v) -> map.put(t, v));
         this.defaultValue = defaultValue;
@@ -20,14 +22,15 @@ public class SymbolMatchValue implements Value
     @Override
     public void print(TextWriter writer)
     {
-        new IterableFlow<>(map.entrySet()).read(e ->
+        writer.write(new StringText("{"));
+        new IterableFlow<>(map.entrySet()).<GenericFlow<Text>>map(e -> f ->
         {
-            writer.write(new StringText("{"));
-            writer.write(new StringText(e.getKey()));
-            writer.write(new StringText(":"));
-            e.getValue().call().print(writer);
-            writer.write(new StringText("}"));
-        });
+            f.call(new StringText(e.getKey()));
+            f.call(new StringText(":"));
+            e.getValue().call().print(f::call);
+        })
+        .join(e -> e.read(writer::write), () -> writer.write(new StringText(", ")));
+        writer.write(new StringText("}"));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package jena.lang.value;
 
+import jena.lang.ArrayBuffer;
+import jena.lang.GenericBuffer;
 import jena.lang.text.TextWriter;
 
 public final class SingleElementMapValue implements Value
@@ -31,5 +33,10 @@ public final class SingleElementMapValue implements Value
     public boolean valueEquals(Value v)
     {
         return v == this;
+    }
+    @Override
+    public GenericBuffer<Value> decompose()
+    {
+        return new ArrayBuffer<>(element, value);
     }
 }

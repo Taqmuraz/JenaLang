@@ -101,7 +101,7 @@ public final class SwingWindowValue implements Value
     {
         this.builder = builder;
 
-        members = new SymbolMatchValue(action ->
+        members = new SymbolMapValue(action ->
         {
             action.call("show", () -> new MethodValue(new EmptyTuple(), arg ->
             {

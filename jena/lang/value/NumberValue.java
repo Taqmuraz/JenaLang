@@ -15,7 +15,7 @@ public final class NumberValue implements Value, Single
     public NumberValue(double value)
     {
         this.value = value;
-        this.members = new SymbolMatchValue(symbolValueAction ->
+        this.members = new SymbolMapValue(symbolValueAction ->
             new ArrayBuffer<String>(new String[]
             {
                 "add",    

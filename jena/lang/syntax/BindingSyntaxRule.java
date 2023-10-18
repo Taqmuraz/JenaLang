@@ -4,11 +4,11 @@ import jena.lang.source.SourceSpan;
 import jena.lang.text.SyntaxText;
 import jena.lang.text.Text;
 
-public final class PairExpressionSyntaxRule implements SyntaxRule
+public final class BindingSyntaxRule implements SyntaxRule
 {
     private Text symbol;
 
-    public PairExpressionSyntaxRule(Text symbol) {
+    public BindingSyntaxRule(Text symbol) {
         this.symbol = symbol;
     }
 
@@ -21,7 +21,7 @@ public final class PairExpressionSyntaxRule implements SyntaxRule
             {
                 new AnyExpressionSyntaxRule().match(nameSpan.skip(1), (expression, expressionSpan) ->
                 {
-                    action.call(new PairExpressionSyntax(new SyntaxText(name), expression), expressionSpan);
+                    action.call(new BindingExpressionSyntax(new SyntaxText(name), expression), expressionSpan);
                 }, mistakeAction);
             }
             else
