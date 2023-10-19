@@ -1,15 +1,15 @@
 using
 (
-    class(name, age)
+    (name, age) ->
     (
         info:printer -> ["Name : ", name, ", age : ", age].each(printer)
     ),
 
-    class(name) info:p -> ["Name : ", name].each(p),
+    name -> info:p -> ["Name : ", name].each(p),
 
-    class() info:printer -> printer("Just Harry"),
+    () -> info:printer -> printer("Just Harry"),
 
-    class info:printer -> printer("Just Peter"),
+    () -> info:printer -> printer("Just Peter"),
 
     (name, age, salary) -> info:reader -> ["Name : ", name, " Age : ", age, ", Worth : ", age * salary ].each(reader)
 )

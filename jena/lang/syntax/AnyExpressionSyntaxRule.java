@@ -18,7 +18,8 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
             new BindingExpressionSyntaxRule(),
             new NotExpressionSyntaxRule(),
             new TupleExpressionSyntaxRule(),
-            new BindingListSyntaxRule()
+            new BindingListSyntaxRule(),
+            new BindingExpressionSyntaxRule()
         ),
         new AnyContinuousSyntaxRule()
     ), new CompositeSyntaxRule

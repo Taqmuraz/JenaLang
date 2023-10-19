@@ -11,8 +11,7 @@ public final class SwingNamespace implements Namespace
     {
         names = new SingleNamespace(new StringText("Window"), new MethodValue(new TupleValue(
             new TextValue("width"),
-            new TextValue("height")
-        ),
+            new TextValue("height")),
         arg ->
         {
             var args = arg.decompose();

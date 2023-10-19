@@ -1,0 +1,3 @@
+nameAge = (name, age) -> info:(printer -> ["Name : ", name, ", ", age, line].each printer) ->
+nameOnly = name -> info:(printer -> ["Name : ", name].each printer) ->
+[nameAge("Harry", 11), nameOnly "Peter"].map.info.each(p -> p(print))

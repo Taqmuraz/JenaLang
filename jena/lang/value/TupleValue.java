@@ -33,8 +33,7 @@ public final class TupleValue implements Value
             }));
             action.call("pipe", () -> new MethodValue(new TupleValue(
                 new TextValue("input"),
-                new TextValue("function")
-            ), arg ->
+                new TextValue("function")), arg ->
             {
                 var args = arg.decompose();
 

@@ -44,35 +44,24 @@ public final class NumberValue implements Value, Single
                 arg -> (long)value | (long)arg,
             })
             .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> new NumberMethodValue(new TextValue(n), f))))
-            .append(new StructPair<String, ValueFunction>
-            (
-                "sqrt", () -> new MethodValue(args -> new NumberValue((int)Math.sqrt(value)))
-            ))
-            .append(new StructPair<String, ValueFunction>
-            (
-                "negative", () -> new MethodValue(args -> new NumberValue(-value))
-            ))
-            .append(new StructPair<String, ValueFunction>
-            (
-                "not", () -> new MethodValue(args -> new NumberValue(value == 0 ? 1 : 0))
-            ))
-            .append(new StructPair<String, ValueFunction>
-            (
-                "times", () -> new TupleValue(new GenericBuffer<Value>()
+            .append(new StructPair<String, ValueFunction>("sqrt", () -> new MethodValue(args -> new NumberValue((int)Math.sqrt(value)))))
+            .append(new StructPair<String, ValueFunction>("negative", () -> new MethodValue(args -> new NumberValue(-value))))
+            .append(new StructPair<String, ValueFunction>("not", () -> new MethodValue(args -> new NumberValue(value == 0 ? 1 : 0))))
+            .append(new StructPair<String, ValueFunction>("times", () -> new TupleValue(new GenericBuffer<Value>()
+            {
+                @Override
+                public int length()
                 {
-                    @Override
-                    public int length()
-                    {
-                        return (int)value;
-                    }
-                    @Override
-                    public Value at(int index)
-                    {
-                        return new NumberValue(index);
-                    }
-                })
-            ))
-            .read(p -> p.both(symbolValueAction::call)), arg -> NoneValue.instance);
+                    return (int)value;
+                }
+                @Override
+                public Value at(int index)
+                {
+                    return new NumberValue(index);
+                }
+            })
+        ))
+        .read(p -> p.both(symbolValueAction::call)), arg -> NoneValue.instance);
     }
 
     @Override

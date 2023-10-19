@@ -6,7 +6,7 @@ import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.SingleElementMapValue;
-import jena.lang.value.TextValue;
+import jena.lang.value.SymbolValue;
 import jena.lang.value.Value;
 import jena.lang.value.ValueProducer;
 
@@ -38,7 +38,7 @@ public final class BindingExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new SingleElementMapValue(new TextValue(name), expression.value(namespace));
+        return new SingleElementMapValue(new SymbolValue(name), expression.value(namespace));
     }
 
     public GenericPair<Text, ValueProducer> nameValue()

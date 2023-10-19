@@ -23,7 +23,8 @@ public class SymbolValue implements Value
     @Override
     public Value call(Value argument)
     {
-        return NoneValue.instance;
+        if(argument instanceof SymbolValue) return NoneValue.instance;
+        return argument.call(this);
     }
 
     @Override
