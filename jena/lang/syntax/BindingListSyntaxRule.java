@@ -6,6 +6,7 @@ import jena.lang.text.Text;
 import jena.lang.text.ValueText;
 import jena.lang.value.NoneValue;
 import jena.lang.value.SymbolMapValue;
+import jena.lang.value.SymbolValue;
 
 public final class BindingListSyntaxRule implements SyntaxRule
 {
@@ -21,7 +22,7 @@ public final class BindingListSyntaxRule implements SyntaxRule
                 {
                     var symbolValue = e.decompose();
                     var value = symbolValue.at(1);
-                    symbolValueAction.call(new ValueText(symbolValue.at(0)).string(), () -> value);
+                    symbolValueAction.call(((SymbolValue)symbolValue.at(0)).name.string(), () -> value);
                 }), args -> NoneValue.instance)), expressionsSpan);
         }, mistakeAction);
     }

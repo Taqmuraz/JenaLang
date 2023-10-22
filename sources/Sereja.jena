@@ -1,0 +1,6 @@
+obj =
+{
+    add:(a -> b -> a + b),
+    sub:(a -> b -> a - b)
+} ->
+[.add, .sub] .map obj .map (m -> m 10 20)

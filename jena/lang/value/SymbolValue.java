@@ -7,7 +7,7 @@ import jena.lang.text.TextWriter;
 
 public class SymbolValue implements Value
 {
-    Text name;
+    public final Text name;
 
     public SymbolValue(Text name)
     {
