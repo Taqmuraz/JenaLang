@@ -19,7 +19,7 @@ public final class NumberValue implements Value, Single
             new ArrayBuffer<String>(new String[]
             {
                 "add",    
-                "sub",    
+                "sub",
                 "mul",    
                 "div",
                 "greater",

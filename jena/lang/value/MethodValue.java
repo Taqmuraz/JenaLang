@@ -5,6 +5,11 @@ import jena.lang.text.TextWriter;
 
 public final class MethodValue implements Value
 {
+    public interface RecurCallFunction
+    {
+        Value call(Value arg, Value self);
+    }
+
     private Value argument;
     private ValueCallFunction function;
 
@@ -17,6 +22,11 @@ public final class MethodValue implements Value
     {
         this.argument = NoneValue.instance;
         this.function = function;
+    }
+    public MethodValue(String argumentName, RecurCallFunction function)
+    {
+        this.argument = new TextValue(argumentName);
+        this.function = arg -> function.call(arg, this);
     }
 
     @Override
