@@ -44,9 +44,9 @@ public final class NumberValue implements Value, Single
                 arg -> (long)value | (long)arg,
             })
             .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> new NumberMethodValue(n, f))))
-            .append(new StructPair<String, ValueFunction>("sqrt", () -> new MethodValue(args -> new NumberValue((int)Math.sqrt(value)))))
-            .append(new StructPair<String, ValueFunction>("negative", () -> new MethodValue(args -> new NumberValue(-value))))
-            .append(new StructPair<String, ValueFunction>("not", () -> new MethodValue(args -> new NumberValue(value == 0 ? 1 : 0))))
+            .append(new StructPair<String, ValueFunction>("sqrt", () -> new NumberValue((int)Math.sqrt(value))))
+            .append(new StructPair<String, ValueFunction>("negative", () -> new NumberValue(-value)))
+            .append(new StructPair<String, ValueFunction>("not", () -> new NumberValue(value == 0 ? 1 : 0)))
             .append(new StructPair<String, ValueFunction>("times", () -> new ArrayValue(new GenericBuffer<Value>()
             {
                 @Override

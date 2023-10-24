@@ -4,6 +4,8 @@ import java.io.File;
 
 import jena.lang.ArrayGenericFlow;
 import jena.lang.source.FileSource;
+import jena.lang.source.Source;
+import jena.lang.source.StringSource;
 import jena.lang.syntax.JenaSyntaxReader;
 import jena.lang.syntax.Syntax;
 import jena.lang.syntax.TextSyntaxMistakePrinter;
@@ -16,20 +18,26 @@ public final class StorageNamespace implements Namespace
 {
     private Namespace namespace;
 
-    static Syntax loadFromFile(String name)
+    static Syntax loadFromSource(Source source)
     {
         Syntax[] value = { null };
+        new JenaSyntaxReader(source).read(syntax ->
+        {
+            value[0] = syntax;
+        }, new TextSyntaxMistakePrinter());
+        if(value[0] == null) throw new RuntimeException("Error while reading source : " + source.text().string());
+        return value[0];
+    }
+
+    static Syntax loadFromFile(String name)
+    {
         File file = new File(name);
 
         if(file.exists())
         {
-            new JenaSyntaxReader(new FileSource(file)).read(syntax ->
-            {
-                value[0] = syntax;
-            }, new TextSyntaxMistakePrinter());
+            return loadFromSource(new FileSource(file));
         }
-        if(value[0] == null) throw new RuntimeException("Error while opening file : " + name); 
-        return value[0];
+        else throw new RuntimeException("Error while opening file : " + name);
     }
 
     public StorageNamespace(File root, Namespace namespace)
@@ -38,7 +46,8 @@ public final class StorageNamespace implements Namespace
             new PairNamespace(
                 new ArrayGenericFlow<Text>(
                     new StringText("source"),
-                    new StringText("inspect")).<Value>zip(
+                    new StringText("inspect"),
+                    new StringText("inspectl")).<Value>zip(
                         action ->
                         {
                             action.call(new MethodValue("fileName", arg ->
@@ -48,6 +57,11 @@ public final class StorageNamespace implements Namespace
                             action.call(new MethodValue("fileName", arg ->
                             {
                                 return new TextValue(new SyntaxText(loadFromFile(new ValueText(arg).string())));
+                            }));
+                            action.call(new MethodValue("line", arg ->
+                            {
+                                return new TextValue(new SyntaxText(loadFromSource(
+                                    new StringSource(new StringText("line"), new ValueText(arg).string()))));
                             }));
                         })
                         .collect()));
