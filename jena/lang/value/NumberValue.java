@@ -43,11 +43,11 @@ public final class NumberValue implements Value, Single
                 arg -> (long)value & (long)arg,
                 arg -> (long)value | (long)arg,
             })
-            .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> new NumberMethodValue(new TextValue(n), f))))
+            .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> new NumberMethodValue(n, f))))
             .append(new StructPair<String, ValueFunction>("sqrt", () -> new MethodValue(args -> new NumberValue((int)Math.sqrt(value)))))
             .append(new StructPair<String, ValueFunction>("negative", () -> new MethodValue(args -> new NumberValue(-value))))
             .append(new StructPair<String, ValueFunction>("not", () -> new MethodValue(args -> new NumberValue(value == 0 ? 1 : 0))))
-            .append(new StructPair<String, ValueFunction>("times", () -> new TupleValue(new GenericBuffer<Value>()
+            .append(new StructPair<String, ValueFunction>("times", () -> new ArrayValue(new GenericBuffer<Value>()
             {
                 @Override
                 public int length()
@@ -61,7 +61,7 @@ public final class NumberValue implements Value, Single
                 }
             })
         ))
-        .read(p -> p.both(symbolValueAction::call)), arg -> NoneValue.instance);
+        .read(p -> p.both(symbolValueAction::call)), arg -> new NumberValue(new ExpressionNumber(arg).single() + value));
     }
 
     @Override

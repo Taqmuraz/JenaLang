@@ -3,8 +3,8 @@ package jena.lang.syntax;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
-import jena.lang.text.ValueText;
 import jena.lang.value.NoneValue;
+import jena.lang.value.SingleElementMapValue;
 import jena.lang.value.SymbolMapValue;
 import jena.lang.value.SymbolValue;
 
@@ -20,9 +20,8 @@ public final class BindingListSyntaxRule implements SyntaxRule
             action.call(new ExpressionListSyntax(expressions, open, close, ex -> new SymbolMapValue(symbolValueAction ->
                 ex.each(e ->
                 {
-                    var symbolValue = e.decompose();
-                    var value = symbolValue.at(1);
-                    symbolValueAction.call(((SymbolValue)symbolValue.at(0)).name.string(), () -> value);
+                    var value = (SingleElementMapValue)e;
+                    symbolValueAction.call(((SymbolValue)value.element).name.string(), () -> value.value);
                 }), args -> NoneValue.instance)), expressionsSpan);
         }, mistakeAction);
     }

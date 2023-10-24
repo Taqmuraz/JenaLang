@@ -41,11 +41,11 @@ public final class StorageNamespace implements Namespace
                     new StringText("inspect")).<Value>zip(
                         action ->
                         {
-                            action.call(new MethodValue(new TupleValue(new TextValue("fileName")), arg ->
+                            action.call(new MethodValue("fileName", arg ->
                             {
                                 return loadFromFile(new ValueText(arg).string()).value(this);
                             }));
-                            action.call(new MethodValue(new TupleValue(new TextValue("fileName")), arg ->
+                            action.call(new MethodValue("fileName", arg ->
                             {
                                 return new TextValue(new SyntaxText(loadFromFile(new ValueText(arg).string())));
                             }));

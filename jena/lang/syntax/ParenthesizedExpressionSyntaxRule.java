@@ -6,7 +6,6 @@ import jena.lang.text.Text;
 
 public final class ParenthesizedExpressionSyntaxRule implements SyntaxRule
 {
-
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {

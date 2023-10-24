@@ -8,11 +8,13 @@ public final class ArrowMethodSyntaxRule implements SyntaxRule
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
         new ArrowExpressionSyntaxRule(
-            new NameExpressionSyntaxRule(),
+            new CompositeSyntaxRule(
+                new NameExpressionSyntaxRule(),
+                new NoneExpressionSyntaxRule()),
             new AnyExpressionSyntaxRule()
         ).match(span, (arguments, expression, endSpan) ->
         {
-            action.call(new MethodExpressionSyntax(arguments, expression), endSpan);
+            action.call(new ArrowExpressionSyntax(arguments, expression), endSpan);
         }, mistakeAction);
     }
 }

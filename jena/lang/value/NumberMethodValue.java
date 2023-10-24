@@ -6,9 +6,9 @@ public final class NumberMethodValue implements Value
 {
     private Value method;
 
-    public NumberMethodValue(Value argument, NumberFunction function)
+    public NumberMethodValue(String argumentName, NumberFunction function)
     {
-        method = new MethodValue(argument, arg ->
+        method = new MethodValue("number", arg ->
         {
             if(arg instanceof Single) return new NumberValue(function.call(((Single)arg).single()));
             else return NoneValue.instance;

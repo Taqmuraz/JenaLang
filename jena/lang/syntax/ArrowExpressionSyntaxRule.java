@@ -1,10 +1,5 @@
 package jena.lang.syntax;
 
-import jena.lang.GenericAction;
-import jena.lang.GenericBuffer;
-import jena.lang.GenericPair;
-import jena.lang.SingleBuffer;
-import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.StringText;
 
@@ -22,28 +17,19 @@ public final class ArrowExpressionSyntaxRule
 
     public void match(SourceSpan span, ArrowSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        GenericAction<GenericPair<SourceSpan,GenericBuffer<Syntax>>> matchAfterName = pair -> pair.both((argSpan, args) ->
+        argumentRule.match(span, (arg, argSpan) ->
         {
             if(argSpan.at(0).text().compareString("->"))
             {
                 expressionRule.match(argSpan.skip(1), (expression, expressionSpan) ->
                 {
-                    action.call(args, expression, expressionSpan);
+                    action.call(arg, expression, expressionSpan);
                 }, mistakeAction);
             }
             else
             {
                 mistakeAction.call(new WrongSourceMistake(argSpan.at(0), new StringText("->")), span);
             }
-        });
-
-        argumentRule.match(span, (arg, argSpan) ->
-        {
-            matchAfterName.call(new StructPair<>(argSpan, new SingleBuffer<>(arg)));
-        }, mistakeAction);
-        new ParenthesizedListSyntaxRule(argumentRule).match(span, (args, argSpan) ->
-        {
-            matchAfterName.call(new StructPair<>(argSpan, args));
         }, mistakeAction);
     }
 }

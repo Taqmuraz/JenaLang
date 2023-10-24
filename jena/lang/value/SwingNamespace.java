@@ -9,16 +9,13 @@ public final class SwingNamespace implements Namespace
 
     public SwingNamespace()
     {
-        names = new SingleNamespace(new StringText("Window"), new MethodValue(new TupleValue(
-            new TextValue("width"),
-            new TextValue("height")),
-        arg ->
+        names = new SingleNamespace(new StringText("Window"), new MethodValue("width", width ->
+            new MethodValue("height", height ->
         {
-            var args = arg.decompose();
             return new SwingWindowValue(
-                new ExpressionNumber(args.at(0)),
-                new ExpressionNumber(args.at(1)));
-        }));
+                new ExpressionNumber(width),
+                new ExpressionNumber(height));
+        })));
     }
 
     @Override

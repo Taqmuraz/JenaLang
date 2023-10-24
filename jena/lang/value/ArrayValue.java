@@ -7,44 +7,39 @@ import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
-public final class TupleValue implements Value
+public final class ArrayValue implements Value
 {
     private GenericBuffer<Value> items;
     private Value members;
 
-    public TupleValue(Value... items)
+    public ArrayValue(Value... items)
     {
         this(new ArrayBuffer<>(items));
     }
 
-    public TupleValue(GenericBuffer<Value> items)
+    public ArrayValue(GenericBuffer<Value> items)
     {
         this.items = items;
         members = new SymbolMapValue(action ->
         {
             action.call("size", () -> new NumberValue(items.length()));
-            action.call("map", () -> new MethodValue(new TextValue("function"), arg ->
-                new TupleValue(items.map(item ->
+            action.call("map", () -> new MethodValue("function", arg ->
+                new ArrayValue(items.map(item ->
                 arg.call(item)))));
-            action.call("each", () -> new MethodValue(new TextValue("action"), arg ->
+            action.call("each", () -> new MethodValue("action", arg ->
             {
                 items.flow().read(item -> arg.call(item));
                 return this;
             }));
-            action.call("pipe", () -> new MethodValue(new TupleValue(
-                new TextValue("input"),
-                new TextValue("function")), arg ->
+            action.call("pipe", () -> new MethodValue("input", input -> new MethodValue("function", function ->
             {
-                var args = arg.decompose();
-
-                Value[] output = { args.at(0) };
-                Value function = args.at(1);
+                Value[] output = { input };
                 items.each(item -> output[0] = function.call(
-                        new TupleValue(output[0], item)));
+                        new ArrayValue(output[0], item)));
                 return output[0];
-            }));
-            action.call("join", () -> new MethodValue(new TextValue("separator"),
-                arg -> new TupleValue(items.join(arg))));
+            })));
+            action.call("join", () -> new MethodValue("separator",
+                arg -> new ArrayValue(items.join(arg))));
         },
         argument -> items.at(new ExpressionNumber(argument).integer()));
     }
@@ -61,23 +56,14 @@ public final class TupleValue implements Value
     }
 
     @Override
-    public GenericBuffer<Value> decompose()
-    {
-        return items;
-    }
-
-    @Override
     public Value call(Value argument)
     {
-        var arguments = argument.decompose();
-        if(arguments.length() == 0) return items.at(items.length() - 1);
         return members.call(argument);
     }
 
     @Override
     public boolean valueEquals(Value v)
     {
-        var d = v.decompose();
-        return d.length() == items.length() && items.zip(d).map(StructPair::new).all(s -> s.a.valueEquals(s.b));
+        return v instanceof ArrayValue array && array.items.length() == items.length() && items.zip(array.items).map(StructPair::new).all(s -> s.a.valueEquals(s.b));
     }
 }

@@ -10,7 +10,7 @@ public final class NoneValue implements Value
     @Override
     public void print(TextWriter writer)
     {
-        writer.write(new StringText("none"));
+        writer.write(new StringText("()"));
     }
 
     @Override

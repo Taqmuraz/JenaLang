@@ -103,7 +103,7 @@ public final class SwingWindowValue implements Value
 
         members = new SymbolMapValue(action ->
         {
-            action.call("show", () -> new MethodValue(new EmptyTuple(), arg ->
+            action.call("show", () -> new MethodValue(arg ->
             {
                 EventQueue.invokeLater(() ->
                 {
@@ -112,68 +112,65 @@ public final class SwingWindowValue implements Value
                 });
                 return NoneValue.instance;
             }));
-            action.call("label", () -> new MethodValue(new TupleValue(
-                    new TextValue("text"),
-                    new TextValue("x"),
-                    new TextValue("y"),
-                    new TextValue("width"),
-                    new TextValue("height")), arg ->
+            action.call("label", () ->
+                new MethodValue("text", text ->
+                new MethodValue("x", x ->
+                new MethodValue("y", y ->
+                new MethodValue("width", width ->
+                new MethodValue("height", height ->
             {
-                var args = arg.decompose();
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
                     Label label = new Label();
-                    label.setText(new ValueText(args.at(0)).string());
+                    label.setText(new ValueText(text).string());
                     label.setBounds(
-                        new ExpressionNumber(args.at(1)).integer(),
-                        new ExpressionNumber(args.at(2)).integer(),
-                        new ExpressionNumber(args.at(3)).integer(),
-                        new ExpressionNumber(args.at(4)).integer());
+                        new ExpressionNumber(x).integer(),
+                        new ExpressionNumber(y).integer(),
+                        new ExpressionNumber(width).integer(),
+                        new ExpressionNumber(height).integer());
                     return label;
                 }));
-            }));
-            action.call("button", () -> new MethodValue(new TupleValue(
-                    new TextValue("text"),
-                    new TextValue("x"),
-                    new TextValue("y"),
-                    new TextValue("width"),
-                    new TextValue("height"),
-                    new TextValue("click")), arg ->
+            }))))));
+            action.call("button", () ->
+                    new MethodValue("text", text ->
+                    new MethodValue("x", x ->
+                    new MethodValue("y", y ->
+                    new MethodValue("width", width ->
+                    new MethodValue("height", height ->
+                    new MethodValue("click", click ->
             {
-                var args = arg.decompose();
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
-                    JButton button = new JButton(new ValueText(args.at(0)).string());
-                    button.addActionListener(e -> args.at(5).call(new EmptyTuple()));
+                    JButton button = new JButton(new ValueText(text).string());
+                    button.addActionListener(e -> click.call(NoneValue.instance));
                     button.setLocation(
-                        new ExpressionNumber(args.at(1)).integer(),
-                        new ExpressionNumber(args.at(2)).integer());
+                        new ExpressionNumber(x).integer(),
+                        new ExpressionNumber(y).integer());
                     button.setSize(
-                        new ExpressionNumber(args.at(3)).integer(),
-                        new ExpressionNumber(args.at(4)).integer());
+                        new ExpressionNumber(width).integer(),
+                        new ExpressionNumber(height).integer());
                     return button;
                 }));
-            }));
-            action.call("image", () -> new MethodValue(new TupleValue(
-                    new TextValue("file"),
-                    new TextValue("x"),
-                    new TextValue("y"),
-                    new TextValue("width"),
-                    new TextValue("height")), arg ->
+            })))))));
+            action.call("image", () ->
+                    new MethodValue("file", file ->
+                    new MethodValue("x", x ->
+                    new MethodValue("y", y ->
+                    new MethodValue("width", width ->
+                    new MethodValue("height", height ->
             {
-                var args = arg.decompose();
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
-                    ImagePanel panel = new ImagePanel(new ValueText(args.at(0)));
+                    ImagePanel panel = new ImagePanel(new ValueText(file));
                     panel.setLocation(
-                        new ExpressionNumber(args.at(1)).integer(),
-                        new ExpressionNumber(args.at(2)).integer());
+                        new ExpressionNumber(x).integer(),
+                        new ExpressionNumber(y).integer());
                     panel.setSize(
-                        new ExpressionNumber(args.at(3)).integer(),
-                        new ExpressionNumber(args.at(4)).integer());
+                        new ExpressionNumber(width).integer(),
+                        new ExpressionNumber(height).integer());
                     return panel;
                 }));
-            }));
+            }))))));
         },
         args -> NoneValue.instance);
     }

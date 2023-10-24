@@ -24,9 +24,11 @@ public final class BindingExpressionSyntax implements Syntax
     @Override
     public void text(TextWriter writer)
     {
+        writer.write(new SingleCharacterText('{'));
         writer.write(name);
         writer.write(new SingleCharacterText(':'));
         expression.text(writer);
+        writer.write(new SingleCharacterText('}'));
     }
 
     @Override

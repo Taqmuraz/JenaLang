@@ -3,7 +3,7 @@ package jena.lang.syntax;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
-import jena.lang.value.TupleValue;
+import jena.lang.value.ArrayValue;
 
 public final class ArrayExpressionSyntaxRule implements SyntaxRule
 {
@@ -18,7 +18,7 @@ public final class ArrayExpressionSyntaxRule implements SyntaxRule
                 elements,
                 openBrace,
                 closeBrace,
-                TupleValue::new), endSpan);
+                ArrayValue::new), endSpan);
         }, mistakeAction);
     }
 }

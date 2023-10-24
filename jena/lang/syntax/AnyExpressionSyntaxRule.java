@@ -8,26 +8,24 @@ public class AnyExpressionSyntaxRule implements SyntaxRule
     (
         new CompositeSyntaxRule
         (
+            new NoneExpressionSyntaxRule(),
             new IntegerLiteralSyntaxRule(),
+            new FloatLiteralSyntaxRule(),
             new SymbolLiteralSyntaxRule(),
+            new OperatorLiteralSyntaxRule(),
             new TextLiteralExpressionSyntaxRule(),
             new NameExpressionSyntaxRule(),
             new ParenthesizedExpressionSyntaxRule(),
             new ArrayExpressionSyntaxRule(),
-            new NegativeExpressionSyntaxRule(),
-            new BindingExpressionSyntaxRule(),
-            new NotExpressionSyntaxRule(),
-            new TupleExpressionSyntaxRule(),
-            new BindingListSyntaxRule(),
-            new BindingExpressionSyntaxRule()
+            new ChainSyntaxRule(),
+            new BindingListSyntaxRule()
         ),
         new AnyContinuousSyntaxRule()
     ), new CompositeSyntaxRule
     (
         new ArrowMethodSyntaxRule(),
-        new ArrowUsingExpressionSyntaxRule(),
-        new MethodExpressionSyntaxRule(),
-        new UsingExpressionSyntaxRule()
+        new BindingExpressionSyntaxRule(),
+        new AssignmentExpressionSyntaxRule()
     ));
 
     @Override

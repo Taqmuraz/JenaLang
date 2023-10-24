@@ -18,8 +18,8 @@ public final class InvocationExpressionSyntax implements Syntax
     @Override
     public void text(TextWriter writer)
     {
-        expression.text(writer);
         writer.write("(");
+        expression.text(writer);
         argument.text(writer);
         writer.write(")");
     }

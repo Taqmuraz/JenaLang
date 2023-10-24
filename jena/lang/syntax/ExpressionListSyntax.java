@@ -3,8 +3,8 @@ package jena.lang.syntax;
 import jena.lang.GenericBuffer;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
-import jena.lang.value.EmptyTuple;
 import jena.lang.value.Namespace;
+import jena.lang.value.NoneValue;
 import jena.lang.value.Value;
 
 public class ExpressionListSyntax implements Syntax
@@ -42,7 +42,7 @@ public class ExpressionListSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        if(expressions.length() == 0) return new EmptyTuple();
+        if(expressions.length() == 0) return NoneValue.instance;
         return factory.value(expressions.flow().map(a -> a.value(namespace)).collect());
     }
 }

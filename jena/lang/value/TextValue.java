@@ -12,7 +12,7 @@ public final class TextValue implements Value
     public TextValue(Text text)
     {
         this.text = text;
-        elements = () -> new TupleValue(text.buffer().<Value>map(CharacterValue::new));
+        elements = () -> new ArrayValue(text.buffer().<Value>map(CharacterValue::new));
     }
     public TextValue(String text)
     {

@@ -2,20 +2,18 @@ package jena.lang.syntax;
 
 import jena.lang.source.SourceSpan;
 import jena.lang.text.SingleCharacterText;
-import jena.lang.value.TupleValue;
 
-public final class TupleExpressionSyntaxRule implements SyntaxRule
+public final class ChainSyntaxRule implements SyntaxRule
 {
-    @Override
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        new ListSyntaxRule().match(span, (expressions, expressionsSpan) ->
+        new ParenthesizedListSyntaxRule(new AnyExpressionSyntaxRule()).match(span, (expressions, expressionsSpan) ->
         {
             action.call(new ExpressionListSyntax(
                 expressions,
                 new SingleCharacterText('('),
                 new SingleCharacterText(')'),
-                TupleValue::new), expressionsSpan);
+                b -> b.at(b.length() - 1)), expressionsSpan);
         }, mistakeAction);
     }
 }
