@@ -14,7 +14,10 @@ public class LowerExpressionSyntaxRule implements SyntaxRule
         new NameExpressionSyntaxRule(),
         new ParenthesizedExpressionSyntaxRule(),
         new ArrayExpressionSyntaxRule(),
-        new BindingListSyntaxRule());
+        new BindingListSyntaxRule(),
+        new ArrowMethodSyntaxRule(),
+        new BindingExpressionSyntaxRule(),
+        new AssignmentExpressionSyntaxRule());
 
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)

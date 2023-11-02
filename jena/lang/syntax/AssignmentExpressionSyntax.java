@@ -26,8 +26,9 @@ public final class AssignmentExpressionSyntax implements Syntax
         writer.write(name);
         writer.write("=");
         expression.text(writer);
-        writer.write(")");
+        writer.write("->");
         next.text(writer);
+        writer.write(")");
     }
 
     @Override

@@ -24,7 +24,7 @@ public class SyntaxGuess
     {
         optional.ifPresentElse(pair -> pair.both((lastItem, lastSpan) ->
         {
-            if (lastSpan.code() < span.code())
+            if (lastSpan.code() <= span.code())
             {
                 optional.apply(new StructPair<>(item, span));
             }

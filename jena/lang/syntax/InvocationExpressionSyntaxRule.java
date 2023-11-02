@@ -22,7 +22,7 @@ public class InvocationExpressionSyntaxRule implements SyntaxRule
         list.reverse().read((first, rest) ->
         {
             Syntax[] result = { first };
-            rest.read(listReader(s -> result[0] = new InvocationExpressionSyntax(s, result[0])));
+            rest.read(listReader(s -> result[0] = new InvocationExpressionSyntax(result[0], s)));
             action.call(result[0], span);
         });
         lowerRule.match(span, (syntax, next) ->
@@ -30,7 +30,7 @@ public class InvocationExpressionSyntaxRule implements SyntaxRule
             matchNext(list.append(syntax), next, action, mistakeAction);
         }, mistakeAction);
     }
-    static GenericList.GenericListElementAction<Syntax> listReader(GenericAction<Syntax> action)
+    static GenericList.FirstRestAction<Syntax> listReader(GenericAction<Syntax> action)
     {
         return (h, t) ->
         {
