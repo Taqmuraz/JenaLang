@@ -20,6 +20,7 @@ public final class InvocationExpressionSyntax implements Syntax
     {
         writer.write("(");
         expression.text(writer);
+        writer.write(" ");
         argument.text(writer);
         writer.write(")");
     }

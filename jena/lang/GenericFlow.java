@@ -7,6 +7,16 @@ public interface GenericFlow<Element>
 {
     void read(GenericAction<Element> action);
 
+    static <Element> GenericFlow<Element> single(Element element)
+    {
+        return new SingleGenericFlow<Element>(element);
+    }
+
+    static <Element> GenericFlow<Element> empty()
+    {
+        return action -> { };
+    }
+
     default <Out> GenericFlow<Out> map(GenericFunction<Element, Out> map)
     {
         return new MapFlow<Element, Out>(this, map);
