@@ -4,7 +4,6 @@ import jena.lang.GenericPair;
 import jena.lang.MutableOptional;
 import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
-import jena.lang.text.SyntaxText;
 
 public class SyntaxGuess
 {
