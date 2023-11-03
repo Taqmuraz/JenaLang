@@ -103,7 +103,7 @@ public final class SwingWindowValue implements Value
 
         members = new SymbolMapValue(action ->
         {
-            action.call("show", () -> new MethodValue(arg ->
+            action.call("show", () -> new FunctionValue(arg ->
             {
                 EventQueue.invokeLater(() ->
                 {
@@ -113,11 +113,11 @@ public final class SwingWindowValue implements Value
                 return NoneValue.instance;
             }));
             action.call("label", () ->
-                new MethodValue("text", text ->
-                new MethodValue("x", x ->
-                new MethodValue("y", y ->
-                new MethodValue("width", width ->
-                new MethodValue("height", height ->
+                new FunctionValue("text", text ->
+                new FunctionValue("x", x ->
+                new FunctionValue("y", y ->
+                new FunctionValue("width", width ->
+                new FunctionValue("height", height ->
             {
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
@@ -132,12 +132,12 @@ public final class SwingWindowValue implements Value
                 }));
             }))))));
             action.call("button", () ->
-                    new MethodValue("text", text ->
-                    new MethodValue("x", x ->
-                    new MethodValue("y", y ->
-                    new MethodValue("width", width ->
-                    new MethodValue("height", height ->
-                    new MethodValue("click", click ->
+                    new FunctionValue("text", text ->
+                    new FunctionValue("x", x ->
+                    new FunctionValue("y", y ->
+                    new FunctionValue("width", width ->
+                    new FunctionValue("height", height ->
+                    new FunctionValue("click", click ->
             {
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {
@@ -153,11 +153,11 @@ public final class SwingWindowValue implements Value
                 }));
             })))))));
             action.call("image", () ->
-                    new MethodValue("file", file ->
-                    new MethodValue("x", x ->
-                    new MethodValue("y", y ->
-                    new MethodValue("width", width ->
-                    new MethodValue("height", height ->
+                    new FunctionValue("file", file ->
+                    new FunctionValue("x", x ->
+                    new FunctionValue("y", y ->
+                    new FunctionValue("width", width ->
+                    new FunctionValue("height", height ->
             {
                 return new SwingWindowValue(new AddComponentBuilder(() ->
                 {

@@ -50,15 +50,15 @@ public final class StorageNamespace implements Namespace
                     new StringText("inspectl")).<Value>zip(
                         action ->
                         {
-                            action.call(new MethodValue("fileName", arg ->
+                            action.call(new FunctionValue("fileName", arg ->
                             {
                                 return loadFromFile(new ValueText(arg).string()).value(this);
                             }));
-                            action.call(new MethodValue("fileName", arg ->
+                            action.call(new FunctionValue("fileName", arg ->
                             {
                                 return new TextValue(new SyntaxText(loadFromFile(new ValueText(arg).string())));
                             }));
-                            action.call(new MethodValue("line", arg ->
+                            action.call(new FunctionValue("line", arg ->
                             {
                                 return new TextValue(new SyntaxText(loadFromSource(
                                     new StringSource(new StringText("line"), new ValueText(arg).string()))));

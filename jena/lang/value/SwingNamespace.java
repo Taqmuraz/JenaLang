@@ -9,8 +9,8 @@ public final class SwingNamespace implements Namespace
 
     public SwingNamespace()
     {
-        names = new SingleNamespace(new StringText("Window"), new MethodValue("width", width ->
-            new MethodValue("height", height ->
+        names = new SingleNamespace(new StringText("Window"), new FunctionValue("width", width ->
+            new FunctionValue("height", height ->
         {
             return new SwingWindowValue(
                 new ExpressionNumber(width),

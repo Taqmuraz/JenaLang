@@ -8,7 +8,7 @@ public final class NumberMethodValue implements Value
 
     public NumberMethodValue(String argumentName, NumberFunction function)
     {
-        method = new MethodValue("number", arg ->
+        method = new FunctionValue("number", arg ->
         {
             if(arg instanceof Single) return new NumberValue(function.call(((Single)arg).single()));
             else return NoneValue.instance;

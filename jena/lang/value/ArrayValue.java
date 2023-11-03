@@ -23,22 +23,22 @@ public final class ArrayValue implements Value
         members = new SymbolMapValue(action ->
         {
             action.call("size", () -> new NumberValue(items.length()));
-            action.call("map", () -> new MethodValue("function", arg ->
+            action.call("map", () -> new FunctionValue("function", arg ->
                 new ArrayValue(items.map(item ->
                 arg.call(item)))));
-            action.call("each", () -> new MethodValue("action", arg ->
+            action.call("each", () -> new FunctionValue("action", arg ->
             {
                 items.flow().read(item -> arg.call(item));
                 return this;
             }));
-            action.call("pipe", () -> new MethodValue("input", input -> new MethodValue("function", function ->
+            action.call("pipe", () -> new FunctionValue("input", input -> new FunctionValue("function", function ->
             {
                 Value[] output = { input };
                 items.each(item -> output[0] = function.call(
                         new ArrayValue(output[0], item)));
                 return output[0];
             })));
-            action.call("join", () -> new MethodValue("separator",
+            action.call("join", () -> new FunctionValue("separator",
                 arg -> new ArrayValue(items.join(arg))));
         },
         argument -> items.at(new ExpressionNumber(argument).integer()));

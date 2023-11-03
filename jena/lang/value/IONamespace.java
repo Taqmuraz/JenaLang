@@ -12,13 +12,13 @@ public final class IONamespace implements Namespace
     {
         names = new HashMapNamespace(action ->
         {
-            action.call("print", () -> new MethodValue("text", (arg, self) ->
+            action.call("print", () -> new FunctionValue("text", (arg, self) ->
             {
                 arg.print(s -> System.out.print(s.string()));
                 return self;
             }));
-            action.call("read", () -> new MethodValue(args -> new TextValue(new InputStreamLineSource(System.in).text())));
-            action.call("readInt", () -> new MethodValue(args ->
+            action.call("read", () -> new FunctionValue(args -> new TextValue(new InputStreamLineSource(System.in).text())));
+            action.call("readInt", () -> new FunctionValue(args ->
             {
                 try
                 {
