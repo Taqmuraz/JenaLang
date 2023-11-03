@@ -19,7 +19,7 @@ public class InvocationExpressionSyntaxRule implements SyntaxRule
 
     void matchNext(GenericList<Syntax> list, SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
     {
-        list.reverse().read((first, rest) ->
+        list.read((first, rest) ->
         {
             Syntax[] result = { first };
             rest.read(listReader(s -> result[0] = new InvocationExpressionSyntax(result[0], s)));
