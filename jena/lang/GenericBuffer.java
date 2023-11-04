@@ -1,9 +1,33 @@
 package jena.lang;
 
+import java.util.function.Function;
+
 public interface GenericBuffer<Element>
 {
     int length();
     Element at(int index);
+
+    public interface ZipFunction<A, B, Zip>
+    {
+        Zip zip(A a, B b);
+    }
+
+    static GenericBuffer<Integer> range(int length)
+    {
+        return new GenericBuffer<Integer>()
+        {
+            @Override
+            public int length()
+            {
+                return length;
+            }
+            @Override
+            public Integer at(int index)
+            {
+                return index;
+            }
+        };
+    }
 
     default GenericFlow<Element> flow()
     {
@@ -33,6 +57,11 @@ public interface GenericBuffer<Element>
     {
         return new ZipBuffer<Element, Other>(this, others);
     }
+    default<Other, Zip> GenericBuffer<Zip> zip(GenericBuffer<Other> other, ZipFunction<Element, Other, Zip> function)
+    {
+        int length = Math.min(length(), other.length());
+        return range(length).map(i -> function.zip(at(i), other.at(i)));
+    }
     default boolean all(Condition<Element> condition)
     {
         for(int i = 0, length = length(); i < length; i++)
@@ -40,5 +69,14 @@ public interface GenericBuffer<Element>
             if(!condition.match(at(i))) return false;
         }
         return true;
+    }
+    default Element[] toArray(Function<Integer, Element[]> factory)
+    {
+        Element[] array = factory.apply(length());
+        for(int i = 0; i < array.length; i++)
+        {
+            array[i] = at(i);
+        }
+        return array;
     }
 }

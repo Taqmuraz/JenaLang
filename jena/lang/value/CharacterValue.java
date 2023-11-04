@@ -5,7 +5,7 @@ import jena.lang.text.TextWriter;
 
 public final class CharacterValue implements Value
 {
-    private Character symbol;
+    public final Character symbol;
 
     public CharacterValue(Character symbol)
     {

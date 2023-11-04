@@ -86,4 +86,25 @@ public final class NumberValue implements Value, Single
     {
         return v instanceof Single s && s.single() == value;
     }
+
+    @Override public int toInt()
+    {
+        return (int)value;
+    }
+    @Override public byte toByte()
+    {
+        return (byte)value;
+    }
+    @Override public long toLong()
+    {
+        return (long)value;
+    }
+    @Override public float toFloat()
+    {
+        return (float)value;
+    }
+    @Override public double toDouble()
+    {
+        return value;
+    }
 }

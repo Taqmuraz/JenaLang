@@ -9,7 +9,7 @@ import jena.lang.text.TextWriter;
 
 public final class ArrayValue implements Value
 {
-    private GenericBuffer<Value> items;
+    public final GenericBuffer<Value> items;
     private Value members;
 
     public ArrayValue(Value... items)
