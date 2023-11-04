@@ -1,11 +1,10 @@
 package jena.lang.value;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import jena.lang.text.TextWriter;
 
@@ -13,12 +12,12 @@ public final class JavaObjectValue implements Value
 {
     Object obj;
     static Map<String, Function<Object, Value>> objectToValueMap;
-    Map<String, Method> methods;
+    List<Method> methods;
 
     public JavaObjectValue(Object obj)
     {
         this.obj = obj;
-        if(obj != null) methods = Stream.of(obj.getClass().getMethods()).collect(Collectors.toMap(c -> c.getName(), c -> c, (a, b) -> a));
+        if(obj != null) methods = List.of(obj.getClass().getMethods());
     }
 
     static
@@ -52,11 +51,14 @@ public final class JavaObjectValue implements Value
         if(obj == null) return NoneValue.instance;
         if(argument instanceof SymbolValue s)
         {
-            Method method = methods.get(s.name.string());
-            if(method != null)
-            {
-                return new JavaFunctionValue(method.getParameterTypes(), method.getReturnType(), args -> method.invoke(obj, args));
-            }
+            var filtered = methods.stream().filter(m -> s.name.compareString(m.getName())).toList();
+            return FunctionValue.parameterizedFunction(
+                s.name.string(),
+                filtered,
+                obj.getClass(),
+                m -> m.getReturnType(),
+                m -> m.getParameterTypes(),
+                m -> args -> m.invoke(obj, args));
         }
         throw new RuntimeException(String.format("Argument %s can't be used : it must be a symbol", argument.string()));
     }

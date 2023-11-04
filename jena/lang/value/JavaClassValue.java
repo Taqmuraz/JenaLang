@@ -36,29 +36,13 @@ public final class JavaClassValue implements Value
         {
             if(symbol.name.compareString("new"))
             {
-                return new FunctionValue("[parameterTypes]", types ->
-                {
-                    if(types instanceof ArrayValue parameterTypes)
-                    {
-                        var ctor = constructors.stream().filter(c ->
-                        {
-                            var ctorParameters = c.getParameterTypes();
-                            if(ctorParameters.length != parameterTypes.items.length()) return false;
-                            for(int i = 0; i < ctorParameters.length; i++)
-                            {
-                                if(ctorParameters[i] != parameterTypes.items.at(i).toObject(Class.class))
-                                {
-                                    return false;
-                                }
-                            }
-                            return true;
-                        })
-                        .findFirst();
-                        if(!ctor.isPresent()) throw new RuntimeException(String.format("No constructor for %s with %s parameters", javaClass, types.string()));
-                        return new JavaFunctionValue(ctor.get().getParameterTypes(), javaClass, ctor.get()::newInstance);
-                    }
-                    throw new RuntimeException("Array of java.lang.Class is expected");
-                });
+                return FunctionValue.parameterizedFunction(
+                    "constructor",
+                    constructors,
+                    javaClass,
+                    c -> javaClass,
+                    c -> c.getParameterTypes(),
+                    c -> c::newInstance);
             }
         }
         return NoneValue.instance;

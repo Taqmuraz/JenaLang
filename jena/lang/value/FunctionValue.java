@@ -1,6 +1,8 @@
 package jena.lang.value;
 
 import java.lang.reflect.Proxy;
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import jena.lang.ArrayBuffer;
@@ -70,6 +72,33 @@ public final class FunctionValue implements Value
                 varg = new ArrayValue(new ArrayBuffer<Object>(args).map(o -> JavaObjectValue.fromObject(o)));
             }
             return function.call(new ArrayValue(varg)).toObject(method.getReturnType());
+        });
+    }
+
+    public static <Executable> Value parameterizedFunction(String name, List<Executable> executables, Class<?> declaredType, Function<Executable, Class<?>> returnType, Function<Executable, Class<?>[]> parameters, Function<Executable, JavaFunctionValue.Function> function)
+    {
+        return new FunctionValue("[parameterTypes]", types ->
+        {
+            if(types instanceof ArrayValue parameterTypes)
+            {
+                var ctor = executables.stream().filter(c ->
+                {
+                    var ctorParameters = parameters.apply(c);
+                    if(ctorParameters.length != parameterTypes.items.length()) return false;
+                    for(int i = 0; i < ctorParameters.length; i++)
+                    {
+                        if(!ctorParameters[i].isAssignableFrom((Class<?>)parameterTypes.items.at(i).toObject(Class.class)))
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                })
+                .findFirst();
+                if(!ctor.isPresent()) throw new RuntimeException(String.format("No %s declared in %s with %s parameters", name, declaredType.getName(), types.string()));
+                return new JavaFunctionValue(parameters.apply(ctor.get()), returnType.apply(ctor.get()), function.apply(ctor.get()));
+            }
+            throw new RuntimeException("Array of java.lang.Class is expected");
         });
     }
 }

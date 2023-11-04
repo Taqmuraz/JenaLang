@@ -65,7 +65,7 @@ public final class JavaFunctionValue implements Value
         }
         else
         {
-            throw new RuntimeException(String.format("Arity mismatch for %s. %i expected", arg.string(), parameterTypes.length));
+            throw new RuntimeException(String.format("Arity mismatch for %s. %d expected", arg.string(), parameterTypes.length));
         }
         try
         {
