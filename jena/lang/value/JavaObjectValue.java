@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import jena.lang.text.TextWriter;
 
@@ -72,20 +71,6 @@ public final class JavaObjectValue implements Value
     public interface Executable
     {
         Object call(Object[] args) throws Throwable;
-    }
-
-    public static Supplier<String> typeParametersText(Class<?>[] types)
-    {
-        return () ->
-        {
-            StringBuilder typesString = new StringBuilder();
-            for(int i = 0; i < types.length; i++)
-            {
-                if(i != 0) typesString.append(", ");
-                typesString.append(types[i].getName());
-            }
-            return typesString.toString();
-        };
     }
 
     public static Value fromObject(Object obj)
