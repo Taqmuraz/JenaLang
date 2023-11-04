@@ -1,5 +1,8 @@
 package jena.lang.value;
 
+import java.util.Map;
+import java.util.function.Function;
+
 import jena.lang.ArrayBuffer;
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
@@ -11,6 +14,26 @@ public final class NumberValue implements Value, Single
 {
     private double value;
     private Value members;
+    
+    private static Map<String, Function<Number, Object>> objectToValueMap;
+    static
+    {
+        objectToValueMap = Map.ofEntries(
+            Map.entry("char", v -> (char)v.intValue()),
+            Map.entry("byte", v -> v.byteValue()),
+            Map.entry("int", v -> v.intValue()),
+            Map.entry("long", v -> v.longValue()),
+            Map.entry("float", v -> v.floatValue()),
+            Map.entry("double", v -> v.doubleValue()),
+
+            Map.entry("java.lang.Character", v -> (char)v.intValue()),
+            Map.entry("java.lang.Byte", v -> v.byteValue()),
+            Map.entry("java.lang.Integer", v -> v.intValue()),
+            Map.entry("java.lang.Long", v -> v.longValue()),
+            Map.entry("java.lang.Float", v -> v.floatValue()),
+            Map.entry("java.lang.Double", v -> v.doubleValue())
+        );
+    }
 
     public NumberValue(double value)
     {
@@ -43,7 +66,7 @@ public final class NumberValue implements Value, Single
                 arg -> (long)value & (long)arg,
                 arg -> (long)value | (long)arg,
             })
-            .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> new NumberMethodValue(n, f))))
+            .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> numberMethod(n, f))))
             .append(new StructPair<String, ValueFunction>("sqrt", () -> new NumberValue((int)Math.sqrt(value))))
             .append(new StructPair<String, ValueFunction>("negative", () -> new NumberValue(-value)))
             .append(new StructPair<String, ValueFunction>("not", () -> new NumberValue(value == 0 ? 1 : 0)))
@@ -62,6 +85,15 @@ public final class NumberValue implements Value, Single
             })
         ))
         .read(p -> p.both(symbolValueAction::call)), arg -> new NumberValue(new ExpressionNumber(arg).single() + value));
+    }
+
+    static Value numberMethod(String argumentName, NumberFunction function)
+    {
+        return new FunctionValue("number", arg ->
+        {
+            if(arg instanceof Single) return new NumberValue(function.call(((Single)arg).single()));
+            else return NoneValue.instance;
+        });
     }
 
     @Override
@@ -87,24 +119,11 @@ public final class NumberValue implements Value, Single
         return v instanceof Single s && s.single() == value;
     }
 
-    @Override public int toInt()
+    @Override
+    public Object toObject(Class<?> type)
     {
-        return (int)value;
-    }
-    @Override public byte toByte()
-    {
-        return (byte)value;
-    }
-    @Override public long toLong()
-    {
-        return (long)value;
-    }
-    @Override public float toFloat()
-    {
-        return (float)value;
-    }
-    @Override public double toDouble()
-    {
-        return value;
+        var func = objectToValueMap.get(type.getName());
+        if(func != null) return func.apply(value);
+        else throw new RuntimeException(String.format("Type %s expected to be primitive", type.getName()));
     }
 }

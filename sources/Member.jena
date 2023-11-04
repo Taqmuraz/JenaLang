@@ -1,6 +1,0 @@
-using(class(i)
-(
-    member:print(i * i),
-    other:() -> this.member
-))
-as (Test) Test(15).other()

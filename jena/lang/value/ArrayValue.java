@@ -1,5 +1,7 @@
 package jena.lang.value;
 
+import java.lang.reflect.Array;
+
 import jena.lang.ArrayBuffer;
 import jena.lang.GenericBuffer;
 import jena.lang.StructPair;
@@ -65,5 +67,22 @@ public final class ArrayValue implements Value
     public boolean valueEquals(Value v)
     {
         return v instanceof ArrayValue array && array.items.length() == items.length() && items.zip(array.items).map(StructPair::new).all(s -> s.a.valueEquals(s.b));
+    }
+
+    @Override
+    public Object toObject(Class<?> type)
+    {
+        if(type.isArray())
+        {
+            int length = items.length();
+            var element = type.getComponentType();
+            Object[] array = (Object[])Array.newInstance(element, length);
+            for(int i = 0; i < length; i++)
+            {
+                array[i] = items.at(i).toObject(element);
+            }
+            return array;
+        }
+        else throw new RuntimeException(String.format("%s is not an array type", type.getName()));
     }
 }

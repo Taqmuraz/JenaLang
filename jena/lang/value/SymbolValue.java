@@ -32,4 +32,10 @@ public class SymbolValue implements Value
     {
         return v instanceof SymbolValue s && s.name.compare(name);
     }
+
+    @Override
+    public Object toObject(Class<?> type)
+    {
+        throw new UnsupportedOperationException("Unimplemented method 'toObject'");
+    }
 }

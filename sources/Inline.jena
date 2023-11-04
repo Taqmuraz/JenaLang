@@ -1,2 +1,0 @@
-writer = write:printer -> printer "Abcdef" ->
-writer.write print

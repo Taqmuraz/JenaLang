@@ -29,4 +29,11 @@ public final class CharacterValue implements Value
     {
         return v instanceof CharacterValue c && c.symbol.equals(symbol);
     }
+
+    @Override
+    public Object toObject(Class<?> type)
+    {
+        if(type == Character.TYPE || type == Character.class) return symbol;
+        else throw new RuntimeException(String.format("%s is not a Character type", type.getName()));
+    }
 }

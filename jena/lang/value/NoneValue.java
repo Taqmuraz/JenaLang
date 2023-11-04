@@ -24,4 +24,10 @@ public final class NoneValue implements Value
     {
         return v instanceof NoneValue;   
     }
+
+    @Override
+    public Object toObject(Class<?> type)
+    {
+        return null;
+    }
 }

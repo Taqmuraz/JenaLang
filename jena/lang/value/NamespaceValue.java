@@ -34,4 +34,10 @@ public final class NamespaceValue implements Value
     {
         return v == this;
     }
+
+    @Override
+    public Object toObject(Class<?> type)
+    {
+        throw new UnsupportedOperationException("Unimplemented method 'toObject'");
+    }
 }

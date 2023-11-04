@@ -35,4 +35,10 @@ public final class TextValue implements Value
     {
         return v instanceof TextValue t && t.text.compare(text);
     }
+    @Override
+    public Object toObject(Class<?> type)
+    {
+        if(type == String.class) return text.string();
+        else throw new RuntimeException(String.format("%s is not a String type", type.getName()));
+    }
 }
