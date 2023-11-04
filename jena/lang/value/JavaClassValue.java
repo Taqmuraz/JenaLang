@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 
 public final class JavaClassValue implements Value
@@ -13,11 +12,11 @@ public final class JavaClassValue implements Value
     Class<?> javaClass;
     Map<Integer, Constructor<?>> constructors;
 
-    public JavaClassValue(Text path)
+    public JavaClassValue(String path)
     {
         try
         {
-            javaClass = Class.forName(path.string());
+            javaClass = Class.forName(path);
         }
         catch(Throwable th)
         {

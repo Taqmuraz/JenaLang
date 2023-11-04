@@ -7,11 +7,6 @@ public interface GenericBuffer<Element>
     int length();
     Element at(int index);
 
-    public interface ZipFunction<A, B, Zip>
-    {
-        Zip zip(A a, B b);
-    }
-
     static GenericBuffer<Integer> range(int length)
     {
         return new GenericBuffer<Integer>()
@@ -57,10 +52,10 @@ public interface GenericBuffer<Element>
     {
         return new ZipBuffer<Element, Other>(this, others);
     }
-    default<Other, Zip> GenericBuffer<Zip> zip(GenericBuffer<Other> other, ZipFunction<Element, Other, Zip> function)
+    default<Other, Zip> GenericBuffer<Zip> zip(GenericBuffer<Other> other, GenericFunctionTwo<Element, Other, Zip> function)
     {
         int length = Math.min(length(), other.length());
-        return range(length).map(i -> function.zip(at(i), other.at(i)));
+        return range(length).map(i -> function.call(at(i), other.at(i)));
     }
     default boolean all(Condition<Element> condition)
     {
