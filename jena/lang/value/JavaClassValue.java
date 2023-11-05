@@ -1,7 +1,11 @@
 package jena.lang.value;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import jena.lang.text.TextWriter;
 
@@ -9,6 +13,7 @@ public final class JavaClassValue implements Value
 {
     Class<?> javaClass;
     List<Constructor<?>> constructors;
+    Value classValue;
 
     public JavaClassValue(String path)
     {
@@ -21,6 +26,7 @@ public final class JavaClassValue implements Value
             throw new RuntimeException(th);
         }
         constructors = List.of(javaClass.getDeclaredConstructors());
+        classValue = new JavaObjectValue(javaClass);
     }
 
     @Override
@@ -43,6 +49,22 @@ public final class JavaClassValue implements Value
                     c -> javaClass,
                     c -> c.getParameterTypes(),
                     c -> c::newInstance);
+            }
+            else
+            {
+                Predicate<Method> modifierCheck = m ->
+                {
+                    var modifiers = m.getModifiers();
+                    return Modifier.isStatic(modifiers);
+                };
+                var filtered = Stream.of(javaClass.getMethods()).filter(m -> modifierCheck.test(m) && symbol.name.compareString(m.getName())).toList();
+                return FunctionValue.parameterizedFunction(
+                    symbol.name.string(),
+                    filtered,
+                    javaClass,
+                    m -> m.getReturnType(),
+                    m -> m.getParameterTypes(),
+                    m -> args -> m.invoke(null, args));
             }
         }
         return NoneValue.instance;

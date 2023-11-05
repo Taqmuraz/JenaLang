@@ -23,18 +23,20 @@ public final class JavaObjectValue implements Value
     {
         objectToValueMap = Map.ofEntries(
             Map.entry("char", v -> new CharacterValue((Character)v)),
+            Map.entry("boolean", v -> new NumberValue((Boolean)v ? 1 : 0)),
             Map.entry("byte", v -> new NumberValue((Byte)v)),
             Map.entry("int", v -> new NumberValue((Integer)v)),
             Map.entry("long", v -> new NumberValue((Long)v)),
             Map.entry("float", v -> new NumberValue((Float)v)),
             Map.entry("double", v -> new NumberValue((Double)v)),
 
-            Map.entry("Character", v -> new CharacterValue((Character)v)),
-            Map.entry("Byte", v -> new NumberValue((Byte)v)),
-            Map.entry("Integer", v -> new NumberValue((Integer)v)),
-            Map.entry("Long", v -> new NumberValue((Long)v)),
-            Map.entry("Float", v -> new NumberValue((Float)v)),
-            Map.entry("Double", v -> new NumberValue((Double)v))
+            Map.entry("java.lang.Character", v -> new CharacterValue((Character)v)),
+            Map.entry("java.lang.Boolean", v -> new NumberValue((Boolean)v ? 1 : 0)),
+            Map.entry("java.lang.Byte", v -> new NumberValue((Byte)v)),
+            Map.entry("java.lang.Integer", v -> new NumberValue((Integer)v)),
+            Map.entry("java.lang.Long", v -> new NumberValue((Long)v)),
+            Map.entry("java.lang.Float", v -> new NumberValue((Float)v)),
+            Map.entry("java.lang.Double", v -> new NumberValue((Double)v))
         );
     }
 

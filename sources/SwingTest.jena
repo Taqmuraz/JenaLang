@@ -1,0 +1,16 @@
+jc = javaClass ->
+import =
+{
+    int:jc "java.lang.Integer",
+    bool:jc "java.lang.Boolean",
+    button:jc "javax.swing.JButton",
+    frame:jc "javax.swing.JFrame",
+    queue:jc "java.awt.EventQueue"
+} ->
+frame = (import.frame.new [] ()) ->
+button = (import.button.new [] ()) ->
+(import.queue.invokeLater [jc "java.lang.Runnable"] () ->
+[
+    frame.setSize[import.int, import.int] [500, 500],
+    frame.setVisible[import.bool] 1
+])

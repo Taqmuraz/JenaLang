@@ -2,6 +2,7 @@ package jena.lang.value;
 
 import java.lang.reflect.Proxy;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -11,6 +12,16 @@ import jena.lang.text.TextWriter;
 
 public final class FunctionValue implements Value
 {
+    static Map<Class<?>, Class<?>> wrapperMap = Map.ofEntries(
+        Map.entry(Integer.class, Integer.TYPE),
+        Map.entry(Long.class, Long.TYPE),
+        Map.entry(Boolean.class, Boolean.TYPE),
+        Map.entry(Character.class, Character.TYPE),
+        Map.entry(Byte.class, Byte.TYPE),
+        Map.entry(Float.class, Float.TYPE),
+        Map.entry(Double.class, Double.TYPE)
+    );
+
     public interface RecurCallFunction
     {
         Value call(Value arg, Value self);
@@ -63,7 +74,7 @@ public final class FunctionValue implements Value
         return Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, (p, method, args) ->
         {
             Value varg;
-            if(args.length == 0)
+            if(args == null || args.length == 0)
             {
                 varg = NoneValue.instance;
             }
@@ -73,6 +84,20 @@ public final class FunctionValue implements Value
             }
             return function.call(new ArrayValue(varg)).toObject(method.getReturnType());
         });
+    }
+
+    static boolean assignabilityCheck(Class<?> from, Class<?> to)
+    {
+        if(from == to) return true;
+        if(to.isPrimitive())
+        {
+            return wrapperMap.get(from).isAssignableFrom(to);
+        }
+        else if(from.isPrimitive())
+        {
+            return from.isAssignableFrom(wrapperMap.get(to));
+        }
+        else return to.isAssignableFrom(from);
     }
 
     public static <Executable> Value parameterizedFunction(String name, List<Executable> executables, Class<?> declaredType, Function<Executable, Class<?>> returnType, Function<Executable, Class<?>[]> parameters, Function<Executable, JavaFunctionValue.Function> function)
@@ -87,7 +112,7 @@ public final class FunctionValue implements Value
                     if(ctorParameters.length != parameterTypes.items.length()) return false;
                     for(int i = 0; i < ctorParameters.length; i++)
                     {
-                        if(!ctorParameters[i].isAssignableFrom((Class<?>)parameterTypes.items.at(i).toObject(Class.class)))
+                        if(!assignabilityCheck((Class<?>)parameterTypes.items.at(i).toObject(Class.class), ctorParameters[i]))
                         {
                             return false;
                         }

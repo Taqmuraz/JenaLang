@@ -20,6 +20,7 @@ public final class NumberValue implements Value, Single
     {
         objectToValueMap = Map.ofEntries(
             Map.entry("char", v -> (char)v.intValue()),
+            Map.entry("boolean", v -> v.intValue() == 0 ? false : true),
             Map.entry("byte", v -> v.byteValue()),
             Map.entry("int", v -> v.intValue()),
             Map.entry("long", v -> v.longValue()),
@@ -27,6 +28,7 @@ public final class NumberValue implements Value, Single
             Map.entry("double", v -> v.doubleValue()),
 
             Map.entry("java.lang.Character", v -> (char)v.intValue()),
+            Map.entry("java.lang.Boolean", v -> v.intValue() == 0 ? false : true),
             Map.entry("java.lang.Byte", v -> v.byteValue()),
             Map.entry("java.lang.Integer", v -> v.intValue()),
             Map.entry("java.lang.Long", v -> v.longValue()),
