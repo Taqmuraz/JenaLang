@@ -82,7 +82,13 @@ public final class FunctionValue implements Value
             {
                 varg = new ArrayValue(new ArrayBuffer<Object>(args).map(o -> JavaObjectValue.fromObject(o)));
             }
-            return function.call(new ArrayValue(varg)).toObject(method.getReturnType());
+            var ret = method.getReturnType();
+            var result = function.call(new ArrayValue(varg));
+            if(ret == Void.TYPE)
+            {
+                return null;
+            }
+            return result.toObject(ret);
         });
     }
 
