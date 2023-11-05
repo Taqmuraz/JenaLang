@@ -12,8 +12,16 @@ frame = (import.frame.new [] ()) ->
 button = (import.button.new [] ()) ->
 (import.queue.invokeLater [jc "java.lang.Runnable"] () ->
 [
-    frame.setSize[import.int, import.int] [500, 500],
-    button.setSize[import.int, import.int] [200, 50],
+    [
+        {
+            component:frame,
+            size:[400, 500]
+        },
+        {
+            component:button,
+            size:[200, 50]
+        }]
+    .each(p -> p.component.setSize[import.int, import.int] (p.size)),
     button.setText[import.string] "Click me",
     button.addActionListener[jc "java.awt.event.ActionListener"] e -> print "clicked!",
     frame.setLayout [jc "java.awt.LayoutManager"] (),
