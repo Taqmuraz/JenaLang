@@ -129,7 +129,17 @@ public interface SyntaxStackRule
     {
         return (span, stack, next, mismatch) ->
         {
-            mismatch.call();
+            if(stack.peek().size() != 0 && span.at(0).text().compare(symbol))
+            { 
+                var first = stack.peek().pop();
+                var nl = SyntaxList.arrowList();
+                nl.push(first);
+                stack.peek().push(nl);
+                stack.push(nl);
+                stack.postponePop();
+                next.accept(span.skip(1));
+            }
+            else mismatch.call();
         };
     }
     static SyntaxStackRule of(GenericList<SyntaxStackRule> rules)

@@ -1,7 +1,6 @@
 package jena.lang.syntax;
 
 import java.util.Stack;
-import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
 import jena.lang.GenericBuffer;
@@ -70,7 +69,7 @@ public interface SyntaxList extends SyntaxUnit
             return ExpressionListSyntax.mapSyntax(GenericBuffer.of(list.collect()));
         };
     }
-    static Function<GenericList<Syntax>, Syntax> completeBindingList(BinaryOperator<Syntax> function)
+    static Function<GenericList<Syntax>, Syntax> completeArrowList()
     {
         return list ->
         {
@@ -78,7 +77,7 @@ public interface SyntaxList extends SyntaxUnit
             list.read((left, rest) ->
             {
                 var right = completeInvocationList().apply(rest);
-                result[0] = function.apply(left, right);
+                result[0] = new ArrowExpressionSyntax(left, right);
             });
             return result[0];
         };
@@ -95,8 +94,8 @@ public interface SyntaxList extends SyntaxUnit
     {
         return of(completeMapList());
     }
-    static SyntaxList bindingList(BinaryOperator<Syntax> function)
+    static SyntaxList arrowList()
     {
-        return of(completeBindingList(function));
+        return of(completeArrowList());
     }
 }
