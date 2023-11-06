@@ -2,6 +2,8 @@ package jena.lang.syntax;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -13,8 +15,14 @@ public interface SyntaxList
     void add(Supplier<Syntax> syntax);
     Syntax complete();
     SyntaxList fresh();
+    void close(Supplier<SyntaxList> pop);
 
     static SyntaxList of(Function<GenericList<Syntax>, Syntax> complete)
+    {
+        return of(complete, p -> { });
+    }
+
+    static SyntaxList of(Function<GenericList<Syntax>, Syntax> complete, Consumer<Supplier<SyntaxList>> close)
     {
         List<Supplier<Syntax>> list = new ArrayList<>();
         return new SyntaxList()
@@ -33,6 +41,11 @@ public interface SyntaxList
             public SyntaxList fresh()
             {
                 return invocationList();
+            }
+            @Override
+            public void close(Supplier<SyntaxList> pop)
+            {
+                close.accept(pop);
             }
         };
     }
@@ -66,6 +79,19 @@ public interface SyntaxList
             return ExpressionListSyntax.mapSyntax(GenericBuffer.of(list.collect()));
         };
     }
+    static Function<GenericList<Syntax>, Syntax> completeBindingList(BinaryOperator<Syntax> function)
+    {
+        return list ->
+        {
+            Syntax[] result = { new NoneValueSyntax() };
+            list.read((left, rest) ->
+            {
+                var right = completeInvocationList().apply(rest);
+                result[0] = function.apply(left, right);
+            });
+            return result[0];
+        };
+    }
     static SyntaxList invocationList()
     {
         return of(completeInvocationList());
@@ -77,5 +103,9 @@ public interface SyntaxList
     static SyntaxList mapList()
     {
         return of(completeMapList());
+    }
+    static SyntaxList bindingList(BinaryOperator<Syntax> function, Consumer<Supplier<SyntaxList>> close)
+    {
+        return of(completeBindingList(function), close);
     }
 }

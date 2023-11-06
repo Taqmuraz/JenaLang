@@ -29,11 +29,13 @@ public final class MapValue implements Value
         }
     }
     Map<Key, Value> map = new HashMap<Key, Value>();
+    GenericBuffer<Value> pairs;
     static final SymbolValue keySymbol = new SymbolValue(Text.of("key"));
     static final SymbolValue valueSymbol = new SymbolValue(Text.of("value"));
 
     public MapValue(GenericBuffer<Value> pairs)
     {
+        this.pairs = pairs;
         pairs.each(p ->
         {
             map.put(new Key(p.call(keySymbol)), p.call(valueSymbol));
@@ -44,13 +46,7 @@ public final class MapValue implements Value
     public void print(TextWriter writer)
     {
         writer.write("{");
-        map.entrySet().forEach(e ->
-        {
-            writer.write(Text.of(e.getKey().value));
-            writer.write(":");
-            writer.write(Text.of(e.getValue()));
-            writer.write(",");
-        });
+        pairs.flow().join(p -> p.print(writer), () -> writer.write(","));
         writer.write("}");
     }
 

@@ -20,9 +20,12 @@ public class JenaSyntaxReader
         new SymbolLiteralSyntaxRule(),
         new OperatorLiteralSyntaxRule(),
         new TextLiteralExpressionSyntaxRule(),
+        new BindingExpressionSyntaxRule(),
         new NameExpressionSyntaxRule());
 
     private static final SyntaxStackRule stackRule = SyntaxStackRule.of(GenericList.of(
+        SyntaxStackRule.arrowRule(new NameExpressionSyntaxRule(), Text.of("->"), ArrowExpressionSyntax::new),
+        //SyntaxStackRule.bindingRule(new NameExpressionSyntaxRule(), Text.of("="), AssignmentExpressionSyntax::new),
         SyntaxStackRule.addSyntaxRule(syntaxRule),
         SyntaxStackRule.pushRule(Text.of('('), SyntaxList::invocationList),
         SyntaxStackRule.pushNestedRule(Text.of('['), SyntaxList::arrayList, SyntaxList::invocationList),
@@ -51,11 +54,16 @@ public class JenaSyntaxReader
         Stack<SyntaxList> stack = new Stack<>();
         stack.push(SyntaxList.invocationList());
         matchStack(stack, start, mismatch);
+        stack.peek().close(stack::pop);
         action.call(stack.peek().complete());
     }
     void matchStack(Stack<SyntaxList> stack, SourceSpan span, Action mismatch)
     {
         if(span.at(0).isEmpty()) return;
+        matchRule(stackRule, stack, span, mismatch);
+    }
+    void matchRule(SyntaxStackRule stackRule, Stack<SyntaxList> stack, SourceSpan span, Action mismatch)
+    {
         stackRule.match(span, syntax ->
         {
             stack.peek().add(() -> syntax);
@@ -65,7 +73,12 @@ public class JenaSyntaxReader
             stack.peek().add(list::complete);
             stack.push(list);
         },
-        stack::pop,
+        () ->
+        {
+            var last = stack.peek();
+            last.close(stack::pop);
+            return stack.pop();
+        },
         stack::peek,
         nextSpan -> matchStack(stack, nextSpan, mismatch),
         mismatch);

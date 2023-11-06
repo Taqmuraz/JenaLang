@@ -1,5 +1,6 @@
 package jena.lang.syntax;
 
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -18,6 +19,9 @@ public interface SyntaxStackRule
         Supplier<SyntaxList> peek,
         Consumer<SourceSpan> next,
         Action mismatch);
+
+    static final SyntaxStackRule identity = (span, add, push, pop, peek, next, mismatch) -> { };
+    static final SyntaxStackRule pop = (span, add, push, pop, peek, next, mismatch) -> pop.get();
 
     static SyntaxStackRule pushRule(Text symbol, Supplier<SyntaxList> list)
     {
@@ -89,6 +93,23 @@ public interface SyntaxStackRule
             {
                 add.accept(syntax);
                 next.accept(nextSpan);
+            },
+            mismatch);
+        };
+    }
+    static SyntaxStackRule arrowRule(SyntaxRule left, Text binding, BinaryOperator<Syntax> function)
+    {
+        return (span, add, push, pop, peek, next, mismatch) ->
+        {
+            left.match(span, (syntax, nextSpan) ->
+            {
+                if(nextSpan.at(0).text().compare(binding))
+                {
+                    push.accept(SyntaxList.bindingList(function, p -> p.get().add(() -> new NoneValueSyntax())));
+                    add.accept(syntax);
+                    next.accept(nextSpan.skip(1));
+                }
+                else mismatch.call();
             },
             mismatch);
         };

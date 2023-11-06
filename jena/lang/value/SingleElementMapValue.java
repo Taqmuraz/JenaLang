@@ -4,8 +4,8 @@ import jena.lang.text.TextWriter;
 
 public final class SingleElementMapValue implements Value
 {
-    public final Value element;
-    public final Value value;
+    private final Value element;
+    private final Value value;
 
     public SingleElementMapValue(Value element, Value value)
     {
@@ -24,6 +24,11 @@ public final class SingleElementMapValue implements Value
     @Override
     public Value call(Value argument)
     {
+        if(argument instanceof SymbolValue s)
+        {
+            if(s.name.compareString("key")) return element;
+            if(s.name.compareString("value")) return value;
+        }
         if(element.valueEquals(argument)) return value;
         else return NoneValue.instance;
     }
