@@ -1,6 +1,5 @@
 package jena.lang.syntax;
 
-import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -13,23 +12,43 @@ public interface SyntaxStackRule
 {
     void match(
         SourceSpan span,
-        Consumer<Syntax> add,
-        Consumer<SyntaxList> push,
-        Supplier<SyntaxList> pop,
-        Supplier<SyntaxList> peek,
+        SyntaxListStack stack,
         Consumer<SourceSpan> next,
         Action mismatch);
 
-    static final SyntaxStackRule identity = (span, add, push, pop, peek, next, mismatch) -> { };
-    static final SyntaxStackRule pop = (span, add, push, pop, peek, next, mismatch) -> pop.get();
+        
+    static final SyntaxRule syntaxRule = new CompositeSyntaxRule(
+        new NoneExpressionSyntaxRule(),
+        new IntegerLiteralSyntaxRule(),
+        new FloatLiteralSyntaxRule(),
+        new SymbolLiteralSyntaxRule(),
+        new OperatorLiteralSyntaxRule(),
+        new TextLiteralExpressionSyntaxRule(),
+        new BindingExpressionSyntaxRule(),
+        new NameExpressionSyntaxRule());
+
+    static final SyntaxStackRule stackRule = of(GenericList.of(
+        arrowRule(Text.of("->")),
+        //SyntaxStackRule.bindingRule(new NameExpressionSyntaxRule(), Text.of("="), AssignmentExpressionSyntax::new),
+        addSyntaxRule(syntaxRule),
+        pushRule(Text.of('('), SyntaxList::invocationList),
+        pushNestedRule(Text.of('['), SyntaxList::arrayList, SyntaxList::invocationList),
+        pushNestedRule(Text.of('{'), SyntaxList::mapList, SyntaxList::invocationList),
+        popRule(Text.of(')')),
+        popNestedRule(Text.of(']')),
+        popNestedRule(Text.of('}')),
+        commaRule(Text.of(','))
+    ));
 
     static SyntaxStackRule pushRule(Text symbol, Supplier<SyntaxList> list)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             if(span.at(0).text().compare(symbol))
             {
-                push.accept(list.get());
+                var nl = list.get();
+                stack.peek().push(nl);
+                stack.push(nl);
                 next.accept(span.skip(1));
             }
             else mismatch.call();
@@ -37,12 +56,16 @@ public interface SyntaxStackRule
     }
     static SyntaxStackRule pushNestedRule(Text symbol, Supplier<SyntaxList> outer, Supplier<SyntaxList> inner)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             if(span.at(0).text().compare(symbol))
             {
-                push.accept(outer.get());
-                push.accept(inner.get());
+                var newOuter = outer.get();
+                var newInner = inner.get();
+                newOuter.push(newInner);
+                stack.peek().push(newOuter);
+                stack.push(newOuter);
+                stack.push(newInner);
                 next.accept(span.skip(1));
             }
             else mismatch.call();
@@ -50,12 +73,12 @@ public interface SyntaxStackRule
     }
     static SyntaxStackRule popNestedRule(Text symbol)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             if(span.at(0).text().compare(symbol))
             {
-                pop.get();
-                pop.get();
+                stack.pop();
+                stack.pop();
                 next.accept(span.skip(1));
             }
             else mismatch.call();
@@ -63,23 +86,26 @@ public interface SyntaxStackRule
     }
     static SyntaxStackRule popRule(Text symbol)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             if(span.at(0).text().compare(symbol))
             {
-                pop.get();
+                stack.pop();
                 next.accept(span.skip(1));
             }
             else mismatch.call();
         };
     }
-    static SyntaxStackRule resetRule(Text symbol)
+    static SyntaxStackRule commaRule(Text symbol)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             if(span.at(0).text().compare(symbol))
             {
-                push.accept(pop.get().fresh());
+                var nl = SyntaxList.invocationList();
+                stack.pop();
+                stack.peek().push(nl);
+                stack.push(nl);
                 next.accept(span.skip(1));
             }
             else mismatch.call();
@@ -87,45 +113,41 @@ public interface SyntaxStackRule
     }
     static SyntaxStackRule addSyntaxRule(SyntaxRule rule)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             rule.match(span, (syntax, nextSpan) ->
             {
-                add.accept(syntax);
+                stack.peek().push(SyntaxUnit.of(syntax));
                 next.accept(nextSpan);
             },
             mismatch);
         };
     }
-    static SyntaxStackRule arrowRule(SyntaxRule left, Text binding, BinaryOperator<Syntax> function)
+    static SyntaxStackRule arrowRule(Text symbol)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
-            left.match(span, (syntax, nextSpan) ->
-            {
-                if(nextSpan.at(0).text().compare(binding))
-                {
-                    push.accept(SyntaxList.bindingList(function, p -> p.get().add(() -> new NoneValueSyntax())));
-                    add.accept(syntax);
-                    next.accept(nextSpan.skip(1));
-                }
-                else mismatch.call();
-            },
-            mismatch);
+            mismatch.call();
         };
     }
     static SyntaxStackRule of(GenericList<SyntaxStackRule> rules)
     {
-        return (span, add, push, pop, peek, next, mismatch) ->
+        return (span, stack, next, mismatch) ->
         {
             rules.read((f, r) ->
             {
-                f.match(span, add, push, pop, peek, next, () ->
+                f.match(span, stack, next, () ->
                 {
-                    of(r).match(span, add, push, pop, peek, next, mismatch);
+                    of(r).match(span, stack, next, mismatch);
                 });
             },
             mismatch);
         };
+    }
+
+    static void matchStack(SyntaxListStack stack, SourceSpan span, Action mismatch)
+    {
+        if(span.at(0).isEmpty()) return;
+        stackRule.match(span, stack, nextSpan -> matchStack(stack, nextSpan, mismatch), mismatch);
     }
 }
