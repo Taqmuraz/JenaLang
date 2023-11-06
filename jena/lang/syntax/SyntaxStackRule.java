@@ -77,7 +77,9 @@ public interface SyntaxStackRule
         {
             if(span.at(0).text().compare(symbol))
             {
+                var list = stack.peek();
                 stack.pop();
+                if(list.size() == 0) stack.peek().pop();
                 stack.pop();
                 next.accept(span.skip(1));
             }

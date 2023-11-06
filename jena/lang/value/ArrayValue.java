@@ -43,7 +43,12 @@ public final class ArrayValue implements Value
             action.call("join", () -> new FunctionValue("separator",
                 arg -> new ArrayValue(items.join(arg))));
         },
-        argument -> items.at(new ExpressionNumber(argument).integer()));
+        argument ->
+        {
+            var num = new ExpressionNumber(argument).integer();
+            if(num < items.length() && num >= 0) return items.at(num);
+            else return NoneValue.instance;
+        });
     }
 
     @Override

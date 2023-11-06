@@ -11,6 +11,7 @@ public interface SyntaxList extends SyntaxUnit
 {
     void push(SyntaxUnit unit);
     SyntaxUnit pop();
+    int size();
 
     static SyntaxList of(Function<GenericList<Syntax>, Syntax> complete)
     {
@@ -31,6 +32,11 @@ public interface SyntaxList extends SyntaxUnit
             public SyntaxUnit pop()
             {
                 return stack.pop();
+            }
+            @Override
+            public int size()
+            {
+                return stack.size();
             }
         };
     }
