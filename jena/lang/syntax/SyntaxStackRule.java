@@ -28,8 +28,8 @@ public interface SyntaxStackRule
         new NameExpressionSyntaxRule());
 
     static final SyntaxStackRule stackRule = of(GenericList.of(
-        arrowRule(Text.of("->")),
-        //SyntaxStackRule.bindingRule(new NameExpressionSyntaxRule(), Text.of("="), AssignmentExpressionSyntax::new),
+        arrowRule(),
+        assignmentRule(),
         addSyntaxRule(syntaxRule),
         pushRule(Text.of('('), SyntaxList::invocationList),
         pushNestedRule(Text.of('['), SyntaxList::arrayList, SyntaxList::invocationList),
@@ -37,7 +37,7 @@ public interface SyntaxStackRule
         popRule(Text.of(')')),
         popNestedRule(Text.of(']')),
         popNestedRule(Text.of('}')),
-        commaRule(Text.of(','))
+        commaRule()
     ));
 
     static SyntaxStackRule pushRule(Text symbol, Supplier<SyntaxList> list)
@@ -98,11 +98,11 @@ public interface SyntaxStackRule
             else mismatch.call();
         };
     }
-    static SyntaxStackRule commaRule(Text symbol)
+    static SyntaxStackRule commaRule()
     {
         return (span, stack, next, mismatch) ->
         {
-            if(span.at(0).text().compare(symbol))
+            if(span.at(0).text().compareString(","))
             {
                 var nl = SyntaxList.invocationList();
                 stack.pop();
@@ -125,14 +125,40 @@ public interface SyntaxStackRule
             mismatch);
         };
     }
-    static SyntaxStackRule arrowRule(Text symbol)
+    static SyntaxStackRule arrowRule()
+    {
+        return (span, stack, next, mismatch) ->
+        {
+            stack.peek().arrowRule().match(span, stack, next, mismatch);
+        };
+    }
+    static SyntaxStackRule arrowRuleCommon()
+    {
+        return splitRule(Text.of("->"), SyntaxList::arrowList);
+    }
+    static SyntaxStackRule arrowRuleAssignment()
+    {
+        return (span, stack, next, mismatch) ->
+        {
+            if(span.at(0).text().compareString("->"))
+            {
+                var nl = SyntaxList.invocationList();
+                stack.peek().push(nl);
+                stack.push(nl);
+                stack.postponePop();
+                next.accept(span.skip(1));
+            }
+            else mismatch.call();
+        };
+    }
+    static SyntaxStackRule splitRule(Text symbol, Supplier<SyntaxList> newList)
     {
         return (span, stack, next, mismatch) ->
         {
             if(stack.peek().size() != 0 && span.at(0).text().compare(symbol))
-            { 
+            {
                 var first = stack.peek().pop();
-                var nl = SyntaxList.arrowList();
+                var nl = newList.get();
                 nl.push(first);
                 stack.peek().push(nl);
                 stack.push(nl);
@@ -141,6 +167,10 @@ public interface SyntaxStackRule
             }
             else mismatch.call();
         };
+    }
+    static SyntaxStackRule assignmentRule()
+    {
+        return splitRule(Text.of("="), SyntaxList::assignmentList);
     }
     static SyntaxStackRule of(GenericList<SyntaxStackRule> rules)
     {

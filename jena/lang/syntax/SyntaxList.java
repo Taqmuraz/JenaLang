@@ -5,14 +5,21 @@ import java.util.function.Function;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericList;
+import jena.lang.text.Text;
 
 public interface SyntaxList extends SyntaxUnit
 {
     void push(SyntaxUnit unit);
     SyntaxUnit pop();
     int size();
+    SyntaxStackRule arrowRule();
 
     static SyntaxList of(Function<GenericList<Syntax>, Syntax> complete)
+    {
+        return of(complete, SyntaxStackRule.arrowRuleCommon());
+    }
+
+    static SyntaxList of(Function<GenericList<Syntax>, Syntax> complete, SyntaxStackRule arrowRule)
     {
         Stack<SyntaxUnit> stack = new Stack<>();
         return new SyntaxList()
@@ -36,6 +43,11 @@ public interface SyntaxList extends SyntaxUnit
             public int size()
             {
                 return stack.size();
+            }
+            @Override
+            public SyntaxStackRule arrowRule()
+            {
+                return arrowRule;
             }
         };
     }
@@ -82,6 +94,22 @@ public interface SyntaxList extends SyntaxUnit
             return result[0];
         };
     }
+    static Function<GenericList<Syntax>, Syntax> completeAssignmentList()
+    {
+        return list ->
+        {
+            Syntax[] result = { new NoneValueSyntax() };
+            list.read((left, rest) ->
+            {
+                rest.reverse().read((last, rev) ->
+                {
+                    var right = completeInvocationList().apply(rev.reverse());
+                    result[0] = new AssignmentExpressionSyntax(right, Text.of(left), last);
+                });
+            });
+            return result[0];
+        };
+    }
     static SyntaxList invocationList()
     {
         return of(completeInvocationList());
@@ -97,5 +125,9 @@ public interface SyntaxList extends SyntaxUnit
     static SyntaxList arrowList()
     {
         return of(completeArrowList());
+    }
+    static SyntaxList assignmentList()
+    {
+        return of(completeAssignmentList(), SyntaxStackRule.arrowRuleAssignment());
     }
 }
