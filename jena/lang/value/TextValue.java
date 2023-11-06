@@ -41,4 +41,9 @@ public final class TextValue implements Value
         if(type == String.class) return text.string();
         else throw new RuntimeException(String.format("%s is not a String type", type.getName()));
     }
+    @Override
+    public int valueCode()
+    {
+        return text.string().hashCode();
+    }
 }

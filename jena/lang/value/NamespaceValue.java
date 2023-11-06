@@ -9,6 +9,7 @@ public final class NamespaceValue implements Value
 {
     private Namespace namespace;
     private GenericBuffer<GenericPair<Text, Value>> names;
+    Object hash = new Object();
 
     public NamespaceValue(GenericBuffer<GenericPair<Text, Value>> names)
     {
@@ -39,5 +40,11 @@ public final class NamespaceValue implements Value
     public Object toObject(Class<?> type)
     {
         throw new UnsupportedOperationException("Unimplemented method 'toObject'");
+    }
+
+    @Override
+    public int valueCode()
+    {
+        return hash.hashCode();
     }
 }

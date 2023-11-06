@@ -89,4 +89,10 @@ public final class JavaFunctionValue implements Value
             return function.apply(args);
         });
     }
+
+    @Override
+    public int valueCode()
+    {
+        return hashCode();
+    }
 }

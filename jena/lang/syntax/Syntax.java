@@ -6,5 +6,4 @@ import jena.lang.value.ValueProducer;
 public interface Syntax extends ValueProducer
 {
     void text(TextWriter writer);
-    Syntax decomposed();
 }

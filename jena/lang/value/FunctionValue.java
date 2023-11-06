@@ -29,6 +29,7 @@ public final class FunctionValue implements Value
 
     private Supplier<String> argument;
     private ValueCallFunction function;
+    Object hash = new Object();
 
     public FunctionValue(String argumentName, ValueCallFunction function)
     {
@@ -131,5 +132,10 @@ public final class FunctionValue implements Value
             }
             throw new RuntimeException("Array of java.lang.Class is expected");
         });
+    }
+    @Override
+    public int valueCode()
+    {
+        return hash.hashCode();
     }
 }

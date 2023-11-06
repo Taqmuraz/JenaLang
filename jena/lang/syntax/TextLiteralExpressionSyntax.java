@@ -32,10 +32,4 @@ public final class TextLiteralExpressionSyntax implements Syntax
         writer.write(text);
         writer.write(separator);
     }
-
-    @Override
-    public Syntax decomposed()
-    {
-        return this;
-    }
 }

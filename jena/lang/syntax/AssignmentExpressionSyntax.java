@@ -32,12 +32,6 @@ public final class AssignmentExpressionSyntax implements Syntax
     }
 
     @Override
-    public Syntax decomposed()
-    {
-        return new AssignmentExpressionSyntax(expression.decomposed(), name, next.decomposed());
-    }
-
-    @Override
     public Value value(Namespace namespace)
     {
         return next.value(namespace.nested(new SingleNamespace(name, expression.value(namespace))));

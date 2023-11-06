@@ -34,10 +34,4 @@ public final class ArrowExpressionSyntax implements Syntax
         writer.write("->");
         expression.text(writer);
     }
-
-    @Override
-    public Syntax decomposed()
-    {
-        return new ArrowExpressionSyntax(argument.decomposed(), expression.decomposed());
-    }
 }

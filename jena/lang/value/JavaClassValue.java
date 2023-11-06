@@ -82,4 +82,10 @@ public final class JavaClassValue implements Value
         if(type == Class.class) return javaClass;
         else return new RuntimeException(String.format("%s is not a Class<?> type", type.getName()));
     }
+
+    @Override
+    public int valueCode()
+    {
+        return javaClass.hashCode();
+    }
 }

@@ -1,33 +1,35 @@
 package jena.lang.syntax;
 
+import java.util.function.Function;
+
+import jena.lang.Action;
 import jena.lang.source.SourceSpan;
-import jena.lang.text.SyntaxText;
 import jena.lang.text.Text;
 
 public final class BindingSyntaxRule implements SyntaxRule
 {
-    private Text symbol;
+    SyntaxRule left;
+    Text symbol;
+    Function<Syntax, Syntax> factory;
 
-    public BindingSyntaxRule(Text symbol) {
+    public BindingSyntaxRule(SyntaxRule left, Text symbol, Function<Syntax, Syntax> factory)
+    {
+        this.left = left;
         this.symbol = symbol;
+        this.factory = factory;
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
+    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
     {
-        new NameExpressionSyntaxRule().match(span, (name, nameSpan) ->
+        left.match(span, (leftExpr, next) ->
         {
-            if(nameSpan.at(0).text().compare(symbol))
+            if(next.at(0).text().compare(symbol))
             {
-                new AnyExpressionSyntaxRule().match(nameSpan.skip(1), (expression, expressionSpan) ->
-                {
-                    action.call(new BindingExpressionSyntax(new SyntaxText(name), expression), expressionSpan);
-                }, mistakeAction);
+                action.call(factory.apply(leftExpr), next.skip(1));
             }
-            else
-            {
-                mistakeAction.call(new WrongSourceMistake(nameSpan.at(0), symbol), nameSpan);
-            }
-        }, mistakeAction);
+            else mismatch.call();
+        },
+        mismatch);
     }
 }

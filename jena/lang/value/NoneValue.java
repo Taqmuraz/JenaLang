@@ -30,4 +30,10 @@ public final class NoneValue implements Value
     {
         return null;
     }
+
+    @Override
+    public int valueCode()
+    {
+        return 0;
+    }
 }

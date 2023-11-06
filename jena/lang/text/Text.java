@@ -1,6 +1,8 @@
 package jena.lang.text;
 
 import jena.lang.GenericBuffer;
+import jena.lang.syntax.Syntax;
+import jena.lang.value.Value;
 
 public interface Text
 {
@@ -48,5 +50,21 @@ public interface Text
                 return Text.this.at(index);
             }
         };
+    }
+    static Text of(char c)
+    {
+        return new SingleCharacterText(c);
+    }
+    static Text of(String s)
+    {
+        return new StringText(s);
+    }
+    static Text of(Syntax s)
+    {
+        return new SyntaxText(s);
+    }
+    static Text of(Value v)
+    {
+        return new ValueText(v);
     }
 }

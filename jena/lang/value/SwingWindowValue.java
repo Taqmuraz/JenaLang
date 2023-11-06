@@ -197,4 +197,10 @@ public final class SwingWindowValue implements Value
     {
         throw new UnsupportedOperationException("Unimplemented method 'toObject'");
     }
+
+    @Override
+    public int valueCode()
+    {
+        return members.hashCode();
+    }
 }

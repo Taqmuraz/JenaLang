@@ -32,12 +32,6 @@ public final class BindingExpressionSyntax implements Syntax
     }
 
     @Override
-    public Syntax decomposed()
-    {
-        return new BindingExpressionSyntax(name, expression.decomposed());
-    }
-
-    @Override
     public Value value(Namespace namespace)
     {
         return new SingleElementMapValue(new SymbolValue(name), expression.value(namespace));

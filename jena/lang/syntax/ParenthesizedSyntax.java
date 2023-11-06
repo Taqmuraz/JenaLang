@@ -23,12 +23,6 @@ public final class ParenthesizedSyntax implements Syntax
     }
 
     @Override
-    public Syntax decomposed()
-    {
-        return new ParenthesizedSyntax(expression.decomposed());
-    }
-
-    @Override
     public Value value(Namespace namespace)
     {
         return expression.value(namespace);

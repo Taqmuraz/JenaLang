@@ -21,12 +21,6 @@ public final class NameExpressionSyntax implements Syntax
     }
 
     @Override
-    public Syntax decomposed()
-    {
-        return this;
-    }
-
-    @Override
     public Value value(Namespace namespace)
     {
         return namespace.name(name);

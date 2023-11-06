@@ -95,4 +95,10 @@ public final class JavaObjectValue implements Value
         if(type.isAssignableFrom(t)) return obj;
         else throw new RuntimeException(String.format("Type %s is not assignable from %s", type.getName(), t.getName()));
     }
+
+    @Override
+    public int valueCode()
+    {
+        return obj.hashCode();
+    }
 }

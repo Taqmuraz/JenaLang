@@ -24,12 +24,6 @@ public class FloatLiteralSyntax implements Syntax
     }
 
     @Override
-    public Syntax decomposed()
-    {
-        return this;
-    }
-
-    @Override
     public Value value(Namespace namespace)
     {
         return value;

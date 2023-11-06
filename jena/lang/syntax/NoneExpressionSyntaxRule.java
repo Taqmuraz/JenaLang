@@ -1,14 +1,14 @@
 package jena.lang.syntax;
 
+import jena.lang.Action;
 import jena.lang.source.SourceSpan;
-import jena.lang.text.StringText;
 
 public final class NoneExpressionSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
+    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
     {
         if(span.at(0).text().compareString("(") && span.at(1).text().compareString(")")) action.call(new NoneValueSyntax(), span.skip(2));
-        else mistakeAction.call(new WrongSourceMistake(span.at(0), new StringText("()")), span);
+        else mismatch.call();
     }
 }

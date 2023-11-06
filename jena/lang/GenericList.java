@@ -24,17 +24,22 @@ public interface GenericList<Element>
     {
         return (action, empty) -> empty.call();
     }
-    static <Element> GenericList<Element> of(Iterator<Element> it)
+    static <Element> GenericList<Element> of(List<Element> list)
+    {
+        return of(list, 0);
+    }
+    static <Element> GenericList<Element> of(List<Element> list, int start)
     {
         return (action, empty) ->
         {
-            if(it.hasNext()) action.call(it.next(), of(it));
+            if(start < list.size()) action.call(list.get(start), of(list, start + 1));
             else empty.call();
         };
     }
-    static <Element> GenericList<Element> of(Iterable<Element> coll)
+    @SafeVarargs
+    static <Element> GenericList<Element> of(Element... elements)
     {
-        return of(coll.iterator());
+        return of(List.of(elements));
     }
     default Iterable<Element> iterable()
     {

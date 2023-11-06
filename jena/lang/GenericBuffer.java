@@ -1,5 +1,6 @@
 package jena.lang;
 
+import java.util.List;
 import java.util.function.Function;
 
 public interface GenericBuffer<Element>
@@ -73,5 +74,21 @@ public interface GenericBuffer<Element>
             array[i] = at(i);
         }
         return array;
+    }
+    static<Element> GenericBuffer<Element> of(List<Element> list)
+    {
+        return new GenericBuffer<Element>()
+        {
+            @Override
+            public int length()
+            {
+                return list.size();
+            }
+            @Override
+            public Element at(int index)
+            {
+                return list.get(index);
+            }
+        };
     }
 }

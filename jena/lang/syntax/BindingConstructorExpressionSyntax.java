@@ -29,10 +29,4 @@ public final class BindingConstructorExpressionSyntax implements Syntax
         writer.write(name);
         writer.write(":");
     }
-
-    @Override
-    public Syntax decomposed()
-    {
-        return this;
-    }
 }

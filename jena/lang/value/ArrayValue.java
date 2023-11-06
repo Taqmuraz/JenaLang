@@ -85,4 +85,10 @@ public final class ArrayValue implements Value
         }
         else throw new RuntimeException(String.format("%s is not an array type", type.getName()));
     }
+
+    @Override
+    public int valueCode()
+    {
+        return hashCode();
+    }
 }

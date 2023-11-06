@@ -36,4 +36,10 @@ public final class CharacterValue implements Value
         if(type == Character.TYPE || type == Character.class) return symbol;
         else throw new RuntimeException(String.format("%s is not a Character type", type.getName()));
     }
+
+    @Override
+    public int valueCode()
+    {
+        return symbol.hashCode();
+    }
 }

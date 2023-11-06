@@ -1,12 +1,12 @@
 package jena.lang.syntax;
 
+import jena.lang.Action;
 import jena.lang.source.SourceSpan;
-import jena.lang.text.StringText;
 
 public final class NameExpressionSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
+    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
     {
         if(span.at(0).isKind(Character::isAlphabetic))
         {
@@ -14,7 +14,7 @@ public final class NameExpressionSyntaxRule implements SyntaxRule
         }
         else
         {
-            mistakeAction.call(new KindSourceMistake(span.at(0), new StringText("alphabetic")), span);
+            mismatch.call();
         }
     }
 }

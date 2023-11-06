@@ -128,4 +128,10 @@ public final class NumberValue implements Value, Single
         if(func != null) return func.apply(value);
         else throw new RuntimeException(String.format("Type %s expected to be primitive", type.getName()));
     }
+
+    @Override
+    public int valueCode()
+    {
+        return Double.hashCode(value);
+    }
 }

@@ -26,12 +26,6 @@ public final class InvocationExpressionSyntax implements Syntax
     }
 
     @Override
-    public Syntax decomposed()
-    {
-        return new InvocationExpressionSyntax(expression.decomposed(), argument.decomposed());
-    }
-
-    @Override
     public Value value(Namespace namespace)
     {
         return expression.value(namespace).call(argument.value(namespace));

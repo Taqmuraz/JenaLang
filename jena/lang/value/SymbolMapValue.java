@@ -55,4 +55,10 @@ public class SymbolMapValue implements Value
     {
         throw new UnsupportedOperationException("Unimplemented method 'toObject'");
     }
+
+    @Override
+    public int valueCode()
+    {
+        return hashCode();
+    }
 }

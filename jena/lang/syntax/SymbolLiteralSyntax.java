@@ -27,10 +27,4 @@ public final class SymbolLiteralSyntax implements Syntax
         writer.write(".");
         writer.write(name);
     }
-
-    @Override
-    public Syntax decomposed()
-    {
-        return this;
-    }
 }

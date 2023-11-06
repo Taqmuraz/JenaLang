@@ -18,10 +18,4 @@ public class NoneValueSyntax implements Syntax
     {
         writer.write("()");
     }
-
-    @Override
-    public Syntax decomposed()
-    {
-        return this;
-    }
 }

@@ -38,4 +38,10 @@ public class SymbolValue implements Value
     {
         throw new UnsupportedOperationException("Unimplemented method 'toObject'");
     }
+
+    @Override
+    public int valueCode()
+    {
+        return name.hashCode();
+    }
 }

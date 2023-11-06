@@ -1,12 +1,13 @@
 package jena.lang.syntax;
 
+import jena.lang.Action;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.ConcatText;
 
 public class FloatLiteralSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, SyntaxMistakeSpanAction mistakeAction)
+    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
     {
         if(span.at(0).isKind(Character::isDigit) && span.at(1).text().compareString(".") && span.at(2).isKind(Character::isDigit))
         {
@@ -18,5 +19,6 @@ public class FloatLiteralSyntaxRule implements SyntaxRule
                         span.at(2).text()))),
                     span.skip(3));
         }
+        else mismatch.call();
     }
 }
