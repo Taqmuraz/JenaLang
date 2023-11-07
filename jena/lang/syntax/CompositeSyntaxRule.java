@@ -1,32 +1,36 @@
 package jena.lang.syntax;
 
-import java.util.List;
 
 import jena.lang.Action;
-import jena.lang.GenericList;
 import jena.lang.source.SourceSpan;
 
 public class CompositeSyntaxRule implements SyntaxRule
 {
-    private GenericList<SyntaxRule> rules;
-
-    public CompositeSyntaxRule(GenericList<SyntaxRule> rules)
-    {
-        this.rules = rules;
-    }
+    private SyntaxRule[] rules;
 
     public CompositeSyntaxRule(SyntaxRule... rules)
     {
-        this.rules = GenericList.of(List.of(rules));
+        this.rules = rules;
     }
 
     @Override
     public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
     {
-        rules.read((f, r) ->
+        boolean[] hasMatch = { false };
+        int index = 0;
+        do
         {
-            f.match(span, action, () -> new CompositeSyntaxRule(r).match(span, action, mismatch));
-        },
-        mismatch);
+            rules[index++].match(span, (syntax, nextSpan) ->
+            {
+                hasMatch[0] = true;
+                action.call(syntax, nextSpan);
+            },
+            () -> { });
+        }
+        while(!hasMatch[0] && index < rules.length);
+        if(!hasMatch[0])
+        {
+            mismatch.call();
+        }
     }
 }

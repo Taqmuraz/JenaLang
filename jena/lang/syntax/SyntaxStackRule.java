@@ -27,7 +27,7 @@ public interface SyntaxStackRule
         new BindingExpressionSyntaxRule(),
         new NameExpressionSyntaxRule());
 
-    static final SyntaxStackRule stackRule = of(GenericList.of(
+    static final SyntaxStackRule stackRule = of(
         arrowRule(),
         assignmentRule(),
         addSyntaxRule(syntaxRule),
@@ -38,7 +38,7 @@ public interface SyntaxStackRule
         popNestedRule(Text.of(']')),
         popNestedRule(Text.of('}')),
         commaRule()
-    ));
+    );
 
     static SyntaxStackRule pushRule(Text symbol, Supplier<SyntaxList> list)
     {
@@ -170,20 +170,41 @@ public interface SyntaxStackRule
     }
     static SyntaxStackRule assignmentRule()
     {
-        return splitRule(Text.of("="), SyntaxList::assignmentList);
+        return (span, stack, next, mismatch) ->
+        {
+            if(stack.peek().size() != 0 && span.at(0).text().compareString("="))
+            {
+                var first = stack.peek().pop();
+                var nl = SyntaxList.assignmentList();
+                nl.push(first);
+                stack.peek().push(nl);
+                stack.push(nl);
+                stack.postponePop();
+                next.accept(span.skip(1));
+            }
+            else mismatch.call();
+        };
     }
-    static SyntaxStackRule of(GenericList<SyntaxStackRule> rules)
+    static SyntaxStackRule of(SyntaxStackRule... rules)
     {
         return (span, stack, next, mismatch) ->
         {
-            rules.read((f, r) ->
+            boolean[] hasMatch = { false };
+            int index = 0;
+            do
             {
-                f.match(span, stack, next, () ->
+                rules[index++].match(span, stack, nextSpan ->
                 {
-                    of(r).match(span, stack, next, mismatch);
-                });
-            },
-            mismatch);
+                    hasMatch[0] = true;
+                    next.accept(nextSpan);
+                },
+                () -> { });
+            }
+            while(!hasMatch[0] && index < rules.length);
+            if(!hasMatch[0])
+            {
+                mismatch.call();
+            }
         };
     }
 

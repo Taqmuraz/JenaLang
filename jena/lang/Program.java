@@ -1,6 +1,8 @@
 package jena.lang;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.source.Source;
@@ -46,10 +48,20 @@ public class Program
         }
         catch(Throwable error)
         {
-            while(error != null)
+            try
             {
-                error.printStackTrace(System.out);
-                error = error.getCause();
+                var writer = new PrintStream(new FileOutputStream(new File("log.txt")));
+
+                while(error != null)
+                {
+                    error.printStackTrace(writer);
+                    error.printStackTrace(System.out);
+                    error = error.getCause();
+                }
+            }
+            catch(Throwable th)
+            {
+
             }
         }
     }

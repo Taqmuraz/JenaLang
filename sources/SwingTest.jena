@@ -1,12 +1,12 @@
 jc = javaClass ->
 import =
 {
-    int:jc "java.lang.Integer",
-    bool:jc "java.lang.Boolean",
-    button:jc "javax.swing.JButton",
-    frame:jc "javax.swing.JFrame",
-    queue:jc "java.awt.EventQueue",
-    string:jc "java.lang.String"
+    int:(jc "java.lang.Integer"),
+    bool:(jc "java.lang.Boolean"),
+    button:(jc "javax.swing.JButton"),
+    frame:(jc "javax.swing.JFrame"),
+    queue:(jc "java.awt.EventQueue"),
+    string:(jc "java.lang.String")
 } ->
 frame = (import.frame.new [] ()) ->
 button = (import.button.new [] ()) ->

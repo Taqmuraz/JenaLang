@@ -9,6 +9,7 @@ public interface SyntaxListStack
     SyntaxList pop();
     void postponePop();
     void releasePop();
+    boolean isEmpty();
 
     static SyntaxListStack make(SyntaxList list)
     {
@@ -37,7 +38,7 @@ public interface SyntaxListStack
             @Override
             public void postponePop()
             {
-                ++additionalPop;
+                //++additionalPop;
             }
 
             @Override
@@ -48,6 +49,12 @@ public interface SyntaxListStack
                     --additionalPop;
                     stack.pop();
                 }
+            }
+
+            @Override
+            public boolean isEmpty()
+            {
+                return stack.empty();
             }
         };
     }

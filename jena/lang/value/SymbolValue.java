@@ -42,6 +42,6 @@ public class SymbolValue implements Value
     @Override
     public int valueCode()
     {
-        return name.hashCode();
+        return name.string().hashCode();
     }
 }

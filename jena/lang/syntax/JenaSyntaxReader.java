@@ -26,7 +26,12 @@ public class JenaSyntaxReader
         SourceSpan start = flow.span();
         var stack = SyntaxListStack.make(SyntaxList.invocationList());
         SyntaxStackRule.matchStack(stack, start, mismatch);
-        stack.releasePop();
-        action.call(stack.peek().complete());
+        SyntaxList list;
+        do
+        {
+            list = stack.pop();
+        }
+        while(!stack.isEmpty());
+        action.call(list.complete());
     }
 }

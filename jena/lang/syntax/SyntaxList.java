@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericList;
+import jena.lang.IterableFlow;
 import jena.lang.text.Text;
 
 public interface SyntaxList extends SyntaxUnit
@@ -48,6 +49,15 @@ public interface SyntaxList extends SyntaxUnit
             public SyntaxStackRule arrowRule()
             {
                 return arrowRule;
+            }
+            @Override
+            public String toString()
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.append("[");
+                new IterableFlow<>(stack).join(s -> sb.append(s.toString()), () -> sb.append(" "));
+                sb.append("]");
+                return sb.toString();
             }
         };
     }

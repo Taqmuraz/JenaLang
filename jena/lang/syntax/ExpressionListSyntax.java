@@ -18,7 +18,7 @@ public class ExpressionListSyntax implements Syntax
 
     public static Syntax arraySyntax(GenericBuffer<Syntax> expressions)
     {
-        return new ExpressionListSyntax(expressions, Text.of('('), Text.of(')'), ArrayValue::new);
+        return new ExpressionListSyntax(expressions, Text.of('['), Text.of(']'), ArrayValue::new);
     }
     public static Syntax mapSyntax(GenericBuffer<Syntax> expressions)
     {
