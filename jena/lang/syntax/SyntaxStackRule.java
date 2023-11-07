@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import jena.lang.Action;
-import jena.lang.GenericList;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.Text;
 
@@ -145,7 +144,6 @@ public interface SyntaxStackRule
                 var nl = SyntaxList.invocationList();
                 stack.peek().push(nl);
                 stack.push(nl);
-                stack.postponePop();
                 next.accept(span.skip(1));
             }
             else mismatch.call();
@@ -162,7 +160,6 @@ public interface SyntaxStackRule
                 nl.push(first);
                 stack.peek().push(nl);
                 stack.push(nl);
-                stack.postponePop();
                 next.accept(span.skip(1));
             }
             else mismatch.call();
@@ -179,7 +176,6 @@ public interface SyntaxStackRule
                 nl.push(first);
                 stack.peek().push(nl);
                 stack.push(nl);
-                stack.postponePop();
                 next.accept(span.skip(1));
             }
             else mismatch.call();

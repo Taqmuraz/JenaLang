@@ -7,8 +7,6 @@ public interface SyntaxListStack
     void push(SyntaxList list);
     SyntaxList peek();
     SyntaxList pop();
-    void postponePop();
-    void releasePop();
     boolean isEmpty();
 
     static SyntaxListStack make(SyntaxList list)
@@ -17,7 +15,6 @@ public interface SyntaxListStack
         stack.push(list);
         return new SyntaxListStack()
         {
-            int additionalPop;
             @Override
             public void push(SyntaxList list)
             {
@@ -27,28 +24,12 @@ public interface SyntaxListStack
             @Override
             public SyntaxList pop()
             {
-                releasePop();
                 return stack.pop();
             }
             @Override
             public SyntaxList peek()
             {
                 return stack.peek();
-            }
-            @Override
-            public void postponePop()
-            {
-                //++additionalPop;
-            }
-
-            @Override
-            public void releasePop()
-            {
-                while(additionalPop > 0)
-                {
-                    --additionalPop;
-                    stack.pop();
-                }
             }
 
             @Override
