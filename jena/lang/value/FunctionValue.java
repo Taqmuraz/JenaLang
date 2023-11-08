@@ -13,13 +13,13 @@ import jena.lang.text.TextWriter;
 public final class FunctionValue implements Value
 {
     static Map<Class<?>, Class<?>> wrapperMap = Map.ofEntries(
-        Map.entry(Integer.class, Integer.TYPE),
-        Map.entry(Long.class, Long.TYPE),
-        Map.entry(Boolean.class, Boolean.TYPE),
-        Map.entry(Character.class, Character.TYPE),
-        Map.entry(Byte.class, Byte.TYPE),
-        Map.entry(Float.class, Float.TYPE),
-        Map.entry(Double.class, Double.TYPE)
+        Map.entry(Integer.TYPE, Integer.class),
+        Map.entry(Long.TYPE, Long.class),
+        Map.entry(Boolean.TYPE, Boolean.class),
+        Map.entry(Character.TYPE, Character.class),
+        Map.entry(Byte.TYPE, Byte.class),
+        Map.entry(Float.TYPE, Float.class),
+        Map.entry(Double.TYPE, Double.class)
     );
 
     public interface RecurCallFunction
@@ -96,11 +96,11 @@ public final class FunctionValue implements Value
     static boolean assignabilityCheck(Class<?> from, Class<?> to)
     {
         if(from == to) return true;
-        if(to.isPrimitive())
+        if(from.isPrimitive())
         {
             return wrapperMap.get(from).isAssignableFrom(to);
         }
-        else if(from.isPrimitive())
+        else if(to.isPrimitive())
         {
             return from.isAssignableFrom(wrapperMap.get(to));
         }
