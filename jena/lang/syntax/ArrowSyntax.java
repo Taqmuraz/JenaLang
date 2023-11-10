@@ -7,9 +7,9 @@ import jena.lang.value.Namespace;
 import jena.lang.value.SingleNamespace;
 import jena.lang.value.Value;
 
-public final class ArrowExpressionSyntax implements Syntax
+public final class ArrowSyntax implements Syntax
 {
-    public ArrowExpressionSyntax(Syntax argument, Syntax expression)
+    public ArrowSyntax(Syntax argument, Syntax expression)
     {
         this.argument = argument;
         this.expression = expression;

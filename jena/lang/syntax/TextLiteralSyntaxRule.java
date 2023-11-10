@@ -5,7 +5,7 @@ import jena.lang.source.SourceSpan;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
 
-public final class TextLiteralExpressionSyntaxRule implements SyntaxRule
+public final class TextLiteralSyntaxRule implements SyntaxRule
 {
     @Override
     public Optional<SyntaxSpan> match(SourceSpan span)
@@ -13,7 +13,7 @@ public final class TextLiteralExpressionSyntaxRule implements SyntaxRule
         Text symbol = new SingleCharacterText('\"');
         if(span.at(0).text().compare(symbol) && span.at(2).text().compare(symbol))
         {
-            return Optional.yes(SyntaxSpan.of(new TextLiteralExpressionSyntax(span.at(1).text()), span.skip(3)));
+            return Optional.yes(SyntaxSpan.of(new TextLiteralSyntax(span.at(1).text()), span.skip(3)));
         }
         return Optional.no();
     }

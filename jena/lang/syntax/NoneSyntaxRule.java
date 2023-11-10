@@ -3,7 +3,7 @@ package jena.lang.syntax;
 import jena.lang.Optional;
 import jena.lang.source.SourceSpan;
 
-public final class NoneExpressionSyntaxRule implements SyntaxRule
+public final class NoneSyntaxRule implements SyntaxRule
 {
     @Override
     public Optional<SyntaxSpan> match(SourceSpan span)

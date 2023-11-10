@@ -1,5 +1,6 @@
 package jena.lang.syntax;
 
+import jena.lang.StructPair;
 import jena.lang.source.SourceSpan;
 
 public interface SyntaxSpan
@@ -10,6 +11,11 @@ public interface SyntaxSpan
     }
 
     void accept(SyntaxSpanAction action);
+
+    default StructPair<Syntax, SourceSpan> pair()
+    {
+        return new StructPair<Syntax, SourceSpan>(action -> accept(action::call));
+    }
 
     static SyntaxSpan of(Syntax syntax, SourceSpan span)
     {

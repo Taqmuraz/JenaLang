@@ -7,12 +7,12 @@ import jena.lang.value.Namespace;
 import jena.lang.value.TextValue;
 import jena.lang.value.Value;
 
-public final class TextLiteralExpressionSyntax implements Syntax
+public final class TextLiteralSyntax implements Syntax
 {
     private Text text;
     private Value value;
 
-    public TextLiteralExpressionSyntax(Text text)
+    public TextLiteralSyntax(Text text)
     {
         this.text = text;
         value = new TextValue(text);

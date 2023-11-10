@@ -14,6 +14,13 @@ public interface Optional<Item>
             ifPresentElse(item -> present.call(function.call(item)), notPresent);
         };
     }
+    default <Out>Optional<Out> mapOptional(GenericFunction<Item, Optional<Out>> function)
+    {
+        return (present, notPresent) ->
+        {
+            ifPresentElse(item -> function.call(item).ifPresentElse(present, notPresent), notPresent);
+        };
+    }
 
     static<Item> Optional<Item> yes(Item item)
     {

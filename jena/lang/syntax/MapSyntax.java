@@ -10,12 +10,12 @@ import jena.lang.value.SymbolValue;
 import jena.lang.value.Value;
 import jena.lang.value.ValueProducer;
 
-public final class BindingExpressionSyntax implements Syntax
+public final class MapSyntax implements Syntax
 {
     private Text name;
     private Syntax expression;
 
-    public BindingExpressionSyntax(Text name, Syntax expression)
+    public MapSyntax(Text name, Syntax expression)
     {
         this.name = name;
         this.expression = expression;

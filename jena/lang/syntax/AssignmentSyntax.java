@@ -6,13 +6,13 @@ import jena.lang.value.SingleNamespace;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
-public final class AssignmentExpressionSyntax implements Syntax
+public final class AssignmentSyntax implements Syntax
 {
     private Syntax expression;
     private Text name;
     private Syntax next;
     
-    public AssignmentExpressionSyntax(Syntax expression, Text name, Syntax next)
+    public AssignmentSyntax(Text name, Syntax expression, Syntax next)
     {
         this.expression = expression;
         this.name = name;

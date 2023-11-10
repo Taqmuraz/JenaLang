@@ -5,11 +5,11 @@ import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
-public final class NameExpressionSyntax implements Syntax
+public final class NameSyntax implements Syntax
 {
     private Text name;
 
-    public NameExpressionSyntax(Text name)
+    public NameSyntax(Text name)
     {
         this.name = name;
     }

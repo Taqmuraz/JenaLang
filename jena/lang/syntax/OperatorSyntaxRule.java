@@ -7,7 +7,7 @@ import jena.lang.source.SourceSpan;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
 
-public final class OperatorLiteralSyntaxRule implements SyntaxRule
+public final class OperatorSyntaxRule implements SyntaxRule
 {
     static Map<String, String> operatorMap = Map.ofEntries
     (
@@ -30,6 +30,6 @@ public final class OperatorLiteralSyntaxRule implements SyntaxRule
         Text operator = span.at(0).text();
         String name = operatorMap.get(operator.string());
         if(name == null) return Optional.no();
-        return Optional.yes(SyntaxSpan.of(new SymbolLiteralSyntax(new StringText(name)), span.skip(1)));
+        return Optional.yes(SyntaxSpan.of(new SymbolSyntax(new StringText(name)), span.skip(1)));
     }
 }

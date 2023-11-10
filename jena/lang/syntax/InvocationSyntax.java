@@ -4,12 +4,12 @@ import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
-public final class InvocationExpressionSyntax implements Syntax
+public final class InvocationSyntax implements Syntax
 {
     private Syntax expression;
     private Syntax argument;
 
-    public InvocationExpressionSyntax(Syntax expression, Syntax argument)
+    public InvocationSyntax(Syntax expression, Syntax argument)
     {
         this.expression = expression;
         this.argument = argument;

@@ -4,8 +4,6 @@ import jena.lang.EmptyBuffer;
 import jena.lang.GenericBuffer;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
-import jena.lang.value.ArrayValue;
-import jena.lang.value.MapValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 
@@ -15,15 +13,6 @@ public class ExpressionListSyntax implements Syntax
     private Text openBrace;
     private Text closeBrace;
     private ValueFactory factory;
-
-    public static Syntax arraySyntax(GenericBuffer<Syntax> expressions)
-    {
-        return new ExpressionListSyntax(expressions, Text.of('['), Text.of(']'), ArrayValue::new);
-    }
-    public static Syntax mapSyntax(GenericBuffer<Syntax> expressions)
-    {
-        return new ExpressionListSyntax(expressions, Text.of('{'), Text.of('}'), MapValue::new);
-    }
 
     public interface ValueFactory
     {

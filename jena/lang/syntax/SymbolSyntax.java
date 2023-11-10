@@ -2,17 +2,15 @@ package jena.lang.syntax;
 
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
-import jena.lang.value.FunctionValue;
 import jena.lang.value.Namespace;
-import jena.lang.value.SingleElementMapValue;
 import jena.lang.value.SymbolValue;
 import jena.lang.value.Value;
 
-public final class BindingConstructorExpressionSyntax implements Syntax
+public final class SymbolSyntax implements Syntax
 {
     Text name;
 
-    public BindingConstructorExpressionSyntax(Text name)
+    public SymbolSyntax(Text name)
     {
         this.name = name;
     }
@@ -20,13 +18,13 @@ public final class BindingConstructorExpressionSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new FunctionValue("value", arg -> new SingleElementMapValue(new SymbolValue(name), arg));
+        return new SymbolValue(name);
     }
 
     @Override
     public void text(TextWriter writer)
     {
+        writer.write(".");
         writer.write(name);
-        writer.write(":");
     }
 }

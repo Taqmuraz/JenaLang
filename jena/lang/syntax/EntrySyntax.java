@@ -2,15 +2,17 @@ package jena.lang.syntax;
 
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
+import jena.lang.value.FunctionValue;
 import jena.lang.value.Namespace;
+import jena.lang.value.SingleElementMapValue;
 import jena.lang.value.SymbolValue;
 import jena.lang.value.Value;
 
-public final class SymbolLiteralSyntax implements Syntax
+public final class EntrySyntax implements Syntax
 {
     Text name;
 
-    public SymbolLiteralSyntax(Text name)
+    public EntrySyntax(Text name)
     {
         this.name = name;
     }
@@ -18,13 +20,13 @@ public final class SymbolLiteralSyntax implements Syntax
     @Override
     public Value value(Namespace namespace)
     {
-        return new SymbolValue(name);
+        return new FunctionValue("value", arg -> new SingleElementMapValue(new SymbolValue(name), arg));
     }
 
     @Override
     public void text(TextWriter writer)
     {
-        writer.write(".");
         writer.write(name);
+        writer.write(":");
     }
 }
