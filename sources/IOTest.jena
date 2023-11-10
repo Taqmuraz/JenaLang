@@ -1,4 +1,4 @@
-jc = javaClass ->
+jc = (javaClass) ->
 file = (jc "java.io.File" .new [jc "java.lang.String"] "sources/out.txt") ->
 stream = (jc "java.io.FileOutputStream" .new [jc "java.io.File"] file) ->
 writer = (jc "java.io.OutputStreamWriter".new [jc "java.io.OutputStream"] stream) ->

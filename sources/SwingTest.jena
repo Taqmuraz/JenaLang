@@ -1,4 +1,4 @@
-jc = javaClass ->
+jc = (javaClass) ->
 import =
 {
     int:(jc "java.lang.Integer"),

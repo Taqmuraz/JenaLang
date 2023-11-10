@@ -9,7 +9,7 @@ public final class ArrowSyntaxRule implements SyntaxRule
     @Override
     public Optional<SyntaxSpan> match(SourceSpan span)
     {
-        return SyntaxRule.name.match(span).mapOptional(name ->
+        return new CompositeSyntaxRule(SyntaxRule.name, SyntaxRule.none).match(span).mapOptional(name ->
         {
             var namePair = name.pair();
             if(namePair.b.at(0).text().compare(Text.of("->")))

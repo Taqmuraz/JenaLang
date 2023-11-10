@@ -1,14 +1,6 @@
-java.lang.RuntimeException: Error while reading source : ((a -> b -> a * b) 1 2)
-	at jena.lang.value.StorageNamespace.loadFromSource(StorageNamespace.java:28)
-	at jena.lang.value.StorageNamespace.lambda$4(StorageNamespace.java:63)
-	at jena.lang.value.FunctionValue.call(FunctionValue.java:65)
-	at jena.lang.syntax.InvocationSyntax.value(InvocationSyntax.java:31)
-	at jena.lang.syntax.ParenthesizedSyntax.value(ParenthesizedSyntax.java:28)
-	at jena.lang.syntax.InvocationSyntax.value(InvocationSyntax.java:31)
-	at jena.lang.Program.lambda$0(Program.java:44)
-	at jena.lang.syntax.JenaSyntaxReader.lambda$2(JenaSyntaxReader.java:20)
-	at jena.lang.syntax.SyntaxSpan.lambda$2(SyntaxSpan.java:22)
-	at jena.lang.syntax.JenaSyntaxReader.lambda$0(JenaSyntaxReader.java:20)
-	at jena.lang.Optional.lambda$8(Optional.java:43)
-	at jena.lang.syntax.JenaSyntaxReader.read(JenaSyntaxReader.java:20)
+java.lang.Error: Unresolved compilation problem: 
+	ArrowSyntaxRule cannot be resolved to a type
+
+	at jena.lang.syntax.SyntaxRule.<clinit>(SyntaxRule.java:22)
+	at jena.lang.syntax.JenaSyntaxReader.read(JenaSyntaxReader.java:19)
 	at jena.lang.Program.main(Program.java:38)
