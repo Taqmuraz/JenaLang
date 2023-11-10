@@ -1,6 +1,0 @@
-java.lang.Error: Unresolved compilation problem: 
-	ArrowSyntaxRule cannot be resolved to a type
-
-	at jena.lang.syntax.SyntaxRule.<clinit>(SyntaxRule.java:22)
-	at jena.lang.syntax.JenaSyntaxReader.read(JenaSyntaxReader.java:19)
-	at jena.lang.Program.main(Program.java:38)
