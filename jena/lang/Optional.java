@@ -1,5 +1,8 @@
 package jena.lang;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface Optional<Item>
 {
     void ifPresentElse(GenericAction<Item> present, Action notPresent);
@@ -20,6 +23,19 @@ public interface Optional<Item>
         {
             ifPresentElse(item -> function.call(item).ifPresentElse(present, notPresent), notPresent);
         };
+    }
+    default Optional<Item> orElse(Item item)
+    {
+        return (present, notPresent) ->
+        {
+            ifPresentElse(present, () -> present.call(item));
+        };
+    }
+    default Item itemOrDefault(Item defaultItem)
+    {
+        List<Item> item = new ArrayList<Item>();
+        ifPresent(item::add);
+        return item.isEmpty() ? defaultItem : item.get(0);
     }
 
     static<Item> Optional<Item> yes(Item item)

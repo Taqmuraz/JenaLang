@@ -2,9 +2,6 @@ package jena.lang.syntax;
 
 import jena.lang.source.Source;
 import jena.lang.source.SourceFlow;
-import jena.lang.source.SourceSpan;
-
-import jena.lang.Action;
 import jena.lang.source.JenaSourceFlow;
 
 public class JenaSyntaxReader
@@ -19,19 +16,10 @@ public class JenaSyntaxReader
 
     public void read(SyntaxAction action, SyntaxMistakeAction mistakeAction)
     {
-        Action mismatch = () ->
+        var match = SyntaxRule.any().match(flow.span());
+        match.ifPresentElse(ss -> ss.accept((syntax, span) -> action.call(syntax)), () ->
         {
-            mistakeAction.call(writer -> writer.write("No syntax matched"));
-        };
-        SourceSpan start = flow.span();
-        var stack = SyntaxListStack.make(SyntaxList.invocationList());
-        SyntaxStackRule.matchStack(stack, start, mismatch);
-        SyntaxList list;
-        do
-        {
-            list = stack.pop();
-        }
-        while(!stack.isEmpty());
-        action.call(list.complete());
+            System.out.println("no syntax");
+        });
     }
 }

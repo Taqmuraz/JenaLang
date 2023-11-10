@@ -19,11 +19,13 @@ public interface SyntaxRule
     static final SyntaxRule none = new NoneSyntaxRule();
 
     static final SyntaxRule arrow = new ArrowSyntaxRule();
-    static final SyntaxRule assignment = new ArrowSyntaxRule();
-    static final SyntaxRule parenthesized = new ArrowSyntaxRule();
+    static final SyntaxRule assignment = new AssignmentSyntaxRule();
+    static final SyntaxRule parenthesized = new ParenthesizedSyntaxRule();
 
     static final SyntaxRule array = new ExpressionListSyntaxRule(Text.of('['), Text.of(']'), ArrayValue::new);
     static final SyntaxRule map = new ExpressionListSyntaxRule(Text.of('{'), Text.of('}'), MapValue::new);
+
+    static final SyntaxRule invocation = new InvocationSyntaxRule();
 
     static SyntaxRule lower()
     {
@@ -44,6 +46,8 @@ public interface SyntaxRule
     }
     static SyntaxRule any()
     {
-        return new CompositeSyntaxRule(lower());
+        return new CompositeSyntaxRule(
+            invocation,
+            lower());
     }
 }
