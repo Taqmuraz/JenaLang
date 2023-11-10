@@ -15,6 +15,7 @@ public interface SyntaxRule
     static final SyntaxRule integer = new IntegerLiteralSyntaxRule();
     static final SyntaxRule single = new FloatLiteralSyntaxRule();
     static final SyntaxRule symbol = new SymbolSyntaxRule();
+    static final SyntaxRule operator = new OperatorSyntaxRule();
     static final SyntaxRule text = new TextLiteralSyntaxRule();
     static final SyntaxRule none = new NoneSyntaxRule();
 
@@ -37,6 +38,7 @@ public interface SyntaxRule
             integer,
             single,
             symbol,
+            operator,
             text,
             none,
             parenthesized,

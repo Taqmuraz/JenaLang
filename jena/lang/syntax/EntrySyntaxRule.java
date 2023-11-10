@@ -9,13 +9,14 @@ public final class EntrySyntaxRule implements SyntaxRule
     @Override
     public Optional<SyntaxSpan> match(SourceSpan span)
     {
-        return new NameSyntaxRule().match(span).map(ss -> ss.map((name, nameSpan) ->
+        return SyntaxRule.name.match(span).mapOptional(name ->
         {
-            if(nameSpan.at(0).text().compareString(":"))
+            var namePair = name.pair();
+            if(namePair.b.at(0).text().compareString(":"))
             {
-                return SyntaxSpan.of(new EntrySyntax(Text.of(name)), nameSpan.skip(1));
+                return Optional.yes(SyntaxSpan.of(new EntrySyntax(Text.of(namePair.a)), namePair.b.skip(1)));
             }
-            return ss;
-        }));
+            return Optional.no();
+        });
     }
 }

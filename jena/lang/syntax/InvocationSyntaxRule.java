@@ -1,5 +1,7 @@
 package jena.lang.syntax;
 
+import java.util.ArrayList;
+
 import jena.lang.Optional;
 import jena.lang.source.SourceSpan;
 
@@ -8,28 +10,27 @@ public class InvocationSyntaxRule implements SyntaxRule
     @Override
     public Optional<SyntaxSpan> match(SourceSpan span)
     {
-        return SyntaxRule.lower().match(span).mapOptional(ex ->
+        var matched = new ArrayList<Syntax>();
+        SourceSpan[] start = { span };
+        boolean[] noMatch = { false };
+        do
         {
-            var exPair = ex.pair();
-            return SyntaxRule.any().match(exPair.b).mapOptional(arg ->
+            SyntaxRule.lower().match(start[0]).ifPresentElse(item ->
             {
-                var argPair = arg.pair();
-                return Optional.yes(SyntaxSpan.of(new InvocationSyntax(exPair.a, argPair.a), argPair.b));
-            })
-            .orElse(ex);
-        });
-    }
+                var pair = item.pair();
+                start[0] = pair.b;
+                matched.add(pair.a);
+            },
+            () -> noMatch[0] = true);
+        } while(!noMatch[0] && !start[0].at(0).isEmpty());
 
-    SyntaxRule continued(Syntax from)
-    {
-        return span ->
+        if(matched.isEmpty()) return Optional.no();
+
+        Syntax result = matched.get(0);
+        for(int i = 1; i < matched.size(); i++)
         {
-            return SyntaxRule.lower().match(span).mapOptional(arg ->
-            {
-                var argPair = arg.pair();
-                return Optional.yes(SyntaxSpan.of(new InvocationSyntax(from, argPair.a), argPair.b));
-            })
-            .orElse(SyntaxSpan.of(from, span));
-        };
+            result = new InvocationSyntax(result, matched.get(i));
+        }
+        return Optional.yes(SyntaxSpan.of(result, start[0]));
     }
 }

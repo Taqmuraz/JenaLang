@@ -27,11 +27,17 @@ public class ExpressionListSyntaxRule implements SyntaxRule
         if(span.at(0).text().compare(open))
         {
             boolean[] noMatch = { false };
-            SourceSpan[] start = { span };
+            SourceSpan[] start = { span.skip(1) };
             ArrayList<Syntax> elements = new ArrayList<>();
             do
             {
-                var result = SyntaxRule.any().match(span);
+                if(start[0].at(0).text().compare(Text.of(',')))
+                {
+                    start[0] = start[0].skip(1);
+                    continue;
+                }
+
+                var result = SyntaxRule.any().match(start[0]);
                 result.ifPresentElse(item ->
                 {
                     var pair = item.pair();
@@ -39,11 +45,6 @@ public class ExpressionListSyntaxRule implements SyntaxRule
                     start[0] = pair.b;
                 },
                 () -> noMatch[0] = true);
-                
-                if(!start[0].at(0).text().compare(Text.of(',')))
-                {
-                    break;
-                }
             }
             while(!noMatch[0] && !start[0].at(0).isEmpty());
             if(start[0].at(0).text().compare(close))
