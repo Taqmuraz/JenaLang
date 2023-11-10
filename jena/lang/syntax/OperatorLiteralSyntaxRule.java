@@ -2,7 +2,7 @@ package jena.lang.syntax;
 
 import java.util.Map;
 
-import jena.lang.Action;
+import jena.lang.Optional;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
@@ -25,11 +25,11 @@ public final class OperatorLiteralSyntaxRule implements SyntaxRule
     );
 
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
+    public Optional<SyntaxSpan> match(SourceSpan span)
     {
         Text operator = span.at(0).text();
         String name = operatorMap.get(operator.string());
-        if(name == null) mismatch.call();
-        else action.call(new SymbolLiteralSyntax(new StringText(name)), span.skip(1));
+        if(name == null) return Optional.no();
+        return Optional.yes(SyntaxSpan.of(new SymbolLiteralSyntax(new StringText(name)), span.skip(1)));
     }
 }

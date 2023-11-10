@@ -1,7 +1,6 @@
 package jena.lang.syntax;
 
-
-import jena.lang.Action;
+import jena.lang.Optional;
 import jena.lang.source.SourceSpan;
 
 public class CompositeSyntaxRule implements SyntaxRule
@@ -14,23 +13,17 @@ public class CompositeSyntaxRule implements SyntaxRule
     }
 
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
+    public Optional<SyntaxSpan> match(SourceSpan span)
     {
         boolean[] hasMatch = { false };
         int index = 0;
+        Optional<SyntaxSpan> result = Optional.no();
         do
         {
-            rules[index++].match(span, (syntax, nextSpan) ->
-            {
-                hasMatch[0] = true;
-                action.call(syntax, nextSpan);
-            },
-            () -> { });
+            result = rules[index++].match(span);
+            result.ifPresent(item -> hasMatch[0] = true);
         }
         while(!hasMatch[0] && index < rules.length);
-        if(!hasMatch[0])
-        {
-            mismatch.call();
-        }
+        return result;
     }
 }

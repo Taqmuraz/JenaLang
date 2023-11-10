@@ -2,8 +2,25 @@ package jena.lang;
 
 public interface Optional<Item>
 {
-    void ifPresent(GenericAction<Item> action);
     void ifPresentElse(GenericAction<Item> present, Action notPresent);
-    <Out>Optional<Out> mapIfPresent(GenericFunction<Item, Out> function);
-    <Out>Optional<Out> mapIfPresentElse(GenericFunction<Item, Out> present, GenericProducer<Out> notPresent);
+    default void ifPresent(GenericAction<Item> action)
+    {
+        ifPresentElse(action, () -> { });
+    }
+    default <Out>Optional<Out> map(GenericFunction<Item, Out> function)
+    {
+        return (present, notPresent) ->
+        {
+            ifPresentElse(item -> present.call(function.call(item)), notPresent);
+        };
+    }
+
+    static<Item> Optional<Item> yes(Item item)
+    {
+        return (present, notPresent) -> present.call(item);
+    }
+    static<Item> Optional<Item> no()
+    {
+        return (present, notPresent) -> notPresent.call();
+    }
 }

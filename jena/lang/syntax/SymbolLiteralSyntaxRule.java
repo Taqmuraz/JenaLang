@@ -1,21 +1,21 @@
 package jena.lang.syntax;
 
-import jena.lang.Action;
+import jena.lang.Optional;
 import jena.lang.source.SourceSpan;
 import jena.lang.text.SyntaxText;
 
 public final class SymbolLiteralSyntaxRule implements SyntaxRule
 {
     @Override
-    public void match(SourceSpan span, SyntaxSpanAction action, Action mismatch)
+    public Optional<SyntaxSpan> match(SourceSpan span)
     {
         if(span.at(0).text().compareString("."))
         {
-            new NameExpressionSyntaxRule().match(span.skip(1), (name, nameSpan) ->
+            return new NameExpressionSyntaxRule().match(span.skip(1)).map(ss -> ss.map((name, nameSpan) ->
             {
-                action.call(new SymbolLiteralSyntax(new SyntaxText(name)), nameSpan);
-            }, mismatch);
+                return SyntaxSpan.of(new SymbolLiteralSyntax(new SyntaxText(name)), nameSpan);
+            }));
         }
-        else mismatch.call();
+        return Optional.no();
     }
 }
