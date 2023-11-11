@@ -20,7 +20,7 @@ public class Program
     {
         try
         {
-            Namespace namespace = new StorageNamespace(new File("sources"),
+            Namespace namespace = new StorageNamespace(
                 new IONamespace().nested(
                     new SwingNamespace().nested(
                         JavaNamespace.create())));

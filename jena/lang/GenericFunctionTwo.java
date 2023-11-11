@@ -1,6 +1,6 @@
 package jena.lang;
 
-public interface GenericFunctionTwo<Arg1, Arg2, Result>
+public interface GenericFunctionTwo<Arg1, Arg2, Value>
 {
-    Result call(Arg1 arg1, Arg2 arg2);
+    Value call(Arg1 arg1, Arg2 arg2);
 }

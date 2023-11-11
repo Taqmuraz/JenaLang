@@ -40,7 +40,7 @@ public final class StorageNamespace implements Namespace
         else throw new RuntimeException("Error while opening file : " + name);
     }
 
-    public StorageNamespace(File root, Namespace namespace)
+    public StorageNamespace(Namespace namespace)
     {
         this.namespace = namespace.nested(
             new PairNamespace(

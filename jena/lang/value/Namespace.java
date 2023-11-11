@@ -10,4 +10,9 @@ public interface Namespace
     {
         return new NestedNamespace(this, inner);
     }
+
+    static final Namespace standard = new StorageNamespace(
+        new IONamespace().nested(
+            new SwingNamespace().nested(
+                JavaNamespace.create())));
 }
