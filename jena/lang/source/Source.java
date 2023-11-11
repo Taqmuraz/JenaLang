@@ -1,6 +1,8 @@
 package jena.lang.source;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.Scanner;
 
 import jena.lang.Count;
 import jena.lang.OneCount;
@@ -58,5 +60,25 @@ public interface Source
     static Source of(String name, String source)
     {
         return new StringSource(Text.of(name), source);
+    }
+
+    public static Source of(String name, InputStream stream)
+    {
+        StringBuilder text = new StringBuilder();
+        Scanner scanner = null;
+        try
+        {
+            scanner = new Scanner(stream);
+            while(scanner.hasNextLine())
+            {
+                text.append(scanner.nextLine());
+                text.append('\n');
+            }
+        }
+        catch(Throwable error)
+        {
+            if(scanner != null) scanner.close();
+        }
+        return new StringSource(Text.of(name), text.toString());
     }
 }
