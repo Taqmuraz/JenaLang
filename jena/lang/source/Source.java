@@ -1,5 +1,7 @@
 package jena.lang.source;
 
+import java.io.File;
+
 import jena.lang.Count;
 import jena.lang.OneCount;
 import jena.lang.Position;
@@ -47,5 +49,14 @@ public interface Source
     default Text text()
     {
         return new SourceText(this);
+    }
+
+    static Source of(File file)
+    {
+        return new FileSource(file);
+    }
+    static Source of(String name, String source)
+    {
+        return new StringSource(Text.of(name), source);
     }
 }
