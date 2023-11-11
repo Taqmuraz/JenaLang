@@ -1,5 +1,8 @@
 package jena.lang.value;
 
+import java.util.List;
+
+import jena.lang.GenericBuffer;
 import jena.lang.source.Source;
 import jena.lang.syntax.Syntax;
 import jena.lang.text.TextWriter;
@@ -12,6 +15,11 @@ public interface Value
     boolean valueEquals(Value v);
     int valueCode();
     Object toObject(Class<?> type);
+
+    default Value managedCall(Object... args)
+    {
+        return call(new ArrayValue(GenericBuffer.of(List.of(args)).flow().map(JavaObjectValue::fromObject).collect()));
+    }
 
     default String string()
     {

@@ -78,11 +78,10 @@ public final class JavaObjectValue implements Value
     public static Value fromObject(Object obj)
     {
         if(obj == null) return NoneValue.instance;
-        if(obj.getClass().isPrimitive())
-        {
-            var func = objectToValueMap.get(obj.getClass().getName());
-            if(func != null) return func.apply(obj);
-        }
+        
+        var func = objectToValueMap.get(obj.getClass().getName());
+        if(func != null) return func.apply(obj);
+        
         if(obj instanceof String s) return new TextValue(s);
         
         return new JavaObjectValue(obj);
