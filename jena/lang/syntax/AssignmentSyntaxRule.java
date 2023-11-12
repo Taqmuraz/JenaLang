@@ -17,7 +17,7 @@ public final class AssignmentSyntaxRule implements SyntaxRule
                 return SyntaxRule.any().match(namePair.b.skip(1)).mapOptional(expression ->
                 {
                     var exPair = expression.pair();
-                    if(exPair.b.at(0).text().compare(Text.of("->")))
+                    if(exPair.b.at(0).text().compare(Text.of("=>")))
                     {
                         return SyntaxRule.any().match(exPair.b.skip(1)).mapOptional(next ->
                         {

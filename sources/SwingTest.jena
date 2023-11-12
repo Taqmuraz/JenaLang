@@ -1,4 +1,4 @@
-jc = (javaClass) ->
+jc = javaClass =>
 import =
 {
     int:(jc "java.lang.Integer"),
@@ -7,9 +7,9 @@ import =
     frame:(jc "javax.swing.JFrame"),
     queue:(jc "java.awt.EventQueue"),
     string:(jc "java.lang.String")
-} ->
-frame = (import.frame.new [] ()) ->
-button = (import.button.new [] ()) ->
+} =>
+frame = import.frame.new [] () =>
+button = import.button.new [] () =>
 (import.queue.invokeLater [jc "java.lang.Runnable"] () ->
 [
     [
