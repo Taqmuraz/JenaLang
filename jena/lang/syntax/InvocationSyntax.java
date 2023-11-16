@@ -2,7 +2,7 @@ package jena.lang.syntax;
 
 import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
-import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public final class InvocationSyntax implements Syntax
 {
@@ -26,8 +26,10 @@ public final class InvocationSyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        return expression.value(namespace).call(argument.value(namespace));
+        var arg = argument.value(namespace);
+        var expr = expression.value(namespace);
+        return ValueFunction.of(expr.call().call(arg.call()));
     }
 }

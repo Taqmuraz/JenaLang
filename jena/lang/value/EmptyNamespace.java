@@ -7,8 +7,8 @@ public final class EmptyNamespace implements Namespace
     public final static Namespace instance = new EmptyNamespace();
 
     @Override
-    public Value name(Text name)
+    public ValueFunction name(Text name)
     {
-        return NoneValue.instance;
+        return ValueFunction.none;
     }
 }

@@ -1,0 +1,6 @@
+string = javaClass "java.lang.String" =>
+objects = javaClass "[Ljava.lang.Object;" =>
+out = javaClass "java.lang.System".field.out =>
+[
+    out.printf [string, objects] ["Your name is %s and age is %s", ["Peter", "20"]],
+]

@@ -38,8 +38,8 @@ public final class TextValue implements Value
     @Override
     public Object toObject(Class<?> type)
     {
-        if(type == String.class) return text.string();
-        else throw new RuntimeException(String.format("%s is not a String type", type.getName()));
+        if(type.isAssignableFrom(String.class)) return text.string();
+        else throw new RuntimeException(String.format("%s is not assignable from the String type", type.getName()));
     }
     @Override
     public int valueCode()

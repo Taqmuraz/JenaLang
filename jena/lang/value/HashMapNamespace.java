@@ -21,10 +21,10 @@ public final class HashMapNamespace implements Namespace
     }
 
     @Override
-    public Value name(Text name)
+    public ValueFunction name(Text name)
     {
         Value value = names.get(name.string());
-        if (value == null) return NoneValue.instance;
-        return value;
+        if (value == null) return ValueFunction.none;
+        return ValueFunction.of(value);
     }
 }

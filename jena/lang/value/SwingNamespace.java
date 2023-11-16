@@ -9,17 +9,17 @@ public final class SwingNamespace implements Namespace
 
     public SwingNamespace()
     {
-        names = new SingleNamespace(new StringText("Window"), new FunctionValue("width", width ->
+        names = new SingleNamespace(new StringText("Window"), ValueFunction.of(new FunctionValue("width", width ->
             new FunctionValue("height", height ->
         {
             return new SwingWindowValue(
                 new ExpressionNumber(width),
                 new ExpressionNumber(height));
-        })));
+        }))));
     }
 
     @Override
-    public Value name(Text name)
+    public ValueFunction name(Text name)
     {
         return names.name(name);
     }

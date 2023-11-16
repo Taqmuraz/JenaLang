@@ -4,7 +4,7 @@ import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.value.SingleNamespace;
 import jena.lang.value.Namespace;
-import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public final class AssignmentSyntax implements Syntax
 {
@@ -32,8 +32,9 @@ public final class AssignmentSyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        return next.value(namespace.nested(new SingleNamespace(name, expression.value(namespace))));
+        var expr = expression.value(namespace);
+        return next.value(namespace.nested(new SingleNamespace(name, expr)));
     }
 }

@@ -3,7 +3,7 @@ package jena.lang.syntax;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
-import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public final class NameSyntax implements Syntax
 {
@@ -21,7 +21,7 @@ public final class NameSyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
         return namespace.name(name);
     }

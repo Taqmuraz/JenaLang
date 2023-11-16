@@ -4,7 +4,7 @@ import jena.lang.text.Text;
 
 public interface Namespace
 {
-    Value name(Text name);
+    ValueFunction name(Text name);
 
     default Namespace nested(Namespace inner)
     {

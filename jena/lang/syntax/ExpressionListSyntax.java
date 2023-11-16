@@ -6,6 +6,7 @@ import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public class ExpressionListSyntax implements Syntax
 {
@@ -34,9 +35,11 @@ public class ExpressionListSyntax implements Syntax
     }
     
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        if(expressions.length() == 0) factory.value(new EmptyBuffer<Value>());
-        return factory.value(expressions.flow().map(a -> a.value(namespace)).collect());
+        if(expressions.length() == 0) ValueFunction.of(factory.value(new EmptyBuffer<Value>()));
+
+        var exprs = expressions.map(e -> e.value(namespace)).cached();
+        return ValueFunction.of(factory.value(exprs.map(e -> e.call()).cached()));
     }
 }

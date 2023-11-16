@@ -5,5 +5,5 @@ writer = jc "java.io.OutputStreamWriter".new [jc "java.io.OutputStream"] stream 
 [
     writer.write [jc "java.lang.String"] ("hello, file"),
     writer.flush [] (),
-    print "operation complete :)"
+    print "operation complete :)" line
 ]

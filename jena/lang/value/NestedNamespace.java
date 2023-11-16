@@ -13,10 +13,10 @@ public final class NestedNamespace implements Namespace
     }
 
     @Override
-    public Value name(Text name)
+    public ValueFunction name(Text name)
     {
-        Value innerName = inner.name(name);
-        if(innerName instanceof NoneValue) return outer.name(name);
+        ValueFunction innerName = inner.name(name);
+        if(innerName == ValueFunction.none) return outer.name(name);
         return innerName;
     }
 }

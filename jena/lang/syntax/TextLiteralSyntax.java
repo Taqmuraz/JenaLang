@@ -6,6 +6,7 @@ import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.TextValue;
 import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public final class TextLiteralSyntax implements Syntax
 {
@@ -19,9 +20,9 @@ public final class TextLiteralSyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        return value;
+        return ValueFunction.of(value);
     }
 
     @Override

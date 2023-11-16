@@ -4,7 +4,7 @@ import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.SymbolValue;
-import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public final class SymbolSyntax implements Syntax
 {
@@ -16,9 +16,9 @@ public final class SymbolSyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        return new SymbolValue(name);
+        return ValueFunction.of(new SymbolValue(name));
     }
 
     @Override

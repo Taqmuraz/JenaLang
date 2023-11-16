@@ -43,7 +43,7 @@ public final class StorageNamespace implements Namespace
     public StorageNamespace(Namespace namespace)
     {
         this.namespace = namespace.nested(
-            new PairNamespace(
+            new HashMapNamespace(
                 new ArrayGenericFlow<Text>(
                     new StringText("source"),
                     new StringText("inspect"),
@@ -52,7 +52,7 @@ public final class StorageNamespace implements Namespace
                         {
                             action.call(new FunctionValue("fileName", arg ->
                             {
-                                return loadFromFile(new ValueText(arg).string()).value(this);
+                                return loadFromFile(new ValueText(arg).string()).value(this).call();
                             }));
                             action.call(new FunctionValue("fileName", arg ->
                             {
@@ -68,7 +68,7 @@ public final class StorageNamespace implements Namespace
     }
 
     @Override
-    public Value name(Text name)
+    public ValueFunction name(Text name)
     {
         return namespace.name(name);
     }

@@ -33,7 +33,8 @@ public final class NumberValue implements Value, Single
             Map.entry("java.lang.Integer", v -> v.intValue()),
             Map.entry("java.lang.Long", v -> v.longValue()),
             Map.entry("java.lang.Float", v -> v.floatValue()),
-            Map.entry("java.lang.Double", v -> v.doubleValue())
+            Map.entry("java.lang.Double", v -> v.doubleValue()),
+            Map.entry("java.lang.Object", v -> v)
         );
     }
 

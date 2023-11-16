@@ -33,7 +33,7 @@ public interface Value
             StringBuilder sb = new StringBuilder();
             mistake.print(sb::append);
             return new RuntimeException(sb.toString());
-        }).value(namespace);
+        }).value(namespace).call();
     }
     static Value of(Source source)
     {

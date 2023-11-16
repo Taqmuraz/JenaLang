@@ -6,7 +6,7 @@ import jena.lang.value.FunctionValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.SingleElementMapValue;
 import jena.lang.value.SymbolValue;
-import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public final class EntrySyntax implements Syntax
 {
@@ -18,9 +18,9 @@ public final class EntrySyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        return new FunctionValue("value", arg -> new SingleElementMapValue(new SymbolValue(name), arg));
+        return ValueFunction.of(new FunctionValue("value", arg -> new SingleElementMapValue(new SymbolValue(name), arg)));
     }
 
     @Override

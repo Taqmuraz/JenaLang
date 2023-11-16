@@ -1,10 +1,13 @@
 package jena.lang.value;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jena.lang.text.TextWriter;
@@ -14,6 +17,9 @@ public final class JavaClassValue implements Value
     Class<?> javaClass;
     List<Constructor<?>> constructors;
     Value classValue;
+    Method[] methods;
+    Field[] fields;
+    Map<String, Field> staticFields;
 
     public JavaClassValue(String path)
     {
@@ -26,6 +32,11 @@ public final class JavaClassValue implements Value
             throw new RuntimeException(th);
         }
         constructors = List.of(javaClass.getDeclaredConstructors());
+        methods = javaClass.getMethods();
+        fields = javaClass.getFields();
+        staticFields = Stream.of(fields).filter(f -> Modifier.isStatic(f.getModifiers())).collect(Collectors.toMap(
+            f -> f.getName(),
+            f -> f));
         classValue = new JavaObjectValue(javaClass);
     }
 
@@ -50,6 +61,22 @@ public final class JavaClassValue implements Value
                     c -> c.getParameterTypes(),
                     c -> c::newInstance);
             }
+            else if(symbol.name.compareString("field"))
+            {
+                return new FunctionValue("fieldName", arg ->
+                {
+                    try
+                    {
+                        if(arg instanceof SymbolValue s) return JavaObjectValue.fromObject(
+                            staticFields.get(s.name.string()).get(null));
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new RuntimeException(ex);
+                    }
+                    return NoneValue.instance;
+                });
+            }
             else
             {
                 Predicate<Method> modifierCheck = m ->
@@ -57,7 +84,7 @@ public final class JavaClassValue implements Value
                     var modifiers = m.getModifiers();
                     return Modifier.isStatic(modifiers);
                 };
-                var filtered = Stream.of(javaClass.getMethods()).filter(m -> modifierCheck.test(m) && symbol.name.compareString(m.getName())).toList();
+                var filtered = Stream.of(methods).filter(m -> modifierCheck.test(m) && symbol.name.compareString(m.getName())).toList();
                 return FunctionValue.parameterizedFunction(
                     symbol.name.string(),
                     filtered,

@@ -36,7 +36,7 @@ public final class IONamespace implements Namespace
     }
 
     @Override
-    public Value name(Text name)
+    public ValueFunction name(Text name)
     {
         return names.name(name);
     }

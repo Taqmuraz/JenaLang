@@ -1,5 +1,6 @@
 package jena.lang;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -74,6 +75,13 @@ public interface GenericBuffer<Element>
             array[i] = at(i);
         }
         return array;
+    }
+    default GenericBuffer<Element> cached()
+    {
+        int len = length();
+        ArrayList<Element> list = new ArrayList<Element>(len);
+        for(int i = 0; i < len; i++) list.add(at(i));
+        return of(list);
     }
     static<Element> GenericBuffer<Element> of(List<Element> list)
     {

@@ -5,11 +5,13 @@ import jena.lang.source.JenaSourceFlow;
 import jena.lang.source.Source;
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
-import jena.lang.value.ValueProducer;
+import jena.lang.value.Namespace;
+import jena.lang.value.ValueFunction;
 
-public interface Syntax extends ValueProducer
+public interface Syntax
 {
     void text(TextWriter writer);
+    ValueFunction value(Namespace namespace);
 
     static Result<Syntax, SyntaxMistake> read(Source source)
     {

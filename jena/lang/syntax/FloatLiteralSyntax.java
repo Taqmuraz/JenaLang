@@ -5,6 +5,7 @@ import jena.lang.text.TextWriter;
 import jena.lang.value.Namespace;
 import jena.lang.value.NumberValue;
 import jena.lang.value.Value;
+import jena.lang.value.ValueFunction;
 
 public class FloatLiteralSyntax implements Syntax
 {
@@ -24,8 +25,8 @@ public class FloatLiteralSyntax implements Syntax
     }
 
     @Override
-    public Value value(Namespace namespace)
+    public ValueFunction value(Namespace namespace)
     {
-        return value;
+        return ValueFunction.of(value);
     }
 }
