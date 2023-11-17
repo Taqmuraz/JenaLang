@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 
 import jena.lang.source.InputStreamLineSource;
+import jena.lang.source.Source;
+import jena.lang.text.Text;
+import jena.lang.value.TextValue;
 import jena.lang.value.Value;
 
 public class Program
@@ -13,9 +16,20 @@ public class Program
     {
         try
         {
-            while(true)
+            if(args.length == 0)
             {
-                Value.of(new InputStreamLineSource(System.in));
+                while(true)
+                {
+                    Value.of(new InputStreamLineSource(System.in));
+                }
+            }
+            else
+            {
+                var source = Value.of(Source.of(new File(args[0])));
+                for(int i = 1; i < args.length; i++)
+                {
+                    source = source.call(new TextValue(Text.of(args[i])));
+                }
             }
         }
         catch(Throwable error)

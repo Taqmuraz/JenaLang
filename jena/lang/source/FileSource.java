@@ -13,6 +13,10 @@ public class FileSource implements Source
 
     public FileSource(File file)
     {
+        if(!file.exists())
+        {
+            throw new RuntimeException("No such file : " + file.getAbsolutePath());
+        }
         StringBuilder text = new StringBuilder();
         Scanner scanner = null;
         try

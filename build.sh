@@ -6,5 +6,3 @@ rm sourcelist.txt
 cd build
 echo Main-Class: jena.lang.Program >> manifest.txt
 jar -cvfm jena.jar manifest.txt jena
-cd ..
-sh run_linux.sh
