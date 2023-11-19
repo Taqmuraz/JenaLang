@@ -74,23 +74,31 @@ public final class FunctionValue implements Value
     {
         return Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, (p, method, args) ->
         {
-            Value varg;
-            if(args == null || args.length == 0)
-            {
-                varg = NoneValue.instance;
-            }
-            else
-            {
-                varg = new ArrayValue(new ArrayBuffer<Object>(args).map(o -> JavaObjectValue.fromObject(o)));
-            }
-            var ret = method.getReturnType();
-            var result = function.call(new ArrayValue(varg));
-            if(ret == Void.TYPE)
-            {
-                return null;
-            }
-            return result.toObject(ret);
+            return callMethod(args, method.getReturnType(), function);
         });
+    }
+
+    public static Object callMethod(Object[] args, Class<?> returnType, ValueCallFunction function)
+    {
+        Value varg;
+        if(args == null || args.length == 0)
+        {
+            varg = NoneValue.instance;
+        }
+        else if(args.length == 1)
+        {
+            varg = JavaObjectValue.fromObject(args[0]);
+        }
+        else
+        {
+            varg = new ArrayValue(new ArrayBuffer<Object>(args).map(o -> JavaObjectValue.fromObject(o)));
+        }
+        var result = function.call(varg);
+        if(returnType == Void.TYPE)
+        {
+            return null;
+        }
+        return result.toObject(returnType);
     }
 
     static boolean assignabilityCheck(Class<?> from, Class<?> to)

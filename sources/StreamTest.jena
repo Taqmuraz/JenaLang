@@ -1,0 +1,6 @@
+jc = javaClass =>
+ints = javaArray "java.lang.Integer" =>
+function = jc "java.util.function.Function" =>
+consumer = jc "java.util.function.Consumer" =>
+stream = jc "java.util.stream.Stream".of[ints](10.times) =>
+stream.map[function](1+).map[function](s -> "(" + s + ")" + line).forEach[consumer](print)

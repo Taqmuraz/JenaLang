@@ -11,6 +11,10 @@ public final class TextLiteralSyntaxRule implements SyntaxRule
     public Optional<SyntaxSpan> match(SourceSpan span)
     {
         Text symbol = new SingleCharacterText('\"');
+        if(span.at(0).text().compare(symbol) && span.at(1).text().compare(symbol))
+        {
+            return Optional.yes(SyntaxSpan.of(new TextLiteralSyntax(Text.of("")), span.skip(2)));
+        }
         if(span.at(0).text().compare(symbol) && span.at(2).text().compare(symbol))
         {
             return Optional.yes(SyntaxSpan.of(new TextLiteralSyntax(span.at(1).text()), span.skip(3)));

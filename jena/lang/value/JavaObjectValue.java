@@ -1,6 +1,7 @@
 package jena.lang.value;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -16,7 +17,20 @@ public final class JavaObjectValue implements Value
     public JavaObjectValue(Object obj)
     {
         this.obj = obj;
-        if(obj != null) methods = List.of(obj.getClass().getMethods());
+        if(obj != null)
+        {
+            var cl = obj.getClass();
+            methods = new ArrayList<Method>();
+            collectInterfaceMethods(cl);
+            methods.addAll(List.of(cl.getMethods()));
+        }
+    }
+    void collectInterfaceMethods(Class<?> cl)
+    {
+        if(cl == Object.class) return;
+
+        for(var i : cl.getInterfaces()) methods.addAll(List.of(i.getMethods()));
+        collectInterfaceMethods(cl.getSuperclass());
     }
 
     static

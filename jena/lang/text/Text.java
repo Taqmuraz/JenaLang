@@ -51,6 +51,12 @@ public interface Text
             }
         };
     }
+
+    default Text concat(Text text)
+    {
+        return new ConcatText(this, text);
+    }
+
     static Text of(char c)
     {
         return new SingleCharacterText(c);

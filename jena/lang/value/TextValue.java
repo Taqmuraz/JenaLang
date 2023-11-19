@@ -28,6 +28,17 @@ public final class TextValue implements Value
     @Override
     public Value call(Value argument)
     {
+        if(argument instanceof SymbolValue symbol)
+        {
+            if(symbol.name.compare(Text.of("add")))
+            {
+                return new FunctionValue("addition", arg -> new TextValue(text.concat(Text.of(arg))));
+            }
+            else if(symbol.name.compare(Text.of("buff")))
+            {
+                return new TextValue(Text.of(text.string()));
+            }
+        }
         return elements.call().call(argument);
     }
     @Override

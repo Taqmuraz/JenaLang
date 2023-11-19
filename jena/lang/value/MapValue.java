@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -82,6 +83,14 @@ public final class MapValue implements Value
             }
             return map;
         }
-        else throw new RuntimeException(String.format("%s is expected to be a HashMap assignable class", type.getName()));
+        else if(type.isInterface())
+        {
+            return Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, (p, method, args) ->
+            {
+                var value = map.get(new Key(new SymbolValue(Text.of(method.getName()))));
+                return FunctionValue.callMethod(args, method.getReturnType(), value::call);
+            });
+        }
+        else throw new RuntimeException(String.format("%s is expected to be a HashMap assignable class or interface", type.getName()));
     }
 }
