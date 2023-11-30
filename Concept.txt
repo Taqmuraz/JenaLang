@@ -4,6 +4,8 @@
 
 "[.*]" -- text literal
 
+\\" -- double quote literal
+
 [a-z|A-Z]+ -- name
 
 ([expression|,*]+) -- expression list
@@ -23,7 +25,6 @@
 [expression]: -- key-value-pair constructor
 
 \{[key-value-pair|,]+\} -- map expression
-[key-value-pair] -- single element map expression
 
 [name] = [expression] -> [expression] -- assignment expression
 
