@@ -33,6 +33,10 @@ public final class ArrayValue implements Value
                 items.flow().read(item -> arg.call(item));
                 return this;
             }));
+            action.call("filter", () -> new FunctionValue("condition", arg ->
+            {
+                return new ArrayValue(items.flow().filter(v -> new ExpressionNumber(arg.call(v)).integer() == 1).collect());
+            }));
             action.call("pipe", () -> new FunctionValue("input", input -> new FunctionValue("function", function ->
             {
                 Value[] output = { input };

@@ -1,0 +1,2 @@
+text = source "sources/JSON.json" =>
+text"features".filter(v -> (v"type" == "Polygon") | (v"type" == "GeometryCollection")).map(v -> v"id")

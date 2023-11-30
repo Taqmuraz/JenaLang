@@ -38,6 +38,11 @@ public final class NumberValue implements Value, Single
         );
     }
 
+    public NumberValue(boolean value)
+    {
+        this(value ? 1 : 0);
+    }
+
     public NumberValue(double value)
     {
         this.value = value;

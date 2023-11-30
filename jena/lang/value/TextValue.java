@@ -38,6 +38,14 @@ public final class TextValue implements Value
             {
                 return new TextValue(Text.of(text.string()));
             }
+            else if(symbol.name.compare(Text.of("equals")))
+            {
+                return new FunctionValue("equalTo", arg -> new NumberValue(arg instanceof TextValue t && t.text.compare(text)));
+            }
+            else if(symbol.name.compare(Text.of("notEquals")))
+            {
+                return new TextValue(Text.of(text.string()));
+            }
         }
         return elements.call().call(argument);
     }
