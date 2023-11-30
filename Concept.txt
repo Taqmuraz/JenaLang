@@ -20,7 +20,7 @@
 
 [designation list | name] -> [expression] -- function arrow expression
 
-[name]:[expression] -- key-value-pair
+[expression]: -- key-value-pair constructor
 
 \{[key-value-pair|,]+\} -- map expression
 [key-value-pair] -- single element map expression
@@ -45,4 +45,3 @@ non-continuable syntaxes :
 
 arrow expression
 assignment expression
-single element map expression
