@@ -1,6 +1,6 @@
-java.lang.RuntimeException: error while loading source, Source: `(` Syntax tree is not complete origin:JsonTest.jena.line:2symbol:22
+java.lang.RuntimeException: error while reading source, Source: `'a'` Syntax tree is not complete origin:command line.line:1symbol:7
 	at jena.lang.syntax.SyntaxMistake.exception(SyntaxMistake.java:37)
-	at jena.lang.value.StorageNamespace.lambda$0(StorageNamespace.java:21)
+	at jena.lang.value.Value.lambda$1(Value.java:33)
 	at jena.lang.Result.lambda$1(Result.java:15)
 	at jena.lang.syntax.Syntax.lambda$3(Syntax.java:26)
 	at jena.lang.syntax.SyntaxSpan.lambda$2(SyntaxSpan.java:22)
@@ -8,13 +8,6 @@ java.lang.RuntimeException: error while loading source, Source: `(` Syntax tree 
 	at jena.lang.Optional.lambda$8(Optional.java:43)
 	at jena.lang.syntax.Syntax.lambda$0(Syntax.java:22)
 	at jena.lang.Result.itemOrThrow(Result.java:13)
-	at jena.lang.value.StorageNamespace.loadFromSource(StorageNamespace.java:21)
-	at jena.lang.value.StorageNamespace.loadFromFile(StorageNamespace.java:30)
-	at jena.lang.value.StorageNamespace.lambda$2(StorageNamespace.java:47)
-	at jena.lang.value.FunctionValue.call(FunctionValue.java:65)
-	at jena.lang.syntax.InvocationSyntax.value(InvocationSyntax.java:33)
-	at jena.lang.syntax.ParenthesizedSyntax.value(ParenthesizedSyntax.java:28)
-	at jena.lang.syntax.InvocationSyntax.value(InvocationSyntax.java:31)
-	at jena.lang.value.Value.of(Value.java:34)
+	at jena.lang.value.Value.of(Value.java:31)
 	at jena.lang.value.Value.of(Value.java:38)
 	at jena.lang.Program.main(Program.java:23)

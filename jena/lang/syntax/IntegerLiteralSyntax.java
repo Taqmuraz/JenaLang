@@ -15,7 +15,7 @@ public class IntegerLiteralSyntax implements Syntax
     public IntegerLiteralSyntax(Text literal)
     {
         this.literal = literal;
-        this.value = new NumberValue(Integer.valueOf(literal.string()));
+        this.value = new NumberValue(Long.valueOf(literal.string()));
     }
 
     @Override

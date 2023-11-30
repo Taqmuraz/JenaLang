@@ -12,7 +12,7 @@ public class StringSource implements Source
     public StringSource(Text sourceName, String source)
     {
         this.sourceName = sourceName;
-        this.source = source;
+        this.source = source.replace("\\" + "\"", "\'");
     }
 
     @Override
