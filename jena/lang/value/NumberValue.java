@@ -3,17 +3,14 @@ package jena.lang.value;
 import java.util.Map;
 import java.util.function.Function;
 
-import jena.lang.ArrayBuffer;
 import jena.lang.GenericBuffer;
-import jena.lang.GenericPair;
-import jena.lang.StructPair;
 import jena.lang.text.StringText;
 import jena.lang.text.TextWriter;
 
 public final class NumberValue implements Value, Single
 {
     private double value;
-    private Value members;
+    private static MembersMap<NumberValue> members;
     
     private static Map<String, Function<Number, Object>> objectToValueMap;
     static
@@ -36,6 +33,23 @@ public final class NumberValue implements Value, Single
             Map.entry("java.lang.Double", v -> v.doubleValue()),
             Map.entry("java.lang.Object", v -> v)
         );
+        members = new MembersMap<NumberValue>(action ->
+        {
+            action.call("add", self -> self);
+            action.call("sub", self -> new NumberValue(-self.single()));
+            action.call("mul", numberMethod("mulBy", (a, b) -> a * b));
+            action.call("div", numberMethod("divBy", (a, b) -> a * b));
+            action.call("greater", numberMethod("greaterThan", (a, b) -> a > b ? 1 : 0));
+            action.call("less", numberMethod("lessThan", (a, b) -> a < b ? 1 : 0));
+            action.call("equals", numberMethod("equalTo", (a, b) -> a == b ? 1 : 0));
+            action.call("notEquals", numberMethod("notEqualTo", (a, b) -> a != b ? 1 : 0));
+            action.call("and", numberMethod("andWith", (a, b) -> (long)a & (long)b));
+            action.call("or", numberMethod("orWith", (a, b) -> (long)a | (long)b));
+            action.call("sqrt", numberMethod(a -> Math.sqrt(a)));
+            action.call("negative", numberMethod(a -> -a));
+            action.call("not", numberMethod(a -> a == 0 ? 1 : 0));
+            action.call("times", self -> new ArrayValue(GenericBuffer.range(self.integer()).map(NumberValue::new)));
+        });
     }
 
     public NumberValue(boolean value)
@@ -46,59 +60,18 @@ public final class NumberValue implements Value, Single
     public NumberValue(double value)
     {
         this.value = value;
-        this.members = new SymbolMapValue(symbolValueAction ->
-            new ArrayBuffer<String>(new String[]
-            {
-                "mul",    
-                "div",
-                "greater",
-                "less",
-                "equals",
-                "notEquals",
-                "and",
-                "or",
-            })
-            .flow()
-            .zip(new ArrayBuffer<NumberFunction>(new NumberFunction[]
-            {
-                arg -> value * arg,
-                arg -> value / arg,
-                arg -> value > arg ? 1 : 0,
-                arg -> value < arg ? 1 : 0,
-                arg -> value == arg ? 1 : 0,
-                arg -> value != arg ? 1 : 0,
-                arg -> (long)value & (long)arg,
-                arg -> (long)value | (long)arg,
-            })
-            .flow()).<GenericPair<String, ValueFunction>>map(p -> action -> p.both((n, f) -> action.call(n, () -> numberMethod(n, f))))
-            .append(new StructPair<String, ValueFunction>("sqrt", () -> new NumberValue((int)Math.sqrt(value))))
-            .append(new StructPair<String, ValueFunction>("negative", () -> new NumberValue(-value)))
-            .append(new StructPair<String, ValueFunction>("not", () -> new NumberValue(value == 0 ? 1 : 0)))
-            .append(new StructPair<String, ValueFunction>("times", () -> new ArrayValue(new GenericBuffer<Value>()
-            {
-                @Override
-                public int length()
-                {
-                    return (int)value;
-                }
-                @Override
-                public Value at(int index)
-                {
-                    return new NumberValue(index);
-                }
-            })
-        ))
-        .append(new StructPair<>("add", () -> this))
-        .append(new StructPair<>("sub", () -> new NumberValue(-value)))
-        .read(p -> p.both(symbolValueAction::call)), arg -> new NumberValue(new ExpressionNumber(arg).single() + value));
     }
 
-    static Value numberMethod(String argumentName, NumberFunction function)
+    static MembersMap.Member<NumberValue> numberMethod(NumberUnaryFunction function)
     {
-        return new FunctionValue("number", arg ->
+        return self -> new NumberValue(function.call(self.single()));
+    }
+
+    static MembersMap.Member<NumberValue> numberMethod(String argumentName, NumberBinaryFunction function)
+    {
+        return self -> new FunctionValue(argumentName, arg ->
         {
-            if(arg instanceof Single) return new NumberValue(function.call(((Single)arg).single()));
-            else return NoneValue.instance;
+            return new NumberValue(function.call(self.single(), Single.of(arg).single()));
         });
     }
 
@@ -110,7 +83,8 @@ public final class NumberValue implements Value, Single
     @Override
     public Value call(Value argument)
     {
-        return members.call(argument);
+        if(argument instanceof SymbolValue s) return members.member(s.name.string(), self -> self).call(this);
+        return new NumberValue(value + Single.of(argument).single());
     }
 
     @Override

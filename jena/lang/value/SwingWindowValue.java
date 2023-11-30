@@ -124,10 +124,10 @@ public final class SwingWindowValue implements Value
                     Label label = new Label();
                     label.setText(new ValueText(text).string());
                     label.setBounds(
-                        new ExpressionNumber(x).integer(),
-                        new ExpressionNumber(y).integer(),
-                        new ExpressionNumber(width).integer(),
-                        new ExpressionNumber(height).integer());
+                        Single.of(x).integer(),
+                        Single.of(y).integer(),
+                        Single.of(width).integer(),
+                        Single.of(height).integer());
                     return label;
                 }));
             }))))));
@@ -144,11 +144,11 @@ public final class SwingWindowValue implements Value
                     JButton button = new JButton(new ValueText(text).string());
                     button.addActionListener(e -> click.call(NoneValue.instance));
                     button.setLocation(
-                        new ExpressionNumber(x).integer(),
-                        new ExpressionNumber(y).integer());
+                        Single.of(x).integer(),
+                        Single.of(y).integer());
                     button.setSize(
-                        new ExpressionNumber(width).integer(),
-                        new ExpressionNumber(height).integer());
+                        Single.of(width).integer(),
+                        Single.of(height).integer());
                     return button;
                 }));
             })))))));
@@ -163,11 +163,11 @@ public final class SwingWindowValue implements Value
                 {
                     ImagePanel panel = new ImagePanel(new ValueText(file));
                     panel.setLocation(
-                        new ExpressionNumber(x).integer(),
-                        new ExpressionNumber(y).integer());
+                        Single.of(x).integer(),
+                        Single.of(y).integer());
                     panel.setSize(
-                        new ExpressionNumber(width).integer(),
-                        new ExpressionNumber(height).integer());
+                        Single.of(width).integer(),
+                        Single.of(height).integer());
                     return panel;
                 }));
             }))))));

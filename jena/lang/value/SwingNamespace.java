@@ -13,8 +13,8 @@ public final class SwingNamespace implements Namespace
             new FunctionValue("height", height ->
         {
             return new SwingWindowValue(
-                new ExpressionNumber(width),
-                new ExpressionNumber(height));
+                Single.of(width),
+                Single.of(height));
         }))));
     }
 

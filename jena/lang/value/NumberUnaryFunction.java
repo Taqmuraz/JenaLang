@@ -1,6 +1,6 @@
 package jena.lang.value;
 
-public interface NumberFunction
+public interface NumberUnaryFunction
 {
     double call(double arg);
 }

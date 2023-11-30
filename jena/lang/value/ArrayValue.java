@@ -35,7 +35,7 @@ public final class ArrayValue implements Value
             }));
             action.call("filter", () -> new FunctionValue("condition", arg ->
             {
-                return new ArrayValue(items.flow().filter(v -> new ExpressionNumber(arg.call(v)).integer() == 1).collect());
+                return new ArrayValue(items.flow().filter(v -> Single.of(arg.call(v)).integer() == 1).collect());
             }));
             action.call("pipe", () -> new FunctionValue("input", input -> new FunctionValue("function", function ->
             {
@@ -49,7 +49,7 @@ public final class ArrayValue implements Value
         },
         argument ->
         {
-            var num = new ExpressionNumber(argument).integer();
+            var num = Single.of(argument).integer();
             if(num < items.length() && num >= 0) return items.at(num);
             else return NoneValue.instance;
         });
