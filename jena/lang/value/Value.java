@@ -30,9 +30,7 @@ public interface Value
     {
         return Syntax.read(source).itemOrThrow(mistake ->
         {
-            StringBuilder sb = new StringBuilder();
-            mistake.print(sb::append);
-            return new RuntimeException(sb.toString());
+            return mistake.exception("error while reading source");
         }).value(namespace).call();
     }
     static Value of(Source source)

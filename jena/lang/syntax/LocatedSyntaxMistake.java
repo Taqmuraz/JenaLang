@@ -18,6 +18,7 @@ public final class LocatedSyntaxMistake implements SyntaxMistake
     public void print(TextWriter writer)
     {
         mistake.print(writer);
+        writer.write(" ");
         new LocationPrinter(location).print(writer);
     }
 }

@@ -15,6 +15,7 @@ public interface Syntax
 
     static Result<Syntax, SyntaxMistake> read(Source source)
     {
+        if(source.isEmpty()) return Result.result(new NoneValueSyntax());
         var match = SyntaxRule.any().match(new JenaSourceFlow(source).span());
         return (result, none) ->
         {

@@ -1,27 +1,19 @@
 jc = javaClass =>
 import =
 {
-    int:(jc "java.lang.Integer"),
-    bool:(jc "java.lang.Boolean"),
-    button:(jc "javax.swing.JButton"),
-    frame:(jc "javax.swing.JFrame"),
-    queue:(jc "java.awt.EventQueue"),
-    string:(jc "java.lang.String")
+    .int:(jc "java.lang.Integer"),
+    .bool:(jc "java.lang.Boolean"),
+    .button:(jc "javax.swing.JButton"),
+    .frame:(jc "javax.swing.JFrame"),
+    .queue:(jc "java.awt.EventQueue"),
+    .string:(jc "java.lang.String")
 } =>
 frame = import.frame.new [] () =>
 button = import.button.new [] () =>
 (import.queue.invokeLater [jc "java.lang.Runnable"] () ->
 [
-    [
-        {
-            component:frame,
-            size:[400, 500]
-        },
-        {
-            component:button,
-            size:[200, 50]
-        }]
-    .each(p -> p.component.setSize[import.int, import.int] (p.size)),
+    frame.setSize[import.int, import.int] [500, 500],
+    button.setSize[import.int, import.int] [200, 50],
     button.setText[import.string] "Click me",
     button.addActionListener[jc "java.awt.event.ActionListener"] e -> print "clicked!",
     frame.setLayout [jc "java.awt.LayoutManager"] (),

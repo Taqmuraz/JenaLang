@@ -10,7 +10,6 @@ public interface SyntaxRule
 {
     Optional<SyntaxSpan> match(SourceSpan span);
 
-    static final SyntaxRule entry = new EntrySyntaxRule();
     static final SyntaxRule name = new NameSyntaxRule();
     static final SyntaxRule integer = new IntegerLiteralSyntaxRule();
     static final SyntaxRule single = new FloatLiteralSyntaxRule();
@@ -30,13 +29,12 @@ public interface SyntaxRule
 
     static SyntaxRule lower()
     {
-        return new CompositeSyntaxRule(
-            entry,
+        return new EntrySyntaxRule(new CompositeSyntaxRule(
             arrow,
             assignment,
             name,
-            integer,
             single,
+            integer,
             symbol,
             operator,
             text,
@@ -44,7 +42,7 @@ public interface SyntaxRule
             parenthesized,
             array,
             map
-        );
+        ));
     }
     static SyntaxRule any()
     {

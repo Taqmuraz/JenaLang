@@ -29,4 +29,11 @@ public interface SyntaxMistake
     {
         return new LocatedSyntaxMistake(this, location);
     }
+
+    default RuntimeException exception(String message)
+    {
+        StringBuilder sb = new StringBuilder();
+        print(t -> sb.append(t.string()));
+        return new RuntimeException(String.format("%s, %s", message, sb.toString()));
+    }
 }

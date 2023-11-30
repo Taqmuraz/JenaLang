@@ -1,32 +1,31 @@
 package jena.lang.syntax;
 
-import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
 import jena.lang.value.FunctionValue;
 import jena.lang.value.Namespace;
 import jena.lang.value.SingleElementMapValue;
-import jena.lang.value.SymbolValue;
 import jena.lang.value.ValueFunction;
 
 public final class EntrySyntax implements Syntax
 {
-    Text name;
+    Syntax key;
 
-    public EntrySyntax(Text name)
+    public EntrySyntax(Syntax key)
     {
-        this.name = name;
+        this.key = key;
     }
 
     @Override
     public ValueFunction value(Namespace namespace)
     {
-        return ValueFunction.of(new FunctionValue("value", arg -> new SingleElementMapValue(new SymbolValue(name), arg)));
+        var keyValue = key.value(namespace);
+        return ValueFunction.of(new FunctionValue("value", arg -> new SingleElementMapValue(keyValue.call(), arg)));
     }
 
     @Override
     public void text(TextWriter writer)
     {
-        writer.write(name);
+        key.text(writer);
         writer.write(":");
     }
 }

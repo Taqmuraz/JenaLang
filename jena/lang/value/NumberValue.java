@@ -44,8 +44,6 @@ public final class NumberValue implements Value, Single
         this.members = new SymbolMapValue(symbolValueAction ->
             new ArrayBuffer<String>(new String[]
             {
-                "add",    
-                "sub",
                 "mul",    
                 "div",
                 "greater",
@@ -58,8 +56,6 @@ public final class NumberValue implements Value, Single
             .flow()
             .zip(new ArrayBuffer<NumberFunction>(new NumberFunction[]
             {
-                arg -> value + arg,
-                arg -> value - arg,
                 arg -> value * arg,
                 arg -> value / arg,
                 arg -> value > arg ? 1 : 0,
@@ -87,6 +83,8 @@ public final class NumberValue implements Value, Single
                 }
             })
         ))
+        .append(new StructPair<>("add", () -> this))
+        .append(new StructPair<>("sub", () -> new NumberValue(-value)))
         .read(p -> p.both(symbolValueAction::call)), arg -> new NumberValue(new ExpressionNumber(arg).single() + value));
     }
 

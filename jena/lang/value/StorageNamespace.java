@@ -6,9 +6,7 @@ import jena.lang.ArrayGenericFlow;
 import jena.lang.source.FileSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
-import jena.lang.syntax.JenaSyntaxReader;
 import jena.lang.syntax.Syntax;
-import jena.lang.syntax.TextSyntaxMistakePrinter;
 import jena.lang.text.StringText;
 import jena.lang.text.SyntaxText;
 import jena.lang.text.Text;
@@ -20,13 +18,7 @@ public final class StorageNamespace implements Namespace
 
     static Syntax loadFromSource(Source source)
     {
-        Syntax[] value = { null };
-        new JenaSyntaxReader(source).read(syntax ->
-        {
-            value[0] = syntax;
-        }, new TextSyntaxMistakePrinter());
-        if(value[0] == null) throw new RuntimeException("Error while reading source : " + source.text().string());
-        return value[0];
+        return Syntax.read(source).itemOrThrow(mistake -> mistake.exception("error while loading source"));
     }
 
     static Syntax loadFromFile(String name)
@@ -37,7 +29,7 @@ public final class StorageNamespace implements Namespace
         {
             return loadFromSource(new FileSource(file));
         }
-        else throw new RuntimeException("Error while opening file : " + name);
+        else throw new RuntimeException("File does not exist : " + name);
     }
 
     public StorageNamespace(Namespace namespace)
