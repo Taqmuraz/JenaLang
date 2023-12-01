@@ -17,6 +17,12 @@ public final class IONamespace implements Namespace
                 arg.print(s -> System.out.print(s.string()));
                 return self;
             }));
+            action.call("println", () -> new FunctionValue("text", (arg, self) ->
+            {
+                arg.print(s -> System.out.print(s.string()));
+                System.out.println();
+                return self;
+            }));
             action.call("read", () -> new FunctionValue(args -> new TextValue(new InputStreamLineSource(System.in).text())));
             action.call("readInt", () -> new FunctionValue(args ->
             {

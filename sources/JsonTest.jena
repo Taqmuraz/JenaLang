@@ -1,2 +1,15 @@
 text = source "sources/JSON.json" =>
-text"features".filter(v -> (v"type" == "Polygon") | (v"type" == "GeometryCollection")).map(v -> v"id")
+text"features"
+    .filter(v -> v"type" == "GeometryCollection")
+    .map(v -> geom = v"geometries" => geom
+        .filter(v -> v"type" == "LineString")
+        .map(v ->
+        {
+            .width: (v"width".float),
+            .coords: (v"coordinates".map coords ->
+            {
+                .x:(coords(0).float),
+                .y:(coords(1).float)
+            })
+        }))
+    .filter(v -> v.size != 0)

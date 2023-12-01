@@ -6,13 +6,35 @@ import jena.lang.text.TextWriter;
 
 public final class TextValue implements Value
 {
-    private Text text;
+    public final Text text;
     private ValueFunction elements;
+    private static MembersMap<TextValue> members;
+
+    interface BinaryTextFunction
+    {
+        Value call(Text a, Text b);
+    }
+
+    static MembersMap.Member<TextValue> textFunction(String argumentName, BinaryTextFunction func)
+    {
+        return self -> new FunctionValue(argumentName, arg -> func.call(self.text, Text.of(arg)));
+    }
 
     public TextValue(Text text)
     {
         this.text = text;
         elements = () -> new ArrayValue(text.buffer().<Value>map(CharacterValue::new));
+
+        members = new MembersMap<>(action ->
+        {
+            action.call("add", textFunction("addition", (a, b) -> new TextValue(a.concat(b))));
+            action.call("equals", textFunction("equalsTo", (a, b) -> new NumberValue(a.compare(b))));
+            action.call("notEquals", textFunction("notEqualsTo", (a, b) -> new NumberValue(!a.compare(b))));
+            action.call("buff", self -> new TextValue(Text.of(self.text.string())));
+            action.call("size", self -> new NumberValue(text.length()));
+            action.call("elements", self -> elements.call());
+            action.call("float", self -> Single.of(self.text));
+        });
     }
     public TextValue(String text)
     {
@@ -30,22 +52,7 @@ public final class TextValue implements Value
     {
         if(argument instanceof SymbolValue symbol)
         {
-            if(symbol.name.compare(Text.of("add")))
-            {
-                return new FunctionValue("addition", arg -> new TextValue(text.concat(Text.of(arg))));
-            }
-            else if(symbol.name.compare(Text.of("buff")))
-            {
-                return new TextValue(Text.of(text.string()));
-            }
-            else if(symbol.name.compare(Text.of("equals")))
-            {
-                return new FunctionValue("equalTo", arg -> new NumberValue(arg instanceof TextValue t && t.text.compare(text)));
-            }
-            else if(symbol.name.compare(Text.of("notEquals")))
-            {
-                return new TextValue(Text.of(text.string()));
-            }
+            return members.member(symbol.name.string(), self -> NoneValue.instance).call(this);
         }
         return elements.call().call(argument);
     }

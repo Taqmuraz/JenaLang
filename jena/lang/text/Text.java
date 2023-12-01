@@ -2,6 +2,7 @@ package jena.lang.text;
 
 import jena.lang.GenericBuffer;
 import jena.lang.syntax.Syntax;
+import jena.lang.value.TextValue;
 import jena.lang.value.Value;
 
 public interface Text
@@ -71,6 +72,7 @@ public interface Text
     }
     static Text of(Value v)
     {
+        if(v instanceof TextValue t) return t.text;
         return new ValueText(v);
     }
 }

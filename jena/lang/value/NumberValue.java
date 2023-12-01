@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -75,10 +76,19 @@ public final class NumberValue implements Value, Single
         });
     }
 
+    static DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
     @Override
     public void print(TextWriter writer)
     {
-        writer.write(new StringText(String.valueOf(value)));
+        if(value == 0)
+        {
+            writer.write("0");
+        }
+        else
+        {
+            writer.write(new StringText(decimalFormat.format(value)));
+        }
     }
     @Override
     public Value call(Value argument)

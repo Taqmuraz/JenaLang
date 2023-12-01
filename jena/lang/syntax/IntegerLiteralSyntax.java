@@ -2,7 +2,7 @@ package jena.lang.syntax;
 
 import jena.lang.text.Text;
 import jena.lang.text.TextWriter;
-import jena.lang.value.NumberValue;
+import jena.lang.value.Single;
 import jena.lang.value.Namespace;
 import jena.lang.value.Value;
 import jena.lang.value.ValueFunction;
@@ -15,7 +15,7 @@ public class IntegerLiteralSyntax implements Syntax
     public IntegerLiteralSyntax(Text literal)
     {
         this.literal = literal;
-        this.value = new NumberValue(Long.valueOf(literal.string()));
+        this.value = Single.of(literal);
     }
 
     @Override
