@@ -15,6 +15,7 @@ public final class OperatorSyntaxRule implements SyntaxRule
         Map.entry("-", "sub"),
         Map.entry("*", "mul"),
         Map.entry("/", "div"),
+        Map.entry("%", "mod"),
         Map.entry("!", "not"),
         Map.entry("&", "and"),
         Map.entry("|", "or"),
