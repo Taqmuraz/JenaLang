@@ -22,8 +22,14 @@ public final class JavaObjectValue implements Value
             var cl = obj.getClass();
             methods = new ArrayList<Method>();
             collectInterfaceMethods(cl);
-            methods.addAll(List.of(cl.getMethods()));
+            collectBaseMethods(cl.getSuperclass());
+            methods.addAll(List.of(cl.getDeclaredMethods()));
         }
+    }
+    void collectBaseMethods(Class<?> cl)
+    {
+        if(cl != Object.class) collectBaseMethods(cl.getSuperclass());
+        methods.addAll(List.of(cl.getMethods()));
     }
     void collectInterfaceMethods(Class<?> cl)
     {
