@@ -1,6 +1,6 @@
 package jena.lang.value;
 
-import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -77,8 +77,6 @@ public final class NumberValue implements Value, Single
         });
     }
 
-    static DecimalFormat decimalFormat = new DecimalFormat("0.00");
-
     @Override
     public void print(TextWriter writer)
     {
@@ -88,7 +86,7 @@ public final class NumberValue implements Value, Single
         }
         else
         {
-            writer.write(new StringText(decimalFormat.format(value)));
+            writer.write(new StringText(String.format(Locale.US, "%.2f", value)));
         }
     }
     @Override
