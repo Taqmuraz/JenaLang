@@ -20,5 +20,5 @@ public interface Namespace
     static final Namespace standard = new StorageNamespace(
         new IONamespace().nested(
             new SwingNamespace().nested(
-                JavaNamespace.create()))).nested(functions);
+                JavaNamespace.create()).nested(functions)));
 }
