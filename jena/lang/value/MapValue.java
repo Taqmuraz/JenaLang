@@ -88,6 +88,7 @@ public final class MapValue implements Value
             return Proxy.newProxyInstance(type.getClassLoader(), new Class<?>[] { type }, (p, method, args) ->
             {
                 var value = map.get(new Key(new SymbolValue(Text.of(method.getName()))));
+                if(value == null) return null;
                 return FunctionValue.callMethod(args, method.getReturnType(), value::call);
             });
         }
