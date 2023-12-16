@@ -81,9 +81,9 @@ public final class NumberValue implements Value, Single
     @Override
     public void print(TextWriter writer)
     {
-        if(value == 0)
+        if(value == (int)value)
         {
-            writer.write("0");
+            writer.write(String.valueOf((int)value));
         }
         else
         {

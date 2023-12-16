@@ -11,8 +11,13 @@ public interface Namespace
         return new NestedNamespace(this, inner);
     }
 
+    static final Namespace functions = new HashMapNamespace(action ->
+    {
+        action.call("box", () -> new FunctionValue("boxArg", BoxValue::new));
+    });
+
     static final Namespace standard = new StorageNamespace(
         new IONamespace().nested(
             new SwingNamespace().nested(
-                JavaNamespace.create())));
+                JavaNamespace.create()))).nested(functions);
 }
