@@ -18,12 +18,12 @@ public final class LocationPrinter
     {
         location.location(0, (origin, line, symbol) ->
         {
-            writer.write(new StringText("origin:"));
+            writer.write(new StringText("\norigin: "));
             writer.write(origin);
             writer.write(new SingleCharacterText('.'));
-            writer.write(new StringText("line:"));
+            writer.write(new StringText("\nline: "));
             writer.write(new StringText(String.valueOf(line)));
-            writer.write(new StringText("symbol:"));
+            writer.write(new StringText("\nsymbol: "));
             writer.write(new StringText(String.valueOf(symbol)));
         });
     }
