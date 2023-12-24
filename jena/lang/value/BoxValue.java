@@ -20,6 +20,7 @@ public final class BoxValue implements Value
             action.call("take", b -> b.value);
             action.call("set", b -> new FunctionValue("valueForBox", arg -> b.value = arg));
             action.call("put", b -> new FunctionValue("valueForBox", arg -> b.value = arg));
+            action.call("apply", b -> new FunctionValue("functionToApply", arg -> b.value = arg.call(b.value)));
         });
     }
 
