@@ -17,6 +17,7 @@ public class SourceSpanFromFlow implements SourceSpan
     @Override
     public Source at(int index)
     {
+        if(index < 0 || index >= buffer.length) return Source.empty();
         return buffer[index];
     }
 

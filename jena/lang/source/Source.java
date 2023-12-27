@@ -53,6 +53,11 @@ public interface Source
         return new SourceText(this);
     }
 
+    static Source empty()
+    {
+        return new EmptySource(new ZeroSourceLocation());
+    }
+
     static Source of(File file)
     {
         return new FileSource(file);
@@ -62,7 +67,7 @@ public interface Source
         return new StringSource(Text.of(name), source);
     }
 
-    public static Source of(String name, InputStream stream)
+    static Source of(String name, InputStream stream)
     {
         StringBuilder text = new StringBuilder();
         Scanner scanner = null;
