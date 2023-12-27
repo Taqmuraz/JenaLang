@@ -11,18 +11,19 @@ public class InvocationSyntaxRule implements SyntaxRule
     public Optional<SyntaxSpan> match(SourceSpan span)
     {
         var matched = new ArrayList<Syntax>();
-        SourceSpan[] start = { span };
-        boolean[] noMatch = { false };
+        SourceSpan start = span;
+        boolean noMatch = false;
         do
         {
-            SyntaxRule.lower().match(start[0]).ifPresentElse(item ->
+            var result = SyntaxRule.lower().match(start);
+            if(result.present())
             {
-                var pair = item.pair();
-                start[0] = pair.b;
+                var pair = result.item().pair();
+                start = pair.b;
                 matched.add(pair.a);
-            },
-            () -> noMatch[0] = true);
-        } while(!noMatch[0] && !start[0].at(0).isEmpty());
+            }
+            else noMatch = true;
+        } while(!noMatch && !start.at(0).isEmpty());
 
         if(matched.isEmpty()) return Optional.no();
 
@@ -31,6 +32,6 @@ public class InvocationSyntaxRule implements SyntaxRule
         {
             result = new InvocationSyntax(result, matched.get(i));
         }
-        return Optional.yes(SyntaxSpan.of(result, start[0]));
+        return Optional.yes(SyntaxSpan.of(result, start));
     }
 }

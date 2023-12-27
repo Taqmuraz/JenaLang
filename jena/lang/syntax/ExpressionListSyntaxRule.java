@@ -26,34 +26,34 @@ public class ExpressionListSyntaxRule implements SyntaxRule
     {
         if(span.at(0).text().compare(open))
         {
-            boolean[] noMatch = { false };
-            SourceSpan[] start = { span.skip(1) };
+            boolean noMatch = false;
+            SourceSpan start = span.skip(1);
             ArrayList<Syntax> elements = new ArrayList<>();
             do
             {
-                if(start[0].at(0).text().compare(Text.of(',')))
+                if(start.at(0).text().compare(Text.of(',')))
                 {
-                    start[0] = start[0].skip(1);
+                    start = start.skip(1);
                     continue;
                 }
 
-                var result = SyntaxRule.any().match(start[0]);
-                result.ifPresentElse(item ->
+                var result = SyntaxRule.any().match(start);
+                if(result.present())
                 {
-                    var pair = item.pair();
+                    var pair = result.item().pair();
                     elements.add(pair.a);
-                    start[0] = pair.b;
-                },
-                () -> noMatch[0] = true);
+                    start = pair.b;
+                }
+                else noMatch = true;
             }
-            while(!noMatch[0] && !start[0].at(0).isEmpty());
-            if(start[0].at(0).text().compare(close))
+            while(!noMatch && !start.at(0).isEmpty());
+            if(start.at(0).text().compare(close))
             {
                 return Optional.yes(SyntaxSpan.of(new ExpressionListSyntax(
                     GenericBuffer.of(elements),
                     open,
                     close,
-                    factory), start[0].skip(1)));
+                    factory), start.skip(1)));
             }
         }
         return Optional.no();

@@ -1,43 +1,46 @@
 package jena.lang;
 
-import java.util.ArrayList;
 import java.util.function.Function;
 
-public interface Result<Item, None>
+public class Result<Item, None>
 {
-    void ifPresentElse(GenericAction<Item> result, GenericAction<None> none);
-    
-    default <Throws extends RuntimeException> Item itemOrThrow(Function<None, Throws> errorFunction)
+    Item result;
+    None none;
+    boolean hasResult;
+
+    private Result(Item result, None none, boolean hasResult)
     {
-        ArrayList<Item> item = new ArrayList<>();
-        ifPresentElse(i -> item.add(i), none ->
+        this.result = result;
+        this.none = none;
+        this.hasResult = hasResult;
+    }
+
+    public <Throws extends RuntimeException> Item itemOrThrow(Function<None, Throws> errorFunction)
+    {
+        if(!hasResult)
         {
             throw errorFunction.apply(none);
-        });
-        return item.get(0);
+        }
+        return result;
     }
 
-    default <Out>Result<Out, None> map(GenericFunction<Item, Result<Out, None>> function)
+    public <Out>Result<Out, None> map(GenericFunction<Item, Result<Out, None>> function)
     {
-        return (result, none) ->
-        {
-            ifPresentElse(item -> function.call(item).ifPresentElse(result, none), none);
-        };
+        if(hasResult) return function.call(result);
+        else return Result.none(none);
     }
-    default Result<Item, None> orElse(Item item)
+    public Result<Item, None> orElse(Item item)
     {
-        return (result, none) ->
-        {
-            ifPresentElse(result, n -> result.call(item));
-        };
+        if(hasResult) return this;
+        else return Result.result(item);
     }
 
-    static<Item, None> Result<Item, None> result(Item item)
+    public static<Item, None> Result<Item, None> result(Item item)
     {
-        return (result, none) -> result.call(item);
+        return new Result<>(item, null, true);
     }
-    static<Item, None> Result<Item, None> none(None n)
+    public static<Item, None> Result<Item, None> none(None none)
     {
-        return (result, none) -> none.call(n);
+        return new Result<>(null, none, false);
     }
 }

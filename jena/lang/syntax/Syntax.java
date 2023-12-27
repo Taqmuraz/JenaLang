@@ -17,19 +17,26 @@ public interface Syntax
     {
         if(source.isEmpty()) return Result.result(new NoneValueSyntax());
         var match = SyntaxRule.any().match(new JenaSourceFlow(source).span());
-        return (result, none) ->
+        
+        if(match.present())
         {
-            match.ifPresentElse(ss -> ss.accept((syntax, span) ->
+            var pair = match.item().pair();
+            var syntax = pair.a;
+            var span = pair.b;
+            if(span.at(0).isEmpty())
             {
-                if(span.at(0).isEmpty())
-                    result.call(syntax);
-                else none.call(SyntaxMistake.of(Text.of("Syntax tree is not complete"))
+                return Result.result(syntax);
+            }
+            else
+            {
+                return Result.none(SyntaxMistake.of(Text.of("Syntax tree is not complete"))
                     .located(span.at(0).location())
                     .withSource(span.at(0)));
-            }), () ->
-            {
-                none.call(SyntaxMistake.of(Text.of("no syntax")));
-            });
-        };
+            }
+        }
+        else
+        {
+            return Result.none(SyntaxMistake.of(Text.of("no syntax")));
+        }
     }
 }
