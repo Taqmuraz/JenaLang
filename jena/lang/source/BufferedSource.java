@@ -7,12 +7,12 @@ import jena.lang.text.Text;
 public final class BufferedSource implements Source
 {
     private Text buffer;
-    private Source source;
+    private SourceLocation location;
 
     public BufferedSource(Source source)
     {
         this.buffer = source.text();
-        this.source = source;
+        this.location = source.location().struct();
     }
 
     @Override
@@ -26,6 +26,6 @@ public final class BufferedSource implements Source
     @Override
     public SourceLocation location()
     {
-        return source.location();
+        return location;
     }
 }
