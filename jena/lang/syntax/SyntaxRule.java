@@ -27,6 +27,11 @@ public interface SyntaxRule
 
     static final SyntaxRule invocation = new InvocationSyntaxRule();
 
+    default SyntaxRule safe()
+    {
+        return new SafeSyntaxRule(this);
+    }
+
     static SyntaxRule lower()
     {
         return new EntrySyntaxRule(new CompositeSyntaxRule(
@@ -42,12 +47,12 @@ public interface SyntaxRule
             parenthesized,
             array,
             map
-        ));
+        )).safe();
     }
     static SyntaxRule any()
     {
         return new CompositeSyntaxRule(
-            invocation,
+            invocation.safe(),
             lower());
     }
 }
