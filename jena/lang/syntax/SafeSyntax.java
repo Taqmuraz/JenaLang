@@ -29,6 +29,7 @@ public class SafeSyntax implements Syntax
         while(c.code() != end.code())
         {
             sourceText.append(c.at(0).text().string());
+            sourceText.append(" ");
             c = c.skip(1);
         }
 
