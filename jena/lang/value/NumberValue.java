@@ -39,7 +39,7 @@ public final class NumberValue implements Value, Single
             action.call("add", self -> self);
             action.call("sub", self -> new NumberValue(-self.single()));
             action.call("mul", numberMethod("mulBy", (a, b) -> a * b));
-            action.call("div", numberMethod("divBy", (a, b) -> a * b));
+            action.call("div", numberMethod("divBy", (a, b) -> a / b));
             action.call("mod", numberMethod("modBy", (a, b) -> a % b));
             action.call("greater", numberMethod("greaterThan", (a, b) -> a > b ? 1 : 0));
             action.call("less", numberMethod("lessThan", (a, b) -> a < b ? 1 : 0));
