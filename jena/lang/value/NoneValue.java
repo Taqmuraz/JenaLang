@@ -16,7 +16,7 @@ public final class NoneValue implements Value
     @Override
     public Value call(Value argument)
     {
-        return instance;
+        throw new RuntimeException("None function call attempt");
     }
 
     @Override
