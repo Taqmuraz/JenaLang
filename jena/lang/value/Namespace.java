@@ -16,6 +16,7 @@ public interface Namespace
     {
         action.call("box", () -> new FunctionValue("boxArg", BoxValue::new));
         action.call("int", () -> new FunctionValue("toInt", arg -> new NumberValue(Single.of(arg).integer())));
+        action.call("symbol", () -> new FunctionValue("textForSymbol", arg -> new SymbolValue(Text.of(arg))));
     });
 
     static final Namespace standard = new StorageNamespace(

@@ -15,8 +15,7 @@ public interface Single
     {
         if(value instanceof Single) return (Single)value;
         else if(value instanceof JavaObjectValue j && j.obj instanceof Number n) return new NumberValue(n.doubleValue());
-        else if(value instanceof NoneValue) return new NumberValue(0);
-        else return new NumberValue(1);
+        else throw new RuntimeException("Not a number : %s".formatted(value.string()));
     }
     static NumberValue of(Text text)
     {
