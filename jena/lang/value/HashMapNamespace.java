@@ -5,6 +5,7 @@ import java.util.Map;
 
 import jena.lang.GenericBuffer;
 import jena.lang.GenericPair;
+import jena.lang.Optional;
 import jena.lang.text.Text;
 
 public final class HashMapNamespace implements Namespace
@@ -21,10 +22,10 @@ public final class HashMapNamespace implements Namespace
     }
 
     @Override
-    public ValueFunction name(Text name)
+    public Optional<ValueFunction> name(Text name)
     {
         Value value = names.get(name.string());
-        if (value == null) return ValueFunction.none;
-        return ValueFunction.of(value);
+        if (value == null) return Optional.no();
+        return Optional.yes(ValueFunction.of(value));
     }
 }

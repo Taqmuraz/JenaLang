@@ -3,6 +3,7 @@ package jena.lang.value;
 import java.io.File;
 
 import jena.lang.ArrayGenericFlow;
+import jena.lang.Optional;
 import jena.lang.source.FileSource;
 import jena.lang.source.Source;
 import jena.lang.source.StringSource;
@@ -60,7 +61,7 @@ public final class StorageNamespace implements Namespace
     }
 
     @Override
-    public ValueFunction name(Text name)
+    public Optional<ValueFunction> name(Text name)
     {
         return namespace.name(name);
     }

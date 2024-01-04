@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import jena.lang.Optional;
 import jena.lang.source.InputStreamLineSource;
 import jena.lang.text.SingleCharacterText;
 import jena.lang.text.Text;
@@ -42,7 +43,7 @@ public final class IONamespace implements Namespace
     }
 
     @Override
-    public ValueFunction name(Text name)
+    public Optional<ValueFunction> name(Text name)
     {
         return names.name(name);
     }

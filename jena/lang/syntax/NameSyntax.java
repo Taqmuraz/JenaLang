@@ -23,6 +23,11 @@ public final class NameSyntax implements Syntax
     @Override
     public ValueFunction value(Namespace namespace)
     {
-        return namespace.name(name);
+        var value = namespace.name(name);
+        if(!value.present())
+        {
+            throw new RuntimeException("These is no such name as %s".formatted(name.string()));
+        }
+        return value.item();
     }
 }

@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import jena.lang.Optional;
 import jena.lang.text.StringText;
 import jena.lang.text.Text;
 
@@ -19,7 +20,7 @@ public final class SwingNamespace implements Namespace
     }
 
     @Override
-    public ValueFunction name(Text name)
+    public Optional<ValueFunction> name(Text name)
     {
         return names.name(name);
     }

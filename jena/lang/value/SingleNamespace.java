@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import jena.lang.Optional;
 import jena.lang.text.Text;
 
 public final class SingleNamespace implements Namespace
@@ -14,9 +15,9 @@ public final class SingleNamespace implements Namespace
     }
 
     @Override
-    public ValueFunction name(Text name)
+    public Optional<ValueFunction> name(Text name)
     {
-        if(name.compare(this.name)) return value;
-        return ValueFunction.none;
+        if(name.compare(this.name)) return Optional.yes(value);
+        return Optional.no();
     }
 }

@@ -1,5 +1,6 @@
 package jena.lang.value;
 
+import jena.lang.Optional;
 import jena.lang.text.Text;
 
 public final class NestedNamespace implements Namespace
@@ -13,10 +14,10 @@ public final class NestedNamespace implements Namespace
     }
 
     @Override
-    public ValueFunction name(Text name)
+    public Optional<ValueFunction> name(Text name)
     {
-        ValueFunction innerName = inner.name(name);
-        if(innerName == ValueFunction.none) return outer.name(name);
+        var innerName = inner.name(name);
+        if(!innerName.present()) return outer.name(name);
         return innerName;
     }
 }
