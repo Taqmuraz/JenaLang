@@ -52,7 +52,7 @@ public final class TextValue implements Value
     {
         if(argument instanceof SymbolValue symbol)
         {
-            return members.member(symbol.name.string(), self -> NoneValue.instance).call(this);
+            return members.member(symbol.name, self -> NoneValue.instance).call(this);
         }
         return elements.call().call(argument);
     }

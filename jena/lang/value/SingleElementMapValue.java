@@ -26,8 +26,8 @@ public final class SingleElementMapValue implements Value
     {
         if(argument instanceof SymbolValue s)
         {
-            if(s.name.compareString("key")) return element;
-            if(s.name.compareString("value")) return value;
+            if(s.name.equals("key")) return element;
+            if(s.name.equals("value")) return value;
         }
         if(element.valueEquals(argument)) return value;
         else return NoneValue.instance;

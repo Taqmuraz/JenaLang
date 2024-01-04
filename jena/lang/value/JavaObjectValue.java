@@ -72,9 +72,9 @@ public final class JavaObjectValue implements Value
         if(obj == null) return NoneValue.instance;
         if(argument instanceof SymbolValue s)
         {
-            var filtered = methods.stream().filter(m -> s.name.compareString(m.getName())).toList();
+            var filtered = methods.stream().filter(m -> s.name.equals(m.getName())).toList();
             return FunctionValue.parameterizedFunction(
-                s.name.string(),
+                s.name,
                 filtered,
                 obj.getClass(),
                 m -> m.getReturnType(),

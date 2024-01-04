@@ -38,7 +38,7 @@ public class SymbolMapValue implements Value
     {
         if(argument instanceof SymbolValue symbol)
         {
-            String key = symbol.name.string();
+            String key = symbol.name;
             if (map.containsKey(key)) return map.get(key).call();
         }
         return defaultValue.call(argument);

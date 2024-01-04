@@ -37,7 +37,7 @@ public final class BoxValue implements Value
     {
         if(argument instanceof SymbolValue s)
         {
-            return members.member(s.name.string(), b -> value.call(argument)).call(this);
+            return members.member(s.name, b -> value.call(argument)).call(this);
         }
         return value.call(argument);
     }

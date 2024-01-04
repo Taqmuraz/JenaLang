@@ -51,7 +51,7 @@ public final class JavaClassValue implements Value
     {
         if(argument instanceof SymbolValue symbol)
         {
-            if(symbol.name.compareString("new"))
+            if(symbol.name.equals("new"))
             {
                 return FunctionValue.parameterizedFunction(
                     "constructor",
@@ -61,14 +61,14 @@ public final class JavaClassValue implements Value
                     c -> c.getParameterTypes(),
                     c -> c::newInstance);
             }
-            else if(symbol.name.compareString("field"))
+            else if(symbol.name.equals("field"))
             {
                 return new FunctionValue("fieldName", arg ->
                 {
                     try
                     {
                         if(arg instanceof SymbolValue s) return JavaObjectValue.fromObject(
-                            staticFields.get(s.name.string()).get(null));
+                            staticFields.get(s.name).get(null));
                     }
                     catch(Exception ex)
                     {
@@ -84,9 +84,9 @@ public final class JavaClassValue implements Value
                     var modifiers = m.getModifiers();
                     return Modifier.isStatic(modifiers);
                 };
-                var filtered = Stream.of(methods).filter(m -> modifierCheck.test(m) && symbol.name.compareString(m.getName())).toList();
+                var filtered = Stream.of(methods).filter(m -> modifierCheck.test(m) && symbol.name.equals(m.getName())).toList();
                 return FunctionValue.parameterizedFunction(
-                    symbol.name.string(),
+                    symbol.name,
                     filtered,
                     javaClass,
                     m -> m.getReturnType(),

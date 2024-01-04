@@ -92,7 +92,7 @@ public final class NumberValue implements Value, Single
     @Override
     public Value call(Value argument)
     {
-        if(argument instanceof SymbolValue s) return members.member(s.name.string(), self -> self).call(this);
+        if(argument instanceof SymbolValue s) return members.member(s.name, self -> self).call(this);
         return new NumberValue(value + Single.of(argument).single());
     }
 
