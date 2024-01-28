@@ -5,6 +5,10 @@ import jena.lang.text.TextWriter;
 
 public class SymbolValue implements Value
 {
+    static MembersMap<SymbolValue> members = new MembersMap<>(action ->
+    {
+        action.call("text", s -> new TextValue(s.name));
+    });
     public final String name;
 
     public SymbolValue(Text name)
@@ -22,7 +26,7 @@ public class SymbolValue implements Value
     @Override
     public Value call(Value argument)
     {
-        if(argument instanceof SymbolValue) return NoneValue.instance;
+        if(argument instanceof SymbolValue sym) return members.member(sym.name, s -> NoneValue.instance).call(this);
         return argument.call(this);
     }
 

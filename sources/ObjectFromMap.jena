@@ -1,0 +1,3 @@
+map = { "x":10, "y":150 } =>
+obj = (key -> map(key.text)) =>
+print (obj.x) line (obj.y)
