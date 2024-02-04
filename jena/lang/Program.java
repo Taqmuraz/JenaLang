@@ -34,20 +34,14 @@ public class Program
         }
         catch(Throwable error)
         {
-            try
+            try(var writer = new PrintStream(new FileOutputStream(new File("log.txt"))))
             {
-                var writer = new PrintStream(new FileOutputStream(new File("log.txt")));
-
-                while(error != null)
-                {
-                    error.printStackTrace(writer);
-                    error.printStackTrace(System.out);
-                    error = error.getCause();
-                }
+                System.out.println(error);
+                writer.println(error);
             }
             catch(Throwable th)
             {
-
+                System.out.println(th);
             }
         }
     }
