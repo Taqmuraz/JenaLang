@@ -17,11 +17,8 @@ public class JenaException extends RuntimeException
         var cause = getCause();
         while(cause != null)
         {
-            if(cause instanceof JenaException j)
-            {
-                sb.append("\ncaused by:\n");
-                sb.append(j.text);
-            }
+            sb.append("\ncaused by\n");
+            sb.append(cause.getMessage());
             cause = cause.getCause();
         }
         return sb.toString();
