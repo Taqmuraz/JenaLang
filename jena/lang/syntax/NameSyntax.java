@@ -26,7 +26,7 @@ public final class NameSyntax implements Syntax
         var value = namespace.name(name);
         if(!value.present())
         {
-            throw new RuntimeException("These is no such name as %s".formatted(name.string()));
+            throw new RuntimeException("There is no such name as %s".formatted(name.string()));
         }
         return value.item();
     }
