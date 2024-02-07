@@ -1,16 +1,19 @@
-Class = state -> table ->
-    args ->
+Class = table ->
+    constructor ->
+    args -> state = constructor args =>
         key -> arg -> table key args state arg =>
 
-Human = Class { .x:(box 0) } {
+Human = Class {
     .walkLeft: () -> obj -> () -> obj.x.apply(-1),
     .walkRight: () -> obj -> () -> obj.x.apply 1,
-    .status: args -> obj -> () -> println("x = " + (obj.x.get + args.x) + "y = " + (args.y)),
-} =>
+    .walkUp: () -> obj -> () -> obj.y.apply 1,
+    .walkDown: () -> obj -> () -> obj.y.apply 1,
+    .status: () -> obj -> () -> println("x = " + (obj.x.get) + ", y = " + (obj.y.get)),
+} args -> { .x:(box (args.x)), .y:(box (args.y)) }  =>
 
-h = Human() => [
-  h.walkLeft(),
+h = Human{.x:5, .y:0} => [
   h.walkRight(),
+  h.walkUp(),
   h.walkRight(),
   h.status(),
 ]

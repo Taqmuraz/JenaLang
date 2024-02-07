@@ -9,7 +9,7 @@ Human = Class {
     .status: () -> obj -> () -> println("x = " + (obj.x.get)),
 } args -> { .x:(box (args.x)) }  =>
 
-h = Human(5) => [
+h = Human{.x:5} => [
   h.walkLeft(),
   h.walkRight(),
   h.walkRight(),
