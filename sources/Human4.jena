@@ -1,0 +1,17 @@
+Class = table ->
+    constructor ->
+    args -> state = constructor args =>
+        key -> arg -> table key args state arg =>
+
+Human = Class {
+    .walkLeft: () -> obj -> () -> obj.x.apply(-1),
+    .walkRight: () -> obj -> () -> obj.x.apply 1,
+    .status: () -> obj -> () -> println("x = " + (obj.x.get)),
+} args -> { .x:(box (args.x)) }  =>
+
+h = Human(5) => [
+  h.walkLeft(),
+  h.walkRight(),
+  h.walkRight(),
+  h.status(),
+]

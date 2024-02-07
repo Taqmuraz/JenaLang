@@ -1,0 +1,13 @@
+Human = table = {
+  .walkLeft: obj -> obj.x.apply(-1),
+  .walkRight: obj -> obj.x.apply 1,
+  .status: obj -> print ("x = " + (obj.x.get)),
+}
+=> state = { .x:(box 0) }
+=> () -> key -> () -> table key state =>
+h = Human() => [
+  h.walkLeft(),
+  h.walkRight(),
+  h.walkRight(),
+  h.status(),
+]

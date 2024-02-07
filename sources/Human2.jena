@@ -1,0 +1,11 @@
+Human = () -> x = box(0) => {
+  .walkLeft:() -> x.apply(-1),
+  .walkRight:() -> x.apply 1,
+  .status:() -> print ("x = " + (x.get)),
+} =>
+h = Human() => [
+  h.walkLeft(),
+  h.walkRight(),
+  h.walkRight(),
+  h.status(),
+]

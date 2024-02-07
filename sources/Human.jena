@@ -1,0 +1,8 @@
+Human = () -> {
+  .walk:() -> println "walking!",
+  .stand:() -> println "standing!",
+} =>
+h = Human() => [
+  h.walk(),
+  h.stand(),
+]
