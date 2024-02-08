@@ -1,0 +1,24 @@
+processA = {
+    .start:() -> println "A started!",
+    .update:() -> println "A updated!",
+    .end:() -> println "A ended!",
+} =>
+processB = val = box 0 => {
+    .start:() -> [println "B started!", val.apply 1],
+    .update:() -> [println "B updated!", val.apply 1],
+    .end:() -> println ("B ended, val = " + (val.get) + "!"),
+} =>
+processC = base = processA => {
+    .start:() -> [base.start(), println "C started!"],
+    .update:() -> [base.update(), println "C updated!"],
+    .end:() -> [base.end(), println "C ended!"],
+} =>
+list = [
+    processA,
+    processB,
+    processC,
+] => [
+    list.map.start.each.call,
+    list.map.update.each.call,
+    list.map.end.each.call,
+]
