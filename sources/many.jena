@@ -1,0 +1,7 @@
+many = set -> req = self => arg -> req(set.map f -> f arg) =>
+printer = many [
+  () -> print "[output]: ",
+  msg -> print msg,
+  () -> print line,
+] =>
+printer "display text"
