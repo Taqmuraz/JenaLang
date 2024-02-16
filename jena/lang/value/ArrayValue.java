@@ -40,8 +40,7 @@ public final class ArrayValue implements Value
             action.call("pipe", () -> new FunctionValue("input", input -> new FunctionValue("function", function ->
             {
                 Value[] output = { input };
-                items.each(item -> output[0] = function.call(
-                        new ArrayValue(output[0], item)));
+                items.each(item -> output[0] = function.call(output[0]).call(item));
                 return output[0];
             })));
             action.call("join", () -> new FunctionValue("separator",
