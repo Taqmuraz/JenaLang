@@ -27,11 +27,15 @@ public final class ArrayValue implements Value
             action.call("size", () -> new NumberValue(items.length()));
             action.call("map", () -> new FunctionValue("function", arg ->
                 new ArrayValue(items.map(item ->
-                arg.call(item)).cached())));
+                arg.call(item)))));
             action.call("each", () -> new FunctionValue("action", arg ->
             {
                 items.flow().read(item -> arg.call(item));
                 return this;
+            }));
+            action.call("collect", () -> new FunctionValue(arg ->
+            {
+                return new ArrayValue(items.cached());
             }));
             action.call("filter", () -> new FunctionValue("condition", arg ->
             {
