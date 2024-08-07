@@ -1,1 +1,2 @@
-print(10.times.pipe 0 +)
+items = 3.times.map readInt =>
+print(items.pipe 0 +)
